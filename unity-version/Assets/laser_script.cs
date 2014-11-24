@@ -48,13 +48,18 @@ public class laser_script : MonoBehaviour
 				local_laser_pref.localScale = new Vector3(0.15f, scalingy, 1);
 				//*******
 
-				float angle = Vector3.Angle (firstFingerPos,endFingerPos);
-				Debug.Log ("ANGLE : " + angle);
+				Vector3 vectorToTarget = endFingerPos - firstFingerPos;
 
-				Quaternion rotation = Quaternion.identity;
+				float angle = Mathf.Atan2 (vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
+				Quaternion rotation = new Quaternion ();
+				rotation.eulerAngles = new Vector3 (0, 0, angle-90);
+
+				//laser_comportement.start = firstFingerPos;
+				laser_comportement.startSwipe = firstFingerPos;
+				laser_comportement.end = objPos;
+				laser_comportement.endnotadapted = endFingerPos;
 
 				Rigidbody laser = (Rigidbody) Instantiate (local_laser_pref, objPos, rotation);
-
 				audio.PlayOneShot (laserSound, 0.5f);
 				nextShot = Time.time + fireRate;
 			}
@@ -62,5 +67,6 @@ public class laser_script : MonoBehaviour
 
 	}
 
+     	
 
 }
