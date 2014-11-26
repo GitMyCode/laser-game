@@ -3,7 +3,7 @@ using System.Collections;
 
 public class laser_comportement : MonoBehaviour {
 
-	public int speed = 5;
+	public int speed = 2;
 	public static Vector3 startSwipe;
 	public static Vector3 end;
 	public static Vector3 endnotadapted;
@@ -17,7 +17,8 @@ public class laser_comportement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-
+		Vector3 test = Vector3.up * speed * Time.deltaTime;
+		transform.Translate(test);
 
 		/*
 		amttomove = speed * Time.deltaTime;
@@ -33,6 +34,11 @@ public class laser_comportement : MonoBehaviour {
 	}
 
 	void FixedUpdate (){
+		/*
+		Vector3 test = Vector3.up * speed;
+		transform.Translate(test,Space.Self);
+*/
+		/*
 		amttomove = speed * Time.deltaTime;
 		Vector3 start = Vector3.up;
 		//Vector3 start = startSwipe
@@ -46,7 +52,7 @@ public class laser_comportement : MonoBehaviour {
 			Vector3 test = (new Vector3(endnotadapted.x,0,0)) * amttomove/250;
 			test = test + (new Vector3(0,endnotadapted.y,0)) * amttomove/250;
 			transform.Translate(test,Space.World);
-			*/
+
 
 			Vector3 test = Vector3.right * amttomove;
 			test = test + Vector3.up * amttomove;
@@ -62,5 +68,6 @@ public class laser_comportement : MonoBehaviour {
 		} else {
 			transform.Translate(new Vector3(0,speed * Time.deltaTime,0),Space.World);
 		}
+	*/
 	}  
 }
