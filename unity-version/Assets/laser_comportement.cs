@@ -4,13 +4,6 @@ using System.Collections;
 public class laser_comportement : MonoBehaviour {
 
 	public float speed;
-	/*
-	void Update () {
-
-
-
-	}
-	*/
 
 	void FixedUpdate (){
 		Vector3 test = Vector3.up * speed * Time.deltaTime;
