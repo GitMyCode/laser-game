@@ -14,9 +14,11 @@ public class laser_script : MonoBehaviour
 	public Vector3 objFirstpos;
 	public Vector3 firstFingerPos;
 
-
-	private GameObject lineRenderer;
+	private Transform  laser;
 	private Rect shootingZone = new Rect(0, 0, Screen.width, Screen.height / 3);
+
+	public float startTime;
+	public float speedOfLaser;
 
 	void Start ()
 	{
@@ -31,38 +33,59 @@ public class laser_script : MonoBehaviour
 		if (shootingZone.Contains(t.position)) {
 
 			if (t.phase == TouchPhase.Began) {
-				if (Time.time >= nextShot) {
+				startTime = Time.time;
+				if (startTime >= nextShot) {
 					firstFingerPos = t.position;
 					objFirstpos = Camera.main.ScreenToWorldPoint (firstFingerPos);
 					objFirstpos.z = 0.0f;// Sinon Z est a -10.
+
 				}
 			}
 				
 	         if(t.phase == TouchPhase.Ended){
-				if (Time.time >= nextShot) {
+				float endTime = Time.time;
+				if (endTime >= nextShot) {
 
 					Vector3 endFingerPos = t.position;
-					Vector3 objPos = Camera.main.ScreenToWorldPoint (endFingerPos);
-					objPos.z = 0.0f;// Sinon Z est a -10.
+					Vector3 endObjPosInPix = Camera.main.ScreenToWorldPoint (endFingerPos);
+					endObjPosInPix.z = 0.0f;// Sinon Z est a -10.
 
 					//SCALING
-					float scalingy = objFirstpos.y - objPos.y;
+					float scalingy = objFirstpos.y - endObjPosInPix.y;
 					Debug.Log (scalingy);
 
 					Transform local_laser_pref = laser_pref;
 					local_laser_pref.localScale = new Vector3(0.15f, scalingy, 1);
 					//*******
 
-
+					//Calcul de l'angle
 					Vector3 vectorToTarget = endFingerPos - firstFingerPos;
 					float angle = Mathf.Atan2 (vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
 					Quaternion rotation = new Quaternion ();
 					rotation.eulerAngles = new Vector3 (0, 0,angle-90);
+					//**********
+
+
+					//CalculVitesse
+					float distance = Vector3.Distance (objFirstpos, endObjPosInPix);
+					float diffTime = endTime - startTime;
+					speedOfLaser = 1;
+
+					if (diffTime != 0) {
+						speedOfLaser = distance / diffTime;
+						speedOfLaser = speedOfLaser / 2;
+					}
+					//***********
 
 
 					audio.PlayOneShot (laserSound, 0.5f);
 					nextShot = Time.time;
-					Rigidbody laser = (Rigidbody) Instantiate (local_laser_pref, objPos, rotation);
+
+					laser = (Transform )Instantiate (local_laser_pref, endObjPosInPix, rotation);
+
+					laser_comportement laserToSpeedUp = laser.GetComponent<laser_comportement> ();
+					laserToSpeedUp.speed = speedOfLaser;
+
 				}
 	          }
 		}
