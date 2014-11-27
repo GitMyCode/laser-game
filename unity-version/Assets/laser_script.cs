@@ -68,7 +68,7 @@ public class laser_script : MonoBehaviour
 	}
 
 	Transform scalingY(){
-		float scalingy = objFirstpos.y - endObjPosInPix.y;
+		float scalingy = Vector3.Distance(objFirstpos, endObjPosInPix);
 		Transform local_laser_pref = laser_pref;
 		local_laser_pref.localScale = new Vector3(0.15f, scalingy, 1);
 		return local_laser_pref;
