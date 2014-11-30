@@ -9,4 +9,6 @@ public class laser_comportement : MonoBehaviour {
 		Vector3 test = Vector3.up * speed * Time.deltaTime;
 		transform.Translate(test);
 	}  
+
+
 }
