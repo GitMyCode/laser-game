@@ -56,7 +56,9 @@ public class GameController : MonoBehaviour {
 					laser_pref = (Transform)Instantiate(local_laser_pref, endObjPosInPix,(Quaternion.identity)); // Create Laser on Scence
 					//laserPref = (GameObject)Instantiate(Resources.Load("LaserWithTrailPref"));
 					//giveSpeedToLaser ();
-					laser_pref.rigidbody2D.velocity = new Vector2(101,endFingerPos.y).normalized *10;
+					float angleX = endFingerPos.x - firstFingerPos.x;
+					float angleY = endFingerPos.y - firstFingerPos.y;
+					laser_pref.rigidbody2D.velocity = new Vector2(angleX,angleY).normalized *10;
 						
 				}
 			}
