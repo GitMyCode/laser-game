@@ -3,6 +3,7 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 
+	public GameObject laserPref;
 	public Transform laser_pref;
 	public Touch touch;
 	public AudioClip laserSound;
@@ -52,8 +53,11 @@ public class GameController : MonoBehaviour {
 					Quaternion rotation = calculAngle(endFingerPos);			
 					calculSpeed (endTime);
 					shootLaserSound ();
-					laser = (Transform )Instantiate (local_laser_pref, endObjPosInPix, rotation); // Create Laser on Scence
-					giveSpeedToLaser ();
+					laser_pref = (Transform)Instantiate(local_laser_pref, endObjPosInPix,(Quaternion.identity)); // Create Laser on Scence
+					//laserPref = (GameObject)Instantiate(Resources.Load("LaserWithTrailPref"));
+					//giveSpeedToLaser ();
+					laser_pref.rigidbody2D.velocity = new Vector2(101,endFingerPos.y).normalized *10;
+						
 				}
 			}
 		}
