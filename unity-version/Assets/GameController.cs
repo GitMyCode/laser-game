@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
@@ -21,12 +22,20 @@ public class GameController : MonoBehaviour {
 	public float startTime;
 	public float speedOfLaser;
 
+	static Hashtable laserTable = new Hashtable();
+	public static Dictionary<string, LaserTrail> laserTrailDictionary = new Dictionary<string, LaserTrail>();
 
+
+	static int laserIDCounter =0;
 	// Use this for initialization
+
+	int laserID=0;
+
+
 	void Start () {
 	
 	}
-	
+	 
 	// Update is called once per frame
 	void Update () {
 
@@ -35,7 +44,7 @@ public class GameController : MonoBehaviour {
 		}
 
 		Touch t = Input.GetTouch (0);
-		
+		  
 		if (shootingZone.Contains(t.position)) {
 			
 			if (t.phase == TouchPhase.Began) {
@@ -53,13 +62,24 @@ public class GameController : MonoBehaviour {
 					Quaternion rotation = calculAngle(endFingerPos);			
 					calculSpeed (endTime);
 					shootLaserSound ();
+
+					laserIDCounter++;
+
+					local_laser_pref.name = "laser"+laserID;
 					laser = (Transform)Instantiate(local_laser_pref, endObjPosInPix,(Quaternion.identity)); // Create Laser on Scence
+
 					//laserPref = (GameObject)Instantiate(Resources.Load("LaserWithTrailPref"));
 					//giveSpeedToLaser ();
+
 					float angleX = endFingerPos.x - firstFingerPos.x;
 					float angleY = endFingerPos.y - firstFingerPos.y;
 					laser.rigidbody2D.velocity = new Vector2(angleX,angleY).normalized *calculSpeed(endTime);
-						
+
+					laserID = laserIDCounter;
+					laser.name = "laser"+laserID;
+
+					laser.gameObject.name = "laser"+laserID;
+
 				}
 			}
 		}

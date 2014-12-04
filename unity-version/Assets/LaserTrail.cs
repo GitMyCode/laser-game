@@ -22,9 +22,9 @@ public class LaserTrail : MonoBehaviour {
 	public bool colliderEnabled = true;             //determines if the collider is enabled.  Changing this during runtime will have no effect.
 	public bool pausing = false;                     //determines if the trail is pausing, i.e. neither creating nor destroying vertices
 	
-	private Transform trans;                        //transform of the object this script is attached to                    
+	public Transform trans;                        //transform of the object this script is attached to                    
 	private Mesh mesh;                              
-	private new PolygonCollider2D collider;
+	public new PolygonCollider2D collider;
 	
 	private LinkedList<Vector3> centerPositions;    //the previous positions of the object this script is attached to
 	private LinkedList<Vertex> leftVertices;        //the left vertices derived from the center positions
@@ -33,7 +33,10 @@ public class LaserTrail : MonoBehaviour {
 	
 	public static int trailId = 0;
 	public string nameWithId = "";
-	
+	public int laserID=0;
+	public GameObject reference = null;
+
+
 	//************
 	//
 	// Public Methods
@@ -74,13 +77,16 @@ public class LaserTrail : MonoBehaviour {
 	
 	private void Awake() {
 		trailId++;
+		laserID = trailId;
 		//create an object and mesh for the trail
 		GameObject trail = new GameObject("Trail"+trailId, new[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(PolygonCollider2D) } );
 		mesh = trail.GetComponent<MeshFilter>().mesh = new Mesh();
 		trail.renderer.material = trailMaterial;
-		trail.transform.tag = "trail";
-		nameWithId = "Trail"+trailId;
-		
+		trail.transform.tag = "laserTrail";
+		nameWithId = "laserTrail"+trailId;
+		trail.name = "laser"+trailId;
+		reference = trail;
+
 		//get and set the polygon collider on this trail.
 		collider = trail.GetComponent<PolygonCollider2D>();
 		collider.isTrigger = colliderIsTrigger;
@@ -88,13 +94,15 @@ public class LaserTrail : MonoBehaviour {
 		
 		//get the transform of the object this script is attatched to
 		trans = base.transform;
-		
+
 		//set the first center position as the current position
 		centerPositions = new LinkedList<Vector3>();
 		centerPositions.AddFirst(trans.position);
 		
 		leftVertices = new LinkedList<Vertex>();
 		rightVertices = new LinkedList<Vertex>();
+		GameController.laserTrailDictionary.Add(trail.name,this);
+
 	}
 	
 	private void Update() {
@@ -266,7 +274,7 @@ public class LaserTrail : MonoBehaviour {
 		mesh.uv = uvs;
 		mesh.triangles = triangles;
 		
-		if (colliderEnabled && collider != null)
+		if (colliderEnabled )
 		{
 			
 			collider.SetPath(0, colliderPath);

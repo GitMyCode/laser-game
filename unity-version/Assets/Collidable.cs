@@ -4,15 +4,25 @@ using System.Collections;
 public class Collidable : MonoBehaviour {
 
 	// Use this for initialization
+	public GameObject explosion;
+
 	void Start () {
 	
 	}
 	void OnCollisionEnter2D(Collision2D coll) {
+
 		
 		LaserTrail thisLaser = this.gameObject.GetComponent<LaserTrail>();
+
+		if(coll.gameObject.tag == "laserTrail"){
+			Debug.Log("coll: Trail   " + "this: "+this.gameObject.tag);
+		}
+
+		if(coll.gameObject.tag == "laserHead"){
+			Debug.Log("coll: Head   " + "this: "+this.gameObject.tag);
+		}
 		
-		
-		if(coll.gameObject.tag == "trail"){
+		if(coll.gameObject.tag == ""){
 			if(thisLaser.nameWithId == coll.gameObject.name){
 			}else{
 				//Destroy(this.GetComponent<TrailRendererWith2DCollider>());
@@ -40,4 +50,45 @@ public class Collidable : MonoBehaviour {
 		}
 		
 	}
+
+	//On trigger peut etre la zone ou le trail d'un laser
+	void OnTriggerEnter2D(Collider2D coll){
+		//Debug.Log("Trigger :"+coll.name + " this :"+this.name);
+		LaserTrail thisLaserTrail =  GameController.laserTrailDictionary[this.name];  	
+		LaserTrail otherLaserTrail = GameController.laserTrailDictionary[coll.name];
+
+		if((thisLaserTrail.laserID != otherLaserTrail.laserID)){
+
+			Debug.Log("Detruire!");
+			Instantiate (explosion, this.transform.position, this.transform.rotation);
+			Destroy(otherLaserTrail.trans.gameObject);
+			Destroy(coll.gameObject);
+
+			Destroy(thisLaserTrail.reference);
+			Destroy(thisLaserTrail.gameObject);
+			Destroy(this.gameObject);
+			/*
+			Destroy(thisLaserTrail.trans.gameObject);
+			Destroy(thisLaserTrail.GetComponent<Collider2D>());
+			Destroy(this.GetComponent<Collider2D>());
+			Destroy(thisLaserTrail.GetComponent<PolygonCollider2D>());
+			Destroy(this.GetComponent<PolygonCollider2D>());
+
+			Destroy(thisLaserTrail.gameObject);
+			Destroy(GameObject.Find(thisLaserTrail.name));
+			Destroy(this.collider);
+			Destroy(this.gameObject);
+			Destroy(this);
+			Destroy(GameObject.Find(this.name));
+			*/
+//Destroy(this.gameObject);
+
+
+		}
+
+
+
+	}
+
+
 }
