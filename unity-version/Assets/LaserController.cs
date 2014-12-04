@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GameController : MonoBehaviour {
+public class LaserController : MonoBehaviour {
 
 	public GameObject laserPref;
 	public Transform laser_pref;
@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour {
 	static Hashtable laserTable = new Hashtable();
 	public static Dictionary<string, LaserTrail> laserTrailDictionary = new Dictionary<string, LaserTrail>();
 
-
+	public static Dictionary<string, LaserModel> laserModelDictionary = new Dictionary<string,LaserModel >();
 	static int laserIDCounter =0;
 	// Use this for initialization
 
@@ -75,10 +75,15 @@ public class GameController : MonoBehaviour {
 					float angleY = endFingerPos.y - firstFingerPos.y;
 					laser.rigidbody2D.velocity = new Vector2(angleX,angleY).normalized *calculSpeed(endTime);
 
+
+
 					laserID = laserIDCounter;
 					laser.name = "laser"+laserID;
 
 					laser.gameObject.name = "laser"+laserID;
+
+					LaserModel lm = new LaserModel(laser.gameObject,laser.gameObject.GetComponent<LaserTrail>());
+					laserModelDictionary.Add(laser.name,lm);
 
 				}
 			}

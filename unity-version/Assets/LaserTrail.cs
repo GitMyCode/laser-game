@@ -68,6 +68,9 @@ public class LaserTrail : MonoBehaviour {
 	}
 	
 
+	public LaserTrail(int id){
+
+	}
 	
 	//************
 	//
@@ -101,7 +104,7 @@ public class LaserTrail : MonoBehaviour {
 		
 		leftVertices = new LinkedList<Vertex>();
 		rightVertices = new LinkedList<Vertex>();
-		GameController.laserTrailDictionary.Add(trail.name,this);
+		LaserController.laserTrailDictionary.Add(trail.name,this);
 
 	}
 	
