@@ -53,12 +53,12 @@ public class GameController : MonoBehaviour {
 					Quaternion rotation = calculAngle(endFingerPos);			
 					calculSpeed (endTime);
 					shootLaserSound ();
-					laser_pref = (Transform)Instantiate(local_laser_pref, endObjPosInPix,(Quaternion.identity)); // Create Laser on Scence
+					laser = (Transform)Instantiate(local_laser_pref, endObjPosInPix,(Quaternion.identity)); // Create Laser on Scence
 					//laserPref = (GameObject)Instantiate(Resources.Load("LaserWithTrailPref"));
 					//giveSpeedToLaser ();
 					float angleX = endFingerPos.x - firstFingerPos.x;
 					float angleY = endFingerPos.y - firstFingerPos.y;
-					laser_pref.rigidbody2D.velocity = new Vector2(angleX,angleY).normalized *10;
+					laser.rigidbody2D.velocity = new Vector2(angleX,angleY).normalized *calculSpeed(endTime);
 						
 				}
 			}
@@ -95,7 +95,7 @@ public class GameController : MonoBehaviour {
 		return rotation;
 	}
 	
-	void calculSpeed(float endTime){
+	float calculSpeed(float endTime){
 		float distance = Vector3.Distance (objFirstpos, endObjPosInPix);
 		float diffTime = endTime - startTime;
 		speedOfLaser = 1;
@@ -104,6 +104,7 @@ public class GameController : MonoBehaviour {
 			speedOfLaser = distance / diffTime;
 			speedOfLaser = speedOfLaser / 2;
 		}
+		return speedOfLaser;
 	}
 	
 	void giveSpeedToLaser(){
