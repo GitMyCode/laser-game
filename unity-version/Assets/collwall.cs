@@ -12,9 +12,12 @@ public class collwall : MonoBehaviour {
 	void Update () {
 	
 	}
-
-	void OnTriggerEnter2d(Collider2D collider) {
+	void OnCollisionEnter2D(Collision2D coll) {
+		//Destroy (coll.gameObject);
 		Destroy (gameObject);
 		Debug.Log ("Collision: " + collider.name);
+		coll.transform.rotation = Quaternion.Inverse(coll.transform.rotation);
 	}
+
+
 }
