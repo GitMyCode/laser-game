@@ -31,6 +31,9 @@ public class LaserController : MonoBehaviour {
 
 	int laserID=0;
 
+	Vector3 startP;
+	Vector3 endP;
+
 
 	void Start () {
 	
@@ -50,6 +53,7 @@ public class LaserController : MonoBehaviour {
 			if (t.phase == TouchPhase.Began) {
 				startTime = Time.time;
 				if (startTime >= nextShot) {
+					startP = t.position;
 					startTouchAndConvertion (t); // On convertit la position du touch en pixel pour ne pas avoir a se soucier des differents ecrans.
 				}
 			}
@@ -57,6 +61,7 @@ public class LaserController : MonoBehaviour {
 			if(t.phase == TouchPhase.Ended){
 				float endTime = Time.time;
 				if (endTime >= nextShot) {
+					float distance = Vector2.Distance(firstFingerPos,endObjPosInPix);
 					Vector3 endFingerPos = endTouchAndConvertion (t);
 					Transform local_laser_pref = scalingY();
 					Quaternion rotation = calculAngle(endFingerPos);			
@@ -73,7 +78,9 @@ public class LaserController : MonoBehaviour {
 
 					float angleX = endFingerPos.x - firstFingerPos.x;
 					float angleY = endFingerPos.y - firstFingerPos.y;
-					laser.rigidbody2D.velocity = new Vector2(angleX,angleY).normalized *calculSpeed(endTime);
+					float speed = calculSpeed(endTime);
+					laser.rigidbody2D.velocity = new Vector2(angleX,angleY).normalized *speed;
+
 
 
 
@@ -85,10 +92,33 @@ public class LaserController : MonoBehaviour {
 					LaserModel lm = new LaserModel(laser.gameObject,laser.gameObject.GetComponent<LaserTrail>());
 					laserModelDictionary.Add(laser.name,lm);
 
+
+					float length = laser.rigidbody2D.velocity.magnitude;
+					float time = 1/length;
+					laser.gameObject.GetComponent<LaserTrail>().lifeTime = time;
+				
+					convertLengthToTime(laser, speed,distance);
 				}
 			}
 		}
 	
+	}
+
+	public void convertLengthToTime(Transform laser, float speed,float distance){
+
+
+
+		float time = ((laser.rigidbody2D.velocity.normalized/(laser.rigidbody2D.velocity.magnitude)).magnitude);
+		float adaptedLength = (distance/300);
+		time = time* adaptedLength;
+
+		//time = distance/(1/time);
+		//time = time*4;
+		laser.gameObject.GetComponent<LaserTrail>().lifeTime = time;
+		laser.gameObject.GetComponent<LaserTrail>().distance = adaptedLength; 
+		//Debug.Log("Length: "+distance+" speed: "+speed+" Time: "+time);
+		 
+
 	}
 
 
