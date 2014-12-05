@@ -63,7 +63,7 @@ public class LaserController : MonoBehaviour {
 				if (endTime >= nextShot) {
 					Vector3 endFingerPos = endTouchAndConvertion (t);
 
-					float distance = Vector2.Distance(firstFingerPos,endFingerPos);
+					float distance = Vector3.Distance(objFirstpos,endObjPosInPix);
 
 
 					Transform local_laser_pref = scalingY();
@@ -115,7 +115,7 @@ public class LaserController : MonoBehaviour {
 
 
 		float time = ((laser.rigidbody2D.velocity.normalized/(laser.rigidbody2D.velocity.magnitude)).magnitude);
-		float adaptedLength = (distance/300);
+		float adaptedLength = (distance);
 		time = time* adaptedLength;
 
 		//time = distance/(1/time);
