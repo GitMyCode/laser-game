@@ -4,18 +4,13 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour {
 
-	public GameObject laserPref;
-	public Transform laser_pref;
+	public Transform laserPrefabTransform;
 	public Touch touch;
 	public AudioClip laserSound;
 	
 	public float fireRate = 0.1f;
 	public float nextShot = 0.0f;
-	
-	public Vector3 objFirstpos;
-	public Vector3 firstFingerPos;
-	
-	public Vector3 endObjPosInPix;
+
 	private Transform  laser;
 	private Rect shootingZone = new Rect(0, 0, Screen.width, Screen.height / 3);
 	
@@ -31,9 +26,12 @@ public class PlayerController : MonoBehaviour {
 
 	int laserID=0;
 
-	Vector3 startP;
-	Vector3 endP;
+	Vector3 startRawPosition;
+	Vector3 endRawPosition;
 
+
+	Vector3 swipeStartPosition;
+	Vector3 swipeEndPosition;
 
 	void Start () {
 	
@@ -49,45 +47,45 @@ public class PlayerController : MonoBehaviour {
 		Touch t = Input.GetTouch (0);
 		  
 		if (shootingZone.Contains(t.position)) {
-			
+
+
 			if (t.phase == TouchPhase.Began) {
 				startTime = Time.time;
 				if (startTime >= nextShot) {
-					startP = t.position;
-					startTouchAndConvertion (t); // On convertit la position du touch en pixel pour ne pas avoir a se soucier des differents ecrans.
+					startRawPosition = t.position;
+					swipeStartPosition = Camera.main.ScreenToWorldPoint (t.position);
+					swipeStartPosition.z = 0.0f;
+
 				}
 			}
 			
 			if(t.phase == TouchPhase.Ended){
 				float endTime = Time.time;
 				if (endTime >= nextShot) {
-					Vector3 endFingerPos = endTouchAndConvertion (t);
-
-					float distance = Vector3.Distance(objFirstpos,endObjPosInPix);
-
-
-					Transform local_laser_pref = scalingY();
+					endRawPosition = t.position;
+					swipeEndPosition = Camera.main.ScreenToWorldPoint (t.position);
+					swipeEndPosition.z = 0.0f;// Sinon Z est a -10.
 
 
+					float distance = Vector3.Distance(swipeStartPosition,swipeEndPosition);
+					float speed    = getSpeedOfLine(distance,startTime,endTime);
 
-					Quaternion rotation = calculAngle(endFingerPos);			
-					calculSpeed (endTime);
 					shootLaserSound ();
 
 					laserIDCounter++;
 
-					local_laser_pref.name = "laser"+laserID;
-					laser = (Transform)Instantiate(local_laser_pref, endObjPosInPix,(Quaternion.identity)); // Create Laser on Scence
+					laser = (Transform)Instantiate(laserPrefabTransform, swipeEndPosition,(Quaternion.identity)); // Create Laser on Scence
 
-					//laserPref = (GameObject)Instantiate(Resources.Load("LaserWithTrailPref"));
-					//giveSpeedToLaser ();
 
-					float angleX = endFingerPos.x - firstFingerPos.x;
-					float angleY = endFingerPos.y - firstFingerPos.y;
-					float speed = calculSpeed(endTime);
+					float angleX = swipeEndPosition.x - swipeStartPosition.x;
+					float angleY = swipeEndPosition.y - swipeStartPosition.y;
 					laser.rigidbody2D.velocity = new Vector2(angleX,angleY).normalized *speed;
 
-
+					float time = getConvertedLengthToTime(laser, speed,distance);
+					
+					laser.gameObject.GetComponent<LaserTrail>().lifeTime = time;
+					laser.gameObject.GetComponent<LaserTrail>().distance = distance; 
+		 
 
 
 					laserID = laserIDCounter;
@@ -98,78 +96,33 @@ public class PlayerController : MonoBehaviour {
 					LaserModel lm = new LaserModel(laser.gameObject,laser.gameObject.GetComponent<LaserTrail>());
 					laserModelDictionary.Add(laser.name,lm);
 
-
-					float length = laser.rigidbody2D.velocity.magnitude;
-					float time = 1/length;
-					laser.gameObject.GetComponent<LaserTrail>().lifeTime = time;
-				
-					convertLengthToTime(laser, speed,distance);
 				}
 			}
 		}
 	
 	}
 
-	public void convertLengthToTime(Transform laser, float speed,float distance){
+	public float getConvertedLengthToTime(Transform laser, float speed,float distance){
 
 
 
 		float time = ((laser.rigidbody2D.velocity.normalized/(laser.rigidbody2D.velocity.magnitude)).magnitude);
-		float adaptedLength = (distance);
-		time = time* adaptedLength;
+		time = time* distance;
 
-		//time = distance/(1/time);
-		//time = time*4;
-		laser.gameObject.GetComponent<LaserTrail>().lifeTime = time;
-		laser.gameObject.GetComponent<LaserTrail>().distance = adaptedLength; 
-		//Debug.Log("Length: "+distance+" speed: "+speed+" Time: "+time);
-		 
-
+		return time;
 	}
 
-
-	void startTouchAndConvertion(Touch t){
-		firstFingerPos = t.position;
-		objFirstpos = Camera.main.ScreenToWorldPoint (firstFingerPos);
-		objFirstpos.z = 0.0f;// Sinon Z est a -10.
-	}
-	
-	Vector3 endTouchAndConvertion(Touch t){
-		Vector3 endFingerPos = t.position;
-		endObjPosInPix = Camera.main.ScreenToWorldPoint (endFingerPos);
-		endObjPosInPix.z = 0.0f;// Sinon Z est a -10.
-		return endFingerPos;
-	}
-	
-	Transform scalingY(){
-		float scalingy = Vector3.Distance(objFirstpos, endObjPosInPix);
-		Transform local_laser_pref = laser_pref;
-		local_laser_pref.localScale = new Vector3(0.15f, scalingy, 1);
-		return local_laser_pref;
-	}
-	
-	Quaternion calculAngle(Vector3 endFingerPos){
-		Vector3 vectorToTarget = endFingerPos - firstFingerPos;
-		float angle = Mathf.Atan2 (vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
-		Quaternion rotation = new Quaternion (); 
-		rotation.eulerAngles = new Vector3 (0, 0,angle-90);
-		return rotation;
-	}
-	
-	float calculSpeed(float endTime){
-		float distance = Vector3.Distance (objFirstpos, endObjPosInPix);
+	float getSpeedOfLine(float distance, float startTime , float endTime){
 		float diffTime = endTime - startTime;
-		speedOfLaser = 1;
+		float speed = 1;
 		
 		if (diffTime != 0) {
-			speedOfLaser = distance / diffTime;
-			speedOfLaser = speedOfLaser / 2;
+			speed =  distance/ diffTime;
+			speed = speed / 2;
 		}
-		return speedOfLaser;
+		return speed;
 	}
-	
 
-	
 	void shootLaserSound(){
 		audio.PlayOneShot (laserSound, 0.5f);
 		nextShot = Time.time;
