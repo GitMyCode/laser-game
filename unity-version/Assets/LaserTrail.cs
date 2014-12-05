@@ -36,6 +36,8 @@ public class LaserTrail : MonoBehaviour {
 	public int laserID=0;
 	public GameObject reference = null;
 
+	public float distance;
+
 
 	//************
 	//
@@ -106,9 +108,14 @@ public class LaserTrail : MonoBehaviour {
 		rightVertices = new LinkedList<Vertex>();
 		LaserController.laserTrailDictionary.Add(trail.name,this);
 
+
 	}
-	
+
+	int count =0;
 	private void Update() {
+
+		float time = ((trans.gameObject.rigidbody2D.velocity.normalized/(trans.gameObject.rigidbody2D.velocity.magnitude)).magnitude);
+		lifeTime = time* distance;
 		if (!pausing) {
 			//set the mesh and adjust widths if vertices were added or removed
 			if (TryAddVertices() | TryRemoveVertices() ) {
@@ -120,6 +127,14 @@ public class LaserTrail : MonoBehaviour {
 				SetMesh();
 			}
 		}
+		/*count++;
+		if(count%30 ==0){
+			distance = Vector3.Distance(centerPositions.Last.Value,centerPositions.First.Value );
+			Debug.Log("Trail Distance: "+distance);	
+			//distance = Vector3.Distance(leftVertices.First.Value,leftVertices.Last.Value );
+			Debug.Log("Trail DistanceVertice: "+ (leftVertices.Last.Value.Position - trans.position).sqrMagnitude);	
+		}*/
+
 	}
 	
 	//************
