@@ -1,0 +1,16 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# http://www.codeandweb.com/texturepacker/unity
+#
+# Sprite sheet: animpcksprite.png (256 x 128)
+# $TexturePacker:SmartUpdate:53aefdee75b12b38ed7b409c42e158cb:0dc0a273f072fba3541db0f956f25e78:5a59ad96ab783787319f8e648ea8189b$
+#
+
+base;67;63;64;63;0.5;0.5079365079365079
+base25;133;64;63;62;0.5079365079365079;0.5
+base50;59;13;48;47;0.5208333333333334;0.5106382978723405
+base65;2;62;63;64;0.5079365079365079;0.5
+base70;2;5;55;55;0.509090909090909;0.49090909090909096
+base75;109;2;60;59;0.5;0.4915254237288136
