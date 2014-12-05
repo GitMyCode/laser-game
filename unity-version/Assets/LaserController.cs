@@ -61,7 +61,7 @@ public class LaserController : MonoBehaviour {
 			if(t.phase == TouchPhase.Ended){
 				float endTime = Time.time;
 				if (endTime >= nextShot) {
-					float distance = Vector2.Distance(startP,t.position);
+					float distance = Vector2.Distance(firstFingerPos,endObjPosInPix);
 					Vector3 endFingerPos = endTouchAndConvertion (t);
 					Transform local_laser_pref = scalingY();
 					Quaternion rotation = calculAngle(endFingerPos);			
@@ -109,7 +109,7 @@ public class LaserController : MonoBehaviour {
 
 
 		float time = ((laser.rigidbody2D.velocity.normalized/(laser.rigidbody2D.velocity.magnitude)).magnitude);
-		float adaptedLength = (distance/40);
+		float adaptedLength = (distance/300);
 		time = time* adaptedLength;
 
 		//time = distance/(1/time);
