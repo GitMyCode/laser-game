@@ -106,12 +106,12 @@ public class LaserTrail : MonoBehaviour {
 		
 		leftVertices = new LinkedList<Vertex>();
 		rightVertices = new LinkedList<Vertex>();
-		LaserController.laserTrailDictionary.Add(trail.name,this);
+		PlayerController.laserTrailDictionary.Add(trail.name,this);
 
 
 	}
 
-	int count =0;
+	//int count =0;
 	private void Update() {
 
 		//float time = ((trans.gameObject.rigidbody2D.velocity.normalized/(trans.gameObject.rigidbody2D.velocity.magnitude)).magnitude);

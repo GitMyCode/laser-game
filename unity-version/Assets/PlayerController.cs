@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class LaserController : MonoBehaviour {
+public class PlayerController : MonoBehaviour {
 
 	public GameObject laserPref;
 	public Transform laser_pref;
@@ -168,10 +168,7 @@ public class LaserController : MonoBehaviour {
 		return speedOfLaser;
 	}
 	
-	void giveSpeedToLaser(){
-		laser_comportement laserToSpeedUp = laser.GetComponent<laser_comportement> ();
-		laserToSpeedUp.speed = speedOfLaser;
-	}
+
 	
 	void shootLaserSound(){
 		audio.PlayOneShot (laserSound, 0.5f);

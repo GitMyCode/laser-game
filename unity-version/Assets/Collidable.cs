@@ -55,16 +55,16 @@ public class Collidable : MonoBehaviour {
 	//On trigger peut etre la zone ou le trail d'un laser
 	void OnTriggerEnter2D(Collider2D coll){
 		//Debug.Log("Trigger :"+coll.name + " this :"+this.name);
-		LaserTrail thisLaserTrail =  LaserController.laserTrailDictionary[this.name];  	
-		LaserTrail otherLaserTrail = LaserController.laserTrailDictionary[coll.name];
+		LaserTrail thisLaserTrail =  PlayerController.laserTrailDictionary[this.name];  	
+		LaserTrail otherLaserTrail = PlayerController.laserTrailDictionary[coll.name];
 
 		if((thisLaserTrail.laserID != otherLaserTrail.laserID)){
 
 			Debug.Log("Detruire!");
 			Instantiate (explosion, this.transform.position, this.transform.rotation);
 
-			LaserModel thisModel = LaserController.laserModelDictionary[this.name];
-			LaserModel otherModel = LaserController.laserModelDictionary[coll.name];
+			LaserModel thisModel = PlayerController.laserModelDictionary[this.name];
+			LaserModel otherModel = PlayerController.laserModelDictionary[coll.name];
 
 			Destroy(thisModel.head);
 			Destroy(thisModel.trail.reference);
@@ -74,8 +74,8 @@ public class Collidable : MonoBehaviour {
 			Destroy(otherModel.trail.reference);
 			Destroy(otherModel.trail);
 
-			LaserController.laserModelDictionary.Remove(coll.name);
-			LaserController.laserModelDictionary.Remove(this.name);
+			PlayerController.laserModelDictionary.Remove(coll.name);
+			PlayerController.laserModelDictionary.Remove(this.name);
 			//Destroy(otherLaserTrail.trans.gameObject);
 			//Destroy(coll.gameObject);
 
