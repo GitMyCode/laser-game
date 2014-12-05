@@ -68,6 +68,11 @@ public class PlayerController : MonoBehaviour {
 
 
 					float distance = Vector3.Distance(swipeStartPosition,swipeEndPosition);
+					if(distance< 1){
+						return;
+					}
+
+
 					float speed    = getSpeedOfLine(distance,startTime,endTime);
 
 					shootLaserSound ();
@@ -85,12 +90,13 @@ public class PlayerController : MonoBehaviour {
 					
 					laser.gameObject.GetComponent<LaserTrail>().lifeTime = time;
 					laser.gameObject.GetComponent<LaserTrail>().distance = distance; 
-		 
 
+						
 
 					laserID = laserIDCounter;
 					laser.name = "laser"+laserID;
-
+					laser.gameObject.GetComponent<rotatingAim>().aim.name = "laser"+laserID;
+					laser.gameObject.GetComponent<rotatingAim>().aim.gameObject.name = "laser"+laserID;
 					laser.gameObject.name = "laser"+laserID;
 
 					LaserModel lm = new LaserModel(laser.gameObject,laser.gameObject.GetComponent<LaserTrail>());

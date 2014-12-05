@@ -7,6 +7,7 @@ public class rotatingAim : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GameObject aimeClone = (GameObject) Instantiate (aim, this.transform.position, this.transform.rotation);
+		aimeClone.name = aim.name;
 		aimeClone.transform.parent = transform;
 		aimeClone.transform.localPosition = new Vector3 (0, 0, 0);
 	}

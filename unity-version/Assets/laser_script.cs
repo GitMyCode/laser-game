@@ -3,7 +3,7 @@ using System.Collections;
 
 public class laser_script : MonoBehaviour
 {
-
+	/*
 	public Transform laser_pref;
 	public Touch touch;
 	public AudioClip laserSound;
@@ -102,4 +102,5 @@ public class laser_script : MonoBehaviour
 		audio.PlayOneShot (laserSound, 0.5f);
 		nextShot = Time.time;
 	} 
+	*/
 }
