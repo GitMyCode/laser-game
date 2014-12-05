@@ -114,8 +114,8 @@ public class LaserTrail : MonoBehaviour {
 	int count =0;
 	private void Update() {
 
-		float time = ((trans.gameObject.rigidbody2D.velocity.normalized/(trans.gameObject.rigidbody2D.velocity.magnitude)).magnitude);
-		lifeTime = time* distance;
+		//float time = ((trans.gameObject.rigidbody2D.velocity.normalized/(trans.gameObject.rigidbody2D.velocity.magnitude)).magnitude);
+		//lifeTime = time* distance;
 		if (!pausing) {
 			//set the mesh and adjust widths if vertices were added or removed
 			if (TryAddVertices() | TryRemoveVertices() ) {
