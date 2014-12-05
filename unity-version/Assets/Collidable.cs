@@ -6,9 +6,7 @@ public class Collidable : MonoBehaviour {
 	// Use this for initialization
 	public GameObject explosion;
 
-	void Start () {
-	
-	}
+
 	void OnCollisionEnter2D(Collision2D coll) {
 		/*
 		
@@ -76,27 +74,7 @@ public class Collidable : MonoBehaviour {
 
 			PlayerController.laserModelDictionary.Remove(coll.name);
 			PlayerController.laserModelDictionary.Remove(this.name);
-			//Destroy(otherLaserTrail.trans.gameObject);
-			//Destroy(coll.gameObject);
 
-			//Destroy(thisLaserTrail.reference);
-			//Destroy(thisLaserTrail.gameObject);
-			//Destroy(this.gameObject);
-			/*
-			Destroy(thisLaserTrail.trans.gameObject);
-			Destroy(thisLaserTrail.GetComponent<Collider2D>());
-			Destroy(this.GetComponent<Collider2D>());
-			Destroy(thisLaserTrail.GetComponent<PolygonCollider2D>());
-			Destroy(this.GetComponent<PolygonCollider2D>());
-
-			Destroy(thisLaserTrail.gameObject);
-			Destroy(GameObject.Find(thisLaserTrail.name));
-			Destroy(this.collider);
-			Destroy(this.gameObject);
-			Destroy(this);
-			Destroy(GameObject.Find(this.name));
-			*/
-//Destroy(this.gameObject);
 
 
 		}
