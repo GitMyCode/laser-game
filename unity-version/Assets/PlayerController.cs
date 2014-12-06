@@ -17,7 +17,6 @@ public class PlayerController : MonoBehaviour {
 	public float startTime;
 	public float speedOfLaser;
 
-	static Hashtable laserTable = new Hashtable();
 	public static Dictionary<string, LaserTrail> laserTrailDictionary = new Dictionary<string, LaserTrail>();
 
 	public static Dictionary<string, LaserModel> laserModelDictionary = new Dictionary<string,LaserModel >();
