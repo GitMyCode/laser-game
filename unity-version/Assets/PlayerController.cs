@@ -11,19 +11,20 @@ public class PlayerController : MonoBehaviour {
 	public float fireRate = 0.1f;
 	public float nextShot = 0.0f;
 
-	private Transform  laser;
+	private Transform  line;
 	private Rect shootingZone = new Rect(0, 0, Screen.width, Screen.height / 3);
 	
 	public float startTime;
 	public float speedOfLaser;
 
-	public static Dictionary<string, LaserTrail> laserTrailDictionary = new Dictionary<string, LaserTrail>();
+	public static Dictionary<string, LaserTrail> lineTrailDictionary = new Dictionary<string, LaserTrail>();
+	public static string lineNameBase = "player1Line";
 
-	public static Dictionary<string, LaserModel> laserModelDictionary = new Dictionary<string,LaserModel >();
-	static int laserIDCounter =0;
+	public static Dictionary<string, LaserModel> lineModelDictionary = new Dictionary<string,LaserModel >();
+	static int lineIDCounter =0;
 	// Use this for initialization
 
-	int laserID=0;
+	int lineID=0;
 
 	Vector3 startRawPosition;
 	Vector3 endRawPosition;
@@ -76,31 +77,31 @@ public class PlayerController : MonoBehaviour {
 
 					shootLaserSound ();
 
-					laserIDCounter++;
+					lineIDCounter++;
 
-					laser = (Transform)Instantiate(laserPrefabTransform, swipeEndPosition,(Quaternion.identity)); // Create Laser on Scence
+					line = (Transform)Instantiate(laserPrefabTransform, swipeEndPosition,(Quaternion.identity)); // Create Laser on Scence
 
 
 					float angleX = swipeEndPosition.x - swipeStartPosition.x;
 					float angleY = swipeEndPosition.y - swipeStartPosition.y;
-					laser.rigidbody2D.velocity = new Vector2(angleX,angleY).normalized *speed;
+					line.rigidbody2D.velocity = new Vector2(angleX,angleY).normalized *speed;
 
-					float time = getConvertedLengthToTime(laser, speed,distance);
-					
-					laser.gameObject.GetComponent<LaserTrail>().lifeTime = time;
-					laser.gameObject.GetComponent<LaserTrail>().distance = distance; 
+					float time = getConvertedLengthToTime(line, speed,distance);
+
+					line.gameObject.GetComponent<LaserTrail>().lifeTime = time;
+					line.gameObject.GetComponent<LaserTrail>().distance = distance; 
 
 						
 
-					laserID = laserIDCounter;
-					laser.name = "laser"+laserID;
-					laser.gameObject.GetComponent<rotatingAim>().aim.name = "laser"+laserID;
-					laser.gameObject.GetComponent<rotatingAim>().aim.gameObject.name = "laser"+laserID;
-					laser.gameObject.name = "laser"+laserID;
+					lineID = lineIDCounter;
+					line.name = lineNameBase+lineID;
+					line.gameObject.GetComponent<LaserTrail>().nameWithId = line.name;
+					line.gameObject.GetComponent<rotatingAim>().aim.name = lineNameBase+ lineID;
+					line.gameObject.GetComponent<rotatingAim>().aim.gameObject.name = lineNameBase+lineID;
+					line.gameObject.name = lineNameBase+lineID;
 
-					LaserModel lm = new LaserModel(laser.gameObject,laser.gameObject.GetComponent<LaserTrail>());
-					laserModelDictionary.Add(laser.name,lm);
-
+					LaserModel lm = new LaserModel(line.gameObject,line.gameObject.GetComponent<LaserTrail>());
+					lineModelDictionary.Add(line.name,lm);
 				}
 			}
 		}

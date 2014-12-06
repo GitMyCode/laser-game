@@ -20,9 +20,12 @@ public class Collidable : MonoBehaviour {
 
 
 			Collider2D c = Physics2D.OverlapPoint(touchPos); 	
-			if (c != null && PlayerController.laserModelDictionary.ContainsKey(c.name)){
+			if (c != null && 
+			    c.tag == "lineTarget" &&
+			    PlayerController.lineModelDictionary.ContainsKey(c.name))
+				{
 				Debug.Log("blocked");
-				LaserModel laserModel = PlayerController.laserModelDictionary[c.name];
+				LaserModel laserModel = PlayerController.lineModelDictionary[c.name];
 				Destroy(laserModel.head);
 				Destroy(laserModel.trail.reference);
 				Destroy(laserModel.trail);
@@ -83,18 +86,14 @@ public class Collidable : MonoBehaviour {
 
 	
 
-		if(this.tag =="laserHead" && coll.tag == "laserTrail" ){
-			LaserTrail thisLaserTrail =  PlayerController.laserTrailDictionary[this.name];  	
-			LaserTrail otherLaserTrail = PlayerController.laserTrailDictionary[coll.name];
-			
-			if((thisLaserTrail.laserID != otherLaserTrail.laserID)){
+		if(this.tag =="lineHead" && coll.tag == "lineTrail" ){
+			LaserModel thisModel =  PlayerController.lineModelDictionary[this.name];  	
+			LaserModel otherModel = PlayerController.lineModelDictionary[coll.name];
+		
+			if((thisModel.id != otherModel.id)){
 				
 				Debug.Log("Detruire!");
 				Instantiate (explosion, this.transform.position, this.transform.rotation);
-				
-				LaserModel thisModel = PlayerController.laserModelDictionary[this.name];
-				LaserModel otherModel = PlayerController.laserModelDictionary[coll.name];
-				
 				Destroy(thisModel.head);
 				Destroy(thisModel.trail.reference);
 				Destroy(thisModel.trail);
@@ -103,8 +102,8 @@ public class Collidable : MonoBehaviour {
 				Destroy(otherModel.trail.reference);
 				Destroy(otherModel.trail);
 				
-				PlayerController.laserModelDictionary.Remove(coll.name);
-				PlayerController.laserModelDictionary.Remove(this.name);
+				PlayerController.lineModelDictionary.Remove(coll.name);
+				PlayerController.lineModelDictionary.Remove(this.name);
 
 			}
 		}

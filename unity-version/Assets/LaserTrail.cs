@@ -33,7 +33,7 @@ public class LaserTrail : MonoBehaviour {
 	
 	public static int trailId = 0;
 	public string nameWithId = "";
-	public int laserID=0;
+	public int lineID=0;
 	public GameObject reference = null;
 
 	public float distance;
@@ -81,15 +81,15 @@ public class LaserTrail : MonoBehaviour {
 	//************
 	
 	private void Awake() {
+		Debug.Log("awake");
 		trailId++;
-		laserID = trailId;
+		lineID = trailId;
 		//create an object and mesh for the trail
 		GameObject trail = new GameObject("Trail"+trailId, new[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(PolygonCollider2D) } );
 		mesh = trail.GetComponent<MeshFilter>().mesh = new Mesh();
 		trail.renderer.material = trailMaterial;
-		trail.transform.tag = "laserTrail";
-		nameWithId = "laserTrail"+trailId;
-		trail.name = "laser"+trailId;
+		trail.transform.tag = "lineTrail";
+		trail.name = PlayerController.lineNameBase+lineID;
 		reference = trail;
 
 		//get and set the polygon collider on this trail.
@@ -106,7 +106,7 @@ public class LaserTrail : MonoBehaviour {
 		
 		leftVertices = new LinkedList<Vertex>();
 		rightVertices = new LinkedList<Vertex>();
-		PlayerController.laserTrailDictionary.Add(trail.name,this);
+		//PlayerController.lineTrailDictionary.Add(trail.name,this);
 
 
 	}
