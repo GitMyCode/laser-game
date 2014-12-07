@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour {
 	public float nextShot = 0.0f;
 
 	private Transform  line;
-	private Rect shootingZone = new Rect(0, 0, Screen.width, Screen.height / 3);
+	public static Rect shootingZone = new Rect(0, Screen.height - Screen.height/3, Screen.width, Screen.height / 3);
+
 	
 	public float startTime;
 	public float speedOfLaser;
@@ -32,9 +33,37 @@ public class PlayerController : MonoBehaviour {
 
 	Vector3 swipeStartPosition;
 	Vector3 swipeEndPosition;
+	void OnGUI() { 
+		/*
+		Texture2D texture = new Texture2D(1, 1);
+		texture.SetPixel(0,0,Color.blue);
+		texture.Apply();
+		GUI.skin.box.normal.background = texture;
+		GUI.Box(shootingZone, GUIContent.none);
+
+		GameObject zone = GameObject.Find("ZonePlayer1");
+*/
+		/*
+		Vector3 v=Camera.main.WorldToScreenPoint(zone.transform.localPosition);
+		Vector3 s=zone.transform.localScale;
+		//Debug.Log(zone.transform.localScale.x + " : "+zone.transform.localScale.y);
+		
+		float height=s.y;//*zone.transform.localScale.y;
+		float width=s.x;//*zone.transform.localScale.x;
+		Rect rc=new Rect(v.x,Screen.height-v.y,zone.transform.localScale.x,zone.transform.localScale.y);
+		//RectTransform t = zone.gameObject.GetComponent<RectTransform>();
+		texture = new Texture2D(1, 1);
+		texture.SetPixel(0,0,Color.red);
+		texture.Apply();
+		GUI.skin.box.normal.background = texture;
+		GUI.Box(rc, GUIContent.none);
+*/
+	}
 
 	void Start () {
-	
+		//GUI.Label(shootingZone,Color.blue.ToString());
+
+
 	}
 	 
 	// Update is called once per frame
@@ -45,8 +74,13 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		Touch t = Input.GetTouch (0);
-		  
-		if (shootingZone.Contains(t.position)) {
+
+		Vector2 tmp = t.position;
+		tmp.y = Screen.height - tmp.y;
+		//swipeStartPosition = Camera.main.ScreenToWorldPoint (t.position);
+		//swipeStartPosition.z= 0f;
+		Debug.Log("Touch :" + t.position+ " converted:"+swipeStartPosition);
+		if (shootingZone.Contains(tmp)) {
 
 
 			if (t.phase == TouchPhase.Began) {
