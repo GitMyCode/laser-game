@@ -1,0 +1,17 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# http://www.codeandweb.com/texturepacker/unity
+#
+# Sprite sheet: emptyCircle.png (128 x 128)
+# $TexturePacker:SmartUpdate:e7fe05c644b6495f81e755efeff3fc6a:f3dc08dcdb769f35313199a16e168727:0b63956ff8806fe8e81074ba5ddbb6a6$
+#
+
+cercle1;2;6;54;54;0.5;0.5
+cercle2;58;18;42;42;0.5;0.5
+cercle3;68;96;30;30;0.5;0.5
+cercle4;102;108;18;18;0.5;0.5
+cercle5;58;10;6;6;0.5;0.5
+cercle6;2;2;2;2;0.5;0.5
+cercleIdle;2;62;64;64;0.5;0.5

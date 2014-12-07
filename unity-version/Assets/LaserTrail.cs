@@ -13,10 +13,10 @@ public class LaserTrail : MonoBehaviour {
 	
 	public Material trailMaterial;                  //the material of the trail.  Changing this during runtime will have no effect.
 	public float lifeTime = 1.0f;                   //the amount of time in seconds that the trail lasts
-	public float changeTime = 0.5f;                 //time point when the trail begins changing its width (if widthStart != widthEnd)
+	public float changeTime = 0.1f;                 //time point when the trail begins changing its width (if widthStart != widthEnd)
 	public float widthStart = 1.0f;                 //the starting width of the trail
 	public float widthEnd = 1.0f;                   //the ending width of the trail
-	public float vertexDistanceMin = 0.10f;         //the minimum distance between the center positions
+	public float vertexDistanceMin = 0.01f;         //the minimum distance between the center positions
 	public Vector3 renderDirection = new Vector3(0, 0, -1); //the direction that the mesh of the trail will be rendered towards
 	public bool colliderIsTrigger = true;           //determines if the collider is a trigger.  Changing this during runtime will have no effect.
 	public bool colliderEnabled = true;             //determines if the collider is enabled.  Changing this during runtime will have no effect.
@@ -81,7 +81,6 @@ public class LaserTrail : MonoBehaviour {
 	//************
 	
 	private void Awake() {
-		Debug.Log("awake");
 		trailId++;
 		lineID = trailId;
 		//create an object and mesh for the trail
