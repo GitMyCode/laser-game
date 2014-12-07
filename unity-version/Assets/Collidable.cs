@@ -83,8 +83,15 @@ public class Collidable : MonoBehaviour {
 	//On trigger peut etre la zone ou le trail d'un laser
 	void OnTriggerEnter2D(Collider2D coll){
 		//Debug.Log("Trigger :"+coll.name + " this :"+this.name);
+		if(this.tag == "zoneP1") {
+			coll.gameObject.GetComponent<rotatingAim>().reference.gameObject.renderer.enabled = true;
+			
+		}
+		if(coll.tag =="lineTrail" && this.tag == "lineTrail" ){
+			Debug.Log("tien tien");
+		
+		}
 
-	
 
 		if(this.tag =="lineHead" && coll.tag == "lineTrail" ){
 			LaserModel thisModel =  PlayerController.lineModelDictionary[this.name];  	
@@ -112,6 +119,13 @@ public class Collidable : MonoBehaviour {
 
 
 
+	}
+	void OnTriggerExit2D(Collider2D coll){
+		if(this.tag == "zoneP1") {
+			//coll.renderer.enabled = false;
+			coll.gameObject.GetComponent<rotatingAim>().reference.gameObject.renderer.enabled = false;
+			//coll.GetComponent<TargetBehaviorScript>().gameObject.renderer.enabled = false;
+		}
 	}
 
 

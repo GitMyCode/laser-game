@@ -64,7 +64,7 @@ public class Swipe : MonoBehaviour {
 				   activeTouch == -1)
 				{
 					activeTouch = touch.fingerId;
-					Debug.Log(touch.fingerId + " " + fingerTrackArray[touch.fingerId] + " " +  touch.position);
+					//Debug.Log(touch.fingerId + " " + fingerTrackArray[touch.fingerId] + " " +  touch.position);
 					swipeCompleteArray[touch.fingerId] = true;
 					SwipeComplete("swipe right  ",  touch);
 				}
@@ -73,7 +73,7 @@ public class Swipe : MonoBehaviour {
 				   activeTouch == -1)
 				{
 					activeTouch = touch.fingerId;
-					Debug.Log(touch.fingerId + " " + fingerTrackArray[touch.fingerId] + " " +  touch.position);
+				//	Debug.Log(touch.fingerId + " " + fingerTrackArray[touch.fingerId] + " " +  touch.position);
 					swipeCompleteArray[touch.fingerId] = true;
 					SwipeComplete("swipe left  ", touch);
 				}
@@ -82,10 +82,10 @@ public class Swipe : MonoBehaviour {
 				   activeTouch == -1 && touch.phase == TouchPhase.Ended)
 				{
 
-				Debug.Log("distance :"+dist);
-					Debug.Log("tracker.tapCount="+touch.tapCount);
+//				Debug.Log("distance :"+dist);
+				//	Debug.Log("tracker.tapCount="+touch.tapCount);
 					activeTouch = touch.fingerId;
-					Debug.Log(touch.fingerId + " " + fingerTrackArray[touch.fingerId] + " " +  touch.position);
+				//	Debug.Log(touch.fingerId + " " + fingerTrackArray[touch.fingerId] + " " +  touch.position);
 					swipeCompleteArray[touch.fingerId] = true;
 					SwipeComplete("Tap ", touch);
 				}
@@ -94,7 +94,7 @@ public class Swipe : MonoBehaviour {
 				//when the touch has ended we can start accepting swipes again
 				if(touch.fingerId == activeTouch &&  touch.phase == TouchPhase.Ended)
 				{
-					Debug.Log("Ending " + touch.fingerId);
+				//	Debug.Log("Ending " + touch.fingerId);
 					//if more than one finger has swiped then reset the other fingers so
 					//you do not get a double/triple etc. swipe
 					foreach(Touch touchReset in Input.touches)

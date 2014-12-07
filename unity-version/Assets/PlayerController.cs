@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour {
 
+	public GameObject circleAbsorb;
+
 	public Transform laserPrefabTransform;
 	public Touch touch;
 	public AudioClip laserSound;
@@ -12,7 +14,8 @@ public class PlayerController : MonoBehaviour {
 	public float nextShot = 0.0f;
 
 	private Transform  line;
-	private Rect shootingZone = new Rect(0, 0, Screen.width, Screen.height / 3);
+	public static Rect shootingZone = new Rect(0, Screen.height - Screen.height/3, Screen.width, Screen.height / 3);
+
 	
 	public float startTime;
 	public float speedOfLaser;
@@ -21,7 +24,7 @@ public class PlayerController : MonoBehaviour {
 	public static string lineNameBase = "player1Line";
 
 	public static Dictionary<string, LaserModel> lineModelDictionary = new Dictionary<string,LaserModel >();
-	static int lineIDCounter =0;
+	public static int lineIDCounter =0;
 	// Use this for initialization
 
 	int lineID=0;
@@ -32,9 +35,37 @@ public class PlayerController : MonoBehaviour {
 
 	Vector3 swipeStartPosition;
 	Vector3 swipeEndPosition;
+	void OnGUI() { 
+		/*
+		Texture2D texture = new Texture2D(1, 1);
+		texture.SetPixel(0,0,Color.blue);
+		texture.Apply();
+		GUI.skin.box.normal.background = texture;
+		GUI.Box(shootingZone, GUIContent.none);
+
+		GameObject zone = GameObject.Find("ZonePlayer1");
+*/
+		/*
+		Vector3 v=Camera.main.WorldToScreenPoint(zone.transform.localPosition);
+		Vector3 s=zone.transform.localScale;
+		//Debug.Log(zone.transform.localScale.x + " : "+zone.transform.localScale.y);
+		
+		float height=s.y;//*zone.transform.localScale.y;
+		float width=s.x;//*zone.transform.localScale.x;
+		Rect rc=new Rect(v.x,Screen.height-v.y,zone.transform.localScale.x,zone.transform.localScale.y);
+		//RectTransform t = zone.gameObject.GetComponent<RectTransform>();
+		texture = new Texture2D(1, 1);
+		texture.SetPixel(0,0,Color.red);
+		texture.Apply();
+		GUI.skin.box.normal.background = texture;
+		GUI.Box(rc, GUIContent.none);
+*/
+	}
 
 	void Start () {
-	
+		//GUI.Label(shootingZone,Color.blue.ToString());
+
+
 	}
 	 
 	// Update is called once per frame
@@ -45,11 +76,19 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		Touch t = Input.GetTouch (0);
-		  
-		if (shootingZone.Contains(t.position)) {
+
+		Vector2 tmp = t.position;
+		tmp.y = Screen.height - tmp.y;
+		//swipeStartPosition = Camera.main.ScreenToWorldPoint (t.position);
+		//swipeStartPosition.z= 0f;
+		//Debug.Log("Touch :" + t.position+ " converted:"+swipeStartPosition);
+		if (shootingZone.Contains(tmp)) {
 
 
 			if (t.phase == TouchPhase.Began) {
+
+				StartCoroutine(emptyAbsorb(t));
+
 				startTime = Time.time;
 				if (startTime >= nextShot) {
 					startRawPosition = t.position;
@@ -133,6 +172,54 @@ public class PlayerController : MonoBehaviour {
 		audio.PlayOneShot (laserSound, 0.5f);
 		nextShot = Time.time;
 	} 
+
+	public IEnumerator emptyAbsorb(Touch t){
+		Vector3 positionAbosrb = Camera.main.ScreenToWorldPoint (t.position);
+		positionAbosrb.z = 0.0f;
+		GameObject circle = (GameObject) Instantiate(circleAbsorb, positionAbosrb,Quaternion.identity);
+		Animator anim = circle.GetComponent<Animator> ();
+		float length = anim.animation.clip.length;
+		
+		yield return new WaitForSeconds (length);
+		Destroy (circle);
+	}
+	
+	public bool findZoneContainingForCircle(Vector3 touchposition){
+		
+		RaycastHit2D[] hit = Physics2D.CircleCastAll (Camera.main.ScreenToWorldPoint (touchposition),2.0f,Vector2.zero);
+		Collider2D collOfHead = null;
+		
+		for (int i =0; i < hit.Length; i++) {
+			if(hit[i].collider.gameObject.tag.Equals("laserHead")){
+				collOfHead = hit[i].collider;
+				i=hit.Length;
+			}		
+		}
+		
+		//Collider2D = hit.collider.tag
+		if (collOfHead != null) {
+			
+			GameObject line;
+			/*
+			foreach (KeyValuePair<string, LaserModel> entry in laserModelDictionary) {
+					line = entry.Value.head;
+					string lasername = line.name;
+				if (line.name.Equals(collOfHead.gameObject.name)) {
+					line.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
+					return true;
+				}
+			}
+			*/
+			LaserModel lm = lineModelDictionary[collOfHead.gameObject.name];
+			line = lm.head;
+			line.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
+			return true;
+		}
+		
+		return false;
+	}
+
+
 
 
 }
