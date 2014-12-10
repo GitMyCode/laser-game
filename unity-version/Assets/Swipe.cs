@@ -88,6 +88,7 @@ public class Swipe : MonoBehaviour {
 				//	Debug.Log(touch.fingerId + " " + fingerTrackArray[touch.fingerId] + " " +  touch.position);
 					swipeCompleteArray[touch.fingerId] = true;
 					SwipeComplete("Tap ", touch);
+
 				}
 
 

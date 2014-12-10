@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour {
 	public GameObject circleAbsorb;
 
 	public Transform laserPrefabTransform;
+
 	public Touch touch;
 	public AudioClip laserSound;
 	
@@ -87,7 +88,7 @@ public class PlayerController : MonoBehaviour {
 
 			if (t.phase == TouchPhase.Began) {
 
-				StartCoroutine(emptyAbsorb(t));
+
 
 				startTime = Time.time;
 				if (startTime >= nextShot) {
@@ -107,7 +108,8 @@ public class PlayerController : MonoBehaviour {
 
 
 					float distance = Vector3.Distance(swipeStartPosition,swipeEndPosition);
-					if(distance< 1){
+					if(distance< 10){
+						StartCoroutine(emptyAbsorb(t));
 						return;
 					}
 
@@ -177,10 +179,11 @@ public class PlayerController : MonoBehaviour {
 		Vector3 positionAbosrb = Camera.main.ScreenToWorldPoint (t.position);
 		positionAbosrb.z = 0.0f;
 		GameObject circle = (GameObject) Instantiate(circleAbsorb, positionAbosrb,Quaternion.identity);
-		Animator anim = circle.GetComponent<Animator> ();
-		float length = anim.animation.clip.length;
-		
-		yield return new WaitForSeconds (length);
+		circle.GetComponent<ParticleSystem>().Emit(10);
+		//Animator anim = circle.GetComponent<Animator> ();
+		//float length = anim.animation.clip.length;
+		float durationTime = circle.GetComponent<ParticleSystem>().duration;
+		yield return new WaitForSeconds (durationTime);
 		Destroy (circle);
 	}
 	
