@@ -29,8 +29,8 @@ public class PlayerController : MonoBehaviour {
 
 	int lineID=0;
 
-	Vector3 startRawPosition;
-	Vector3 endRawPosition;
+	//Vector3 startRawPosition;
+	//Vector3 endRawPosition;
 
 
 	Vector3 swipeStartPosition;
@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour {
 
 				startTime = Time.time;
 				if (startTime >= nextShot) {
-					startRawPosition = t.position;
+					//startRawPosition = t.position;
 					swipeStartPosition = Camera.main.ScreenToWorldPoint (t.position);
 					swipeStartPosition.z = 0.0f;
 
@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour {
 			if(t.phase == TouchPhase.Ended){
 				float endTime = Time.time;
 				if (endTime >= nextShot) {
-					endRawPosition = t.position;
+					//endRawPosition = t.position;
 					swipeEndPosition = Camera.main.ScreenToWorldPoint (t.position);
 					swipeEndPosition.z = 0.0f;// Sinon Z est a -10.
 

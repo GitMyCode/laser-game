@@ -6,6 +6,9 @@ public class Collidable : MonoBehaviour {
 	// Use this for initialization
 	public GameObject explosion;
 
+	void awake() { 
+
+	}
 
 	void Update() { 
 		if (Input.touchCount > 0 )
@@ -38,6 +41,14 @@ public class Collidable : MonoBehaviour {
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
+
+
+
+		if(coll.gameObject.tag =="lineTrail" && this.tag == "lineTrail" ){
+		//	Debug.Log("tien tien Collision :"+coll.gameObject.tag+ "   " +this.tag);
+			
+		}
+
 		/*
 		
 		//LaserTrail thisLaser = this.gameObject.GetComponent<LaserTrail>();
@@ -83,24 +94,23 @@ public class Collidable : MonoBehaviour {
 	//On trigger peut etre la zone ou le trail d'un laser
 	void OnTriggerEnter2D(Collider2D coll){
 		//Debug.Log("Trigger :"+coll.name + " this :"+this.name);
-		if(this.tag == "zoneP1") {
+		if(this.tag == "zoneP1" && coll.tag == "lineHead") {
 			coll.gameObject.GetComponent<rotatingAim>().reference.gameObject.renderer.enabled = true;
 			
 		}
-		if(coll.tag =="lineTrail" && this.tag == "lineTrail" ){
-			Debug.Log("tien tien");
-		
-		}
 
 
-		if(this.tag =="lineHead" && coll.tag == "lineTrail" ){
+
+
+		if( (this.tag =="lineHead" || this.tag == "lineTrail") && (coll.tag == "lineTrail" || coll.tag == "lineHead")){
 			LaserModel thisModel =  PlayerController.lineModelDictionary[this.name];  	
 			LaserModel otherModel = PlayerController.lineModelDictionary[coll.name];
-		
+
+			GameObject head = (this.tag =="lineHead")? this.gameObject : coll.gameObject;
 			if((thisModel.id != otherModel.id)){
 				
 				Debug.Log("Detruire!");
-				Instantiate (explosion, this.transform.position, this.transform.rotation);
+				Instantiate (explosion, head.transform.position, Quaternion.identity);
 				Destroy(thisModel.head);
 				Destroy(thisModel.trail.reference);
 				Destroy(thisModel.trail);
@@ -121,7 +131,7 @@ public class Collidable : MonoBehaviour {
 
 	}
 	void OnTriggerExit2D(Collider2D coll){
-		if(this.tag == "zoneP1") {
+		if(this.tag == "zoneP1" && coll.tag =="lineHead") {
 			//coll.renderer.enabled = false;
 			coll.gameObject.GetComponent<rotatingAim>().reference.gameObject.renderer.enabled = false;
 			//coll.GetComponent<TargetBehaviorScript>().gameObject.renderer.enabled = false;

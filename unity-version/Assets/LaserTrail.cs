@@ -84,11 +84,26 @@ public class LaserTrail : MonoBehaviour {
 		trailId++;
 		lineID = trailId;
 		//create an object and mesh for the trail
-		GameObject trail = new GameObject("Trail"+trailId, new[] { typeof(MeshRenderer), typeof(MeshFilter), typeof(PolygonCollider2D) } );
+		GameObject trail = new GameObject("Trail"+trailId, new[] { typeof(MeshRenderer), typeof(MeshFilter), 
+																   typeof(PolygonCollider2D),typeof(Rigidbody2D)});
 		mesh = trail.GetComponent<MeshFilter>().mesh = new Mesh();
+		Rigidbody2D body = trail.GetComponent<Rigidbody2D>();
+		body.mass= 0;
+		body.gravityScale = 0;
+		body.angularDrag = 0;
+		body.angularVelocity =0;
+		body.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
+
+		trail.layer = LayerMask.NameToLayer("Default");
 		trail.renderer.material = trailMaterial;
 		trail.transform.tag = "lineTrail";
 		trail.name = PlayerController.lineNameBase+lineID;
+		//trail.AddComponent("Collidable");
+		//trail.AddComponent("DontGoThroughThings");
+		//trail.GetComponent<Collidable>().explosion = Resources.Load("Assets/Standard\ Assets/Particles/Legacy\ Particles/explosion") as GameObject;
+
+
 		reference = trail;
 
 		//get and set the polygon collider on this trail.
@@ -264,7 +279,7 @@ public class LaserTrail : MonoBehaviour {
 			//collider vertices 
 			colliderPath[i] = leftVert.Position;
 			colliderPath[colliderPath.Length - (i + 1) ] = rightVert.Position;
-			
+
 			//trail uvs
 			float uvValue = leftVert.TimeAlive / timeDelta;
 			uvs[vertIndex] = new Vector2(uvValue, 0);
@@ -285,6 +300,19 @@ public class LaserTrail : MonoBehaviour {
 			leftVertNode = leftVertNode.Next;
 			rightVertNode = rightVertNode.Next; 
 		}
+	/*	leftVertNode = leftVertices.Last;
+		rightVertNode = rightVertices.Last;
+		for(int i=colliderPath.Length-1; i > 0; --i){
+			Vertex leftVert = leftVertNode.Value;
+			Vertex rightVert = rightVertNode.Value;
+
+			colliderPath[i] = leftVert.Position;
+			colliderPath[i-1] = rightVert.Position;
+
+			leftVertNode = leftVertNode.Previous;
+			rightVertNode = rightVertNode.Previous;
+		}
+		*/
 		
 		mesh.Clear();
 		mesh.vertices = vertices;
