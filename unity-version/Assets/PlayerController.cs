@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour {
 
 					float distance = Vector3.Distance(swipeStartPosition,swipeEndPosition);
 					if(distance< 10){
-						StartCoroutine(emptyAbsorb(t));
+						GameArbiter.actionQueue.Enqueue(new Action(swipeEndPosition));
 						return;
 					}
 
@@ -175,18 +175,7 @@ public class PlayerController : MonoBehaviour {
 		nextShot = Time.time;
 	} 
 
-	public IEnumerator emptyAbsorb(Touch t){
-		Vector3 positionAbosrb = Camera.main.ScreenToWorldPoint (t.position);
-		positionAbosrb.z = 0.0f;
-		GameObject circle = (GameObject) Instantiate(circleAbsorb, positionAbosrb,Quaternion.identity);
-		circle.GetComponent<ParticleSystem>().Emit(10);
-		//Animator anim = circle.GetComponent<Animator> ();
-		//float length = anim.animation.clip.length;
-		float durationTime = circle.GetComponent<ParticleSystem>().duration;
-		yield return new WaitForSeconds (durationTime);
-		Destroy (circle);
-	}
-	
+
 	public bool findZoneContainingForCircle(Vector3 touchposition){
 		
 		RaycastHit2D[] hit = Physics2D.CircleCastAll (Camera.main.ScreenToWorldPoint (touchposition),2.0f,Vector2.zero);
