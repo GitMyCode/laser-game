@@ -25,7 +25,6 @@ public class LaserModel {
 		idCounter++;
 		this.id  = idCounter; 
 		head = (GameObject) GameObject.Instantiate(GameArbiter.linePref, birthPlace,(Quaternion.identity));
-		float trailTimer =  getConvertedLengthToTime(head,speed,distance);
 
 		float angleX = action.endPos.x - action.startPos.x;
 		float angleY = action.endPos.y - action.startPos.y;
@@ -33,6 +32,7 @@ public class LaserModel {
 
 		head.name = lineNameBase+id;
 		trail = head.gameObject.GetComponent<LaserTrail>();
+		trail.lifeTime = getConvertedLengthToTime(head,speed,distance); 
 		trail.nameWithId = head.name;
 		head.gameObject.GetComponent<rotatingAim>().aim.name = head.name;
 		head.gameObject.GetComponent<rotatingAim>().aim.gameObject.name = head.name;
