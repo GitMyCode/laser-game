@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Collidable : MonoBehaviour {
+public class Collidable : MonoBehaviour , ICollidable {
 
 	// Use this for initialization
 	public GameObject explosion;
@@ -42,6 +42,10 @@ public class Collidable : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D coll) {
 
+
+		if(coll is ICollidable){
+			Debug.Log("dsfsdf");
+		}
 
 
 		if(coll.gameObject.tag =="lineTrail" && this.tag == "lineTrail" ){
@@ -100,11 +104,16 @@ public class Collidable : MonoBehaviour {
 		}
 
 
+		if(this is ICollidable && coll.gameObject is ICollidable){
+			Debug.Log("collidable event");
+	    }
+
+
 
 
 		if( (this.tag =="lineHead" || this.tag == "lineTrail") && (coll.tag == "lineTrail" || coll.tag == "lineHead")){
-			LaserModel thisModel =  PlayerController.lineModelDictionary[this.name];  	
-			LaserModel otherModel = PlayerController.lineModelDictionary[coll.name];
+			LaserModel thisModel =  GameArbiter.lineModelDictionary[this.name];  	
+			LaserModel otherModel = GameArbiter.lineModelDictionary[coll.name];
 
 			GameObject head = (this.tag =="lineHead")? this.gameObject : coll.gameObject;
 			if((thisModel.id != otherModel.id)){
@@ -119,8 +128,8 @@ public class Collidable : MonoBehaviour {
 				Destroy(otherModel.trail.reference);
 				Destroy(otherModel.trail);
 				
-				PlayerController.lineModelDictionary.Remove(coll.name);
-				PlayerController.lineModelDictionary.Remove(this.name);
+				GameArbiter.lineModelDictionary.Remove(coll.name);
+				GameArbiter.lineModelDictionary.Remove(this.name);
 
 			}
 		}

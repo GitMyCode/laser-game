@@ -108,12 +108,18 @@ public class PlayerController : MonoBehaviour {
 
 
 					float distance = Vector3.Distance(swipeStartPosition,swipeEndPosition);
+					float intervalTime = endTime - startTime;
+
 					if(distance< 10){
-						GameArbiter.actionQueue.Enqueue(new Action(swipeEndPosition));
+						GameArbiter.actionQueue.Enqueue(new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.DEFENSIVE));
 						return;
 					}
 
 
+					Action attackAction = new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.ATTACK);
+					GameArbiter.actionQueue.Enqueue(attackAction);
+
+					/*
 					float speed    = getSpeedOfLine(distance,startTime,endTime);
 
 					shootLaserSound ();
@@ -121,7 +127,6 @@ public class PlayerController : MonoBehaviour {
 					lineIDCounter++;
 
 					line = (Transform)Instantiate(laserPrefabTransform, swipeEndPosition,(Quaternion.identity)); // Create Laser on Scence
-
 
 					float angleX = swipeEndPosition.x - swipeStartPosition.x;
 					float angleY = swipeEndPosition.y - swipeStartPosition.y;
@@ -143,6 +148,7 @@ public class PlayerController : MonoBehaviour {
 
 					LaserModel lm = new LaserModel(line.gameObject,line.gameObject.GetComponent<LaserTrail>());
 					lineModelDictionary.Add(line.name,lm);
+					*/
 				}
 			}
 		}

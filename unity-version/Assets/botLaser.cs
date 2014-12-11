@@ -27,7 +27,7 @@ public class botLaser : MonoBehaviour {
 	}
 
 	void launchLine(){
-		Transform local_laser_pref = line_pref;
+		/*Transform local_laser_pref = line_pref;
 		local_laser_pref.localScale = new Vector3(0.15f, 2.0f, 1);
 		
 		
@@ -53,7 +53,7 @@ public class botLaser : MonoBehaviour {
 		float length = line.rigidbody2D.velocity.magnitude;
 		float time = 1/length;
 		line.gameObject.GetComponent<LaserTrail>().lifeTime = time;
-
+*/
 	}
 
 	IEnumerator reload(){
