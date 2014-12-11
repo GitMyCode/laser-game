@@ -7,7 +7,7 @@ public class botLaser : MonoBehaviour {
 	public Transform line_pref;
 	private Transform  line;
 	//static int laserIDCounter =0;
-	int laserID=1;
+	//int laserID=1;
 
 	bool CanShoot = true;
 	void Start () {

@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour {
 	public static int lineIDCounter =0;
 	// Use this for initialization
 
-	int lineID=0;
+	//int lineID=0;
 
 	//Vector3 startRawPosition;
 	//Vector3 endRawPosition;

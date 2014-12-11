@@ -6,9 +6,11 @@ using System.Collections.Generic;
 public class GameArbiter : MonoBehaviour {
 
 	public GameObject circleReference;
+	public GameObject absorbeReference;
 	public GameObject lineReference;
 
 	public static GameObject circlePref ;
+	public static GameObject absorbePref;
 	public static GameObject linePref;
 
 
@@ -23,6 +25,7 @@ public class GameArbiter : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		circlePref = circleReference;
+		absorbePref = absorbeReference;
 		linePref = lineReference;
 	}
 	
@@ -35,7 +38,9 @@ public class GameArbiter : MonoBehaviour {
 				Action a = actionQueue.Dequeue();
 				switch(a.action){
 					case Action.ActionType.DEFENSIVE:
-						{StartCoroutine(emptyAbsorb(a.endPos));}break;
+						{
+							defensiveAction(a);
+						}break;
 					case Action.ActionType.ATTACK:
 						{createLine(a);}break;
 				}
@@ -44,15 +49,7 @@ public class GameArbiter : MonoBehaviour {
 	}
 
 
-	public IEnumerator emptyAbsorb(Vector3 pos){
-		GameObject circle = (GameObject) Instantiate(circlePref, pos,Quaternion.identity);
-		circle.GetComponent<ParticleSystem>().Emit(10);
-		//Animator anim = circle.GetComponent<Animator> ();
-		//float length = anim.animation.clip.length;
-		float durationTime = circle.GetComponent<ParticleSystem>().duration;
-		yield return new WaitForSeconds (durationTime);
-		Destroy (circle);
-	}
+
 
 	public void createLine(Action a){
 		LaserModel lm = new LaserModel(a,a.endPos);
@@ -81,41 +78,67 @@ public class GameArbiter : MonoBehaviour {
 		return time;
 	}
 
+
+	public void defensiveAction(Action a ){
+		List<GameObject> trappedLines = findZoneContainingForCircle(a.endPos);
+		if(trappedLines.Count > 0){
+			Debug.Log("absorbe!");
+			foreach (GameObject gm in trappedLines){
+				LaserModel lm = lineModelDictionary[gm.name];
+				lm.head.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+
+				StartCoroutine(absorbeCircle(a.endPos));
+			}
+		}else{
+
+			StartCoroutine(defensiveCircle(a.endPos));
+		}
+
+	}
+	public IEnumerator absorbeCircle(Vector3 pos){
+		GameObject circle = (GameObject) Instantiate(absorbePref, pos,Quaternion.identity);
+		circle.GetComponent<ParticleSystem>().Emit(10);
+		float durationTime = circle.GetComponent<ParticleSystem>().duration;
+		yield return new WaitForSeconds (durationTime);
+		Destroy (circle);
+	}
+
+	public IEnumerator defensiveCircle(Vector3 pos){
+		GameObject circle = (GameObject) Instantiate(circlePref, pos,Quaternion.identity);
+		circle.GetComponent<ParticleSystem>().Emit(10);
+		float durationTime = circle.GetComponent<ParticleSystem>().duration;
+		yield return new WaitForSeconds (durationTime);
+		Destroy (circle);
+	}
+
 	
-	
-	public bool findZoneContainingForCircle(Vector3 touchposition){
-		
-		RaycastHit2D[] hit = Physics2D.CircleCastAll (Camera.main.ScreenToWorldPoint (touchposition),2.0f,Vector2.zero);
-		Collider2D collOfHead = null;
-		
+	public List<GameObject> findZoneContainingForCircle(Vector3 touchposition){
+
+		List<GameObject> allLines = new List<GameObject>();
+
+		Debug.DrawLine(touchposition, (touchposition * circlePref.transform.lossyScale.x), Color.red);
+		RaycastHit2D[] hit = Physics2D.CircleCastAll (
+			touchposition,
+			circlePref.transform.lossyScale.x/2
+			,Vector2.zero);
+
 		for (int i =0; i < hit.Length; i++) {
-			if(hit[i].collider.gameObject.tag.Equals("laserHead")){
-				collOfHead = hit[i].collider;
-				i=hit.Length;
+			if(hit[i].collider.tag.Equals("lineHead")){
+				allLines.Add(hit[i].collider.gameObject);
 			}		
 		}
-		
-		//Collider2D = hit.collider.tag
-		if (collOfHead != null) {
-			
-			GameObject line;
-			/*
-			foreach (KeyValuePair<string, LaserModel> entry in laserModelDictionary) {
-					line = entry.Value.head;
-					string lasername = line.name;
-				if (line.name.Equals(collOfHead.gameObject.name)) {
-					line.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
-					return true;
-				}
-			}
-			*/
-			LaserModel lm = lineModelDictionary[collOfHead.gameObject.name];
-			line = lm.head;
-			line.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
-			return true;
-		}
-		
-		return false;
+		return allLines;
+	}
+
+	/*
+		Methode qui aurait du etre dans l'objet Grid
+		Temporairement ici
+	 */
+	public static void DestroyLine(GameObject line){
+
+		lineModelDictionary[line.name].Destroy();
+		lineModelDictionary.Remove(line.name);
+
 	}
 	
 

@@ -104,10 +104,6 @@ public class Collidable : MonoBehaviour , ICollidable {
 		}
 
 
-		if(this is ICollidable && coll.gameObject is ICollidable){
-			Debug.Log("collidable event");
-	    }
-
 
 
 
@@ -120,16 +116,9 @@ public class Collidable : MonoBehaviour , ICollidable {
 				
 				Debug.Log("Detruire!");
 				Instantiate (explosion, head.transform.position, Quaternion.identity);
-				Destroy(thisModel.head);
-				Destroy(thisModel.trail.reference);
-				Destroy(thisModel.trail);
-				
-				Destroy(otherModel.head);
-				Destroy(otherModel.trail.reference);
-				Destroy(otherModel.trail);
-				
-				GameArbiter.lineModelDictionary.Remove(coll.name);
-				GameArbiter.lineModelDictionary.Remove(this.name);
+				GameArbiter.DestroyLine(this.gameObject);
+				GameArbiter.DestroyLine(coll.gameObject);
+
 
 			}
 		}
