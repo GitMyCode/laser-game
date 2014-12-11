@@ -31,11 +31,11 @@ public class botLaser : MonoBehaviour {
 
 	void launchLine(){
 		float randomX = Random.Range (zone.transform.position.x - zone.transform.localScale.x / 2, zone.transform.position.x + zone.transform.localScale.x / 2);
-		float randomY = Random.Range (zone.transform.position.y - zone.transform.localScale.y / 2, (zone.transform.position.y + zone.transform.localScale.y / 2));
+		float randomY = Random.Range ((zone.transform.position.y - zone.transform.localScale.y / 2), (zone.transform.position.y));
 		Vector3 start = new Vector3(randomX,randomY,0);
 
 		randomX = Random.Range (zone.transform.position.x - zone.transform.localScale.x / 2, zone.transform.position.x + zone.transform.localScale.x / 2);
-		randomY = Random.Range ((zone.transform.position.y - zone.transform.localScale.y / 2), (zone.transform.position.y + zone.transform.localScale.y / 2)-randomY);
+		randomY = Random.Range ((zone.transform.position.y - zone.transform.localScale.y / 2) , (zone.transform.position.y + zone.transform.localScale.y / 2) - (randomY+11));
 		Vector3 end   = new Vector3(randomX,randomY,0);
 
 		GameArbiter.actionQueue.Enqueue(new Action(start,end,Random.Range(0.2f,0.5f),Action.ActionType.ATTACK));
