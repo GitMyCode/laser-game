@@ -10,8 +10,11 @@ public class botLaser : MonoBehaviour {
 	//int laserID=1;
 
 	bool CanShoot = true;
-	void Start () {
 
+	GameObject zone;
+
+	void Start () {
+		zone = GameObject.Find("ZonePlayer2");
 		 
 	}
 	
@@ -27,37 +30,20 @@ public class botLaser : MonoBehaviour {
 	}
 
 	void launchLine(){
-		/*Transform local_laser_pref = line_pref;
-		local_laser_pref.localScale = new Vector3(0.15f, 2.0f, 1);
-		
-		
-		PlayerController.lineIDCounter++;
-		
-		local_laser_pref.name = "laser"+laserID;
-		
-		line = (Transform) Instantiate (local_laser_pref, this.transform.position, this.transform.rotation);
-		
-		float speed = -1.0f;
-		
-		
-		line.rigidbody2D.velocity = Vector2.up *speed;
-		
-		laserID = PlayerController.lineIDCounter;
-		line.name = "laser"+laserID;
-		
-		line.gameObject.name = "laser"+laserID;
-		
-		LaserModel lm = new LaserModel(line.gameObject,line.gameObject.GetComponent<LaserTrail>());
-		PlayerController.lineModelDictionary.Add(line.name,lm);
-		
-		float length = line.rigidbody2D.velocity.magnitude;
-		float time = 1/length;
-		line.gameObject.GetComponent<LaserTrail>().lifeTime = time;
-*/
+		float randomX = Random.Range (zone.transform.position.x - zone.transform.localScale.x / 2, zone.transform.position.x + zone.transform.localScale.x / 2);
+		float randomY = Random.Range (zone.transform.position.y - zone.transform.localScale.y / 2, (zone.transform.position.y + zone.transform.localScale.y / 2));
+		Vector3 start = new Vector3(randomX,randomY,0);
+
+		randomX = Random.Range (zone.transform.position.x - zone.transform.localScale.x / 2, zone.transform.position.x + zone.transform.localScale.x / 2);
+		randomY = Random.Range ((zone.transform.position.y - zone.transform.localScale.y / 2), (zone.transform.position.y + zone.transform.localScale.y / 2)-randomY);
+		Vector3 end   = new Vector3(randomX,randomY,0);
+
+		GameArbiter.actionQueue.Enqueue(new Action(start,end,Random.Range(0.2f,0.5f),Action.ActionType.ATTACK));
+	
 	}
 
 	IEnumerator reload(){
-		yield return new WaitForSeconds(12);
+		yield return new WaitForSeconds(2);
 		CanShoot = true;
 	}
 
