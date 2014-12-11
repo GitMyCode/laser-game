@@ -99,7 +99,7 @@ public class LaserTrail : MonoBehaviour {
 		trail.layer = LayerMask.NameToLayer("Default");
 		trail.renderer.material = trailMaterial;
 		trail.transform.tag = "lineTrail";
-		trail.name = PlayerController.lineNameBase+lineID;
+		trail.name =  "line"+lineID;
 		//trail.AddComponent("Collidable");
 		//trail.AddComponent("DontGoThroughThings");
 		//trail.GetComponent<Collidable>().explosion = Resources.Load("Assets/Standard\ Assets/Particles/Legacy\ Particles/explosion") as GameObject;
