@@ -137,10 +137,10 @@ public class GameArbiter : MonoBehaviour {
 		Temporairement ici
 	 */
 	public static void DestroyLine(GameObject line){
-
-		lineModelDictionary[line.name].Destroy();
-		lineModelDictionary.Remove(line.name);
-
+		if(lineModelDictionary.ContainsKey(line.name)){
+			lineModelDictionary[line.name].Destroy();
+			lineModelDictionary.Remove(line.name);
+		}
 	}
 	
 
