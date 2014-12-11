@@ -16,11 +16,13 @@ public class LaserModel {
 	public string name;
 	public string lineNameBase = "line";
 
-
+	public GameObject owner; 
 
 	public LaserModel(Action action,Vector3 birthPlace){
 		float distance = Vector3.Distance(action.startPos,action.endPos);
 		float speed    = getSpeedOfLine(distance,action.timeInterval);
+
+		this.owner = action.owner;
 
 		idCounter++;
 		this.id  = idCounter; 

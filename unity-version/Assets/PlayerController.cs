@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour, IPlayer {
 
 	public GameObject circleAbsorb;
 
@@ -36,6 +36,12 @@ public class PlayerController : MonoBehaviour {
 
 	Vector3 swipeStartPosition;
 	Vector3 swipeEndPosition;
+
+
+	public GameObject zone;
+	public GameObject goal;
+
+
 	void OnGUI() { 
 		/*
 		Texture2D texture = new Texture2D(1, 1);
@@ -65,7 +71,8 @@ public class PlayerController : MonoBehaviour {
 
 	void Start () {
 
-
+		zone = GameObject.Find("ZonePlayer2");
+		goal = GameObject.FindGameObjectWithTag("goalP2");
 	}
 	 
 	// Update is called once per frame
@@ -108,12 +115,12 @@ public class PlayerController : MonoBehaviour {
 					float intervalTime = endTime - startTime;
 
 					if(distance< 10){
-						GameArbiter.actionQueue.Enqueue(new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.DEFENSIVE));
+						GameArbiter.actionQueue.Enqueue(new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.DEFENSIVE,gameObject));
 						return;
 					}
 
 
-					Action attackAction = new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.ATTACK);
+					Action attackAction = new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.ATTACK,gameObject);
 					GameArbiter.actionQueue.Enqueue(attackAction);
 
 				
@@ -127,6 +134,16 @@ public class PlayerController : MonoBehaviour {
 		audio.PlayOneShot (laserSound, 0.5f);
 		nextShot = Time.time;
 	} 
+	public GameObject getZone ()
+	{
+		return zone;
+	}
+
+
+	public GameObject getGoal ()
+	{
+		return goal;
+	}
 
 
 

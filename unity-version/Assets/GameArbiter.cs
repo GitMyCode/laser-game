@@ -42,7 +42,9 @@ public class GameArbiter : MonoBehaviour {
 							defensiveAction(a);
 						}break;
 					case Action.ActionType.ATTACK:
-						{createLine(a);}break;
+						{
+							createLine(a);
+						}break;
 				}
 			}
 		}
@@ -52,6 +54,7 @@ public class GameArbiter : MonoBehaviour {
 
 
 	public void createLine(Action a){
+
 		LaserModel lm = new LaserModel(a,a.endPos);
 		lineModelDictionary.Add(lm.name,lm);
 
