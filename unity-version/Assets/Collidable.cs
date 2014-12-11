@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Collidable : MonoBehaviour {
+public class Collidable : MonoBehaviour , ICollidable {
 
 	// Use this for initialization
 	public GameObject explosion;
@@ -42,6 +42,10 @@ public class Collidable : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D coll) {
 
+
+		if(coll is ICollidable){
+			Debug.Log("dsfsdf");
+		}
 
 
 		if(coll.gameObject.tag =="lineTrail" && this.tag == "lineTrail" ){
@@ -102,25 +106,19 @@ public class Collidable : MonoBehaviour {
 
 
 
+
 		if( (this.tag =="lineHead" || this.tag == "lineTrail") && (coll.tag == "lineTrail" || coll.tag == "lineHead")){
-			LaserModel thisModel =  PlayerController.lineModelDictionary[this.name];  	
-			LaserModel otherModel = PlayerController.lineModelDictionary[coll.name];
+			LaserModel thisModel =  GameArbiter.lineModelDictionary[this.name];  	
+			LaserModel otherModel = GameArbiter.lineModelDictionary[coll.name];
 
 			GameObject head = (this.tag =="lineHead")? this.gameObject : coll.gameObject;
 			if((thisModel.id != otherModel.id)){
 				
 				Debug.Log("Detruire!");
 				Instantiate (explosion, head.transform.position, Quaternion.identity);
-				Destroy(thisModel.head);
-				Destroy(thisModel.trail.reference);
-				Destroy(thisModel.trail);
-				
-				Destroy(otherModel.head);
-				Destroy(otherModel.trail.reference);
-				Destroy(otherModel.trail);
-				
-				PlayerController.lineModelDictionary.Remove(coll.name);
-				PlayerController.lineModelDictionary.Remove(this.name);
+				GameArbiter.DestroyLine(this.gameObject);
+				GameArbiter.DestroyLine(coll.gameObject);
+
 
 			}
 		}

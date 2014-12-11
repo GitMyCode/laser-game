@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour {
 	public static int lineIDCounter =0;
 	// Use this for initialization
 
-	int lineID=0;
+	//int lineID=0;
 
 	//Vector3 startRawPosition;
 	//Vector3 endRawPosition;
@@ -64,7 +64,6 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Start () {
-		//GUI.Label(shootingZone,Color.blue.ToString());
 
 
 	}
@@ -80,9 +79,7 @@ public class PlayerController : MonoBehaviour {
 
 		Vector2 tmp = t.position;
 		tmp.y = Screen.height - tmp.y;
-		//swipeStartPosition = Camera.main.ScreenToWorldPoint (t.position);
-		//swipeStartPosition.z= 0f;
-		//Debug.Log("Touch :" + t.position+ " converted:"+swipeStartPosition);
+
 		if (shootingZone.Contains(tmp)) {
 
 
@@ -108,120 +105,28 @@ public class PlayerController : MonoBehaviour {
 
 
 					float distance = Vector3.Distance(swipeStartPosition,swipeEndPosition);
+					float intervalTime = endTime - startTime;
+
 					if(distance< 10){
-						StartCoroutine(emptyAbsorb(t));
+						GameArbiter.actionQueue.Enqueue(new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.DEFENSIVE));
 						return;
 					}
 
 
-					float speed    = getSpeedOfLine(distance,startTime,endTime);
+					Action attackAction = new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.ATTACK);
+					GameArbiter.actionQueue.Enqueue(attackAction);
 
-					shootLaserSound ();
-
-					lineIDCounter++;
-
-					line = (Transform)Instantiate(laserPrefabTransform, swipeEndPosition,(Quaternion.identity)); // Create Laser on Scence
-
-
-					float angleX = swipeEndPosition.x - swipeStartPosition.x;
-					float angleY = swipeEndPosition.y - swipeStartPosition.y;
-					line.rigidbody2D.velocity = new Vector2(angleX,angleY).normalized *speed;
-
-					float time = getConvertedLengthToTime(line, speed,distance);
-
-					line.gameObject.GetComponent<LaserTrail>().lifeTime = time;
-					line.gameObject.GetComponent<LaserTrail>().distance = distance; 
-
-						
-
-					lineID = lineIDCounter;
-					line.name = lineNameBase+lineID;
-					line.gameObject.GetComponent<LaserTrail>().nameWithId = line.name;
-					line.gameObject.GetComponent<rotatingAim>().aim.name = lineNameBase+ lineID;
-					line.gameObject.GetComponent<rotatingAim>().aim.gameObject.name = lineNameBase+lineID;
-					line.gameObject.name = lineNameBase+lineID;
-
-					LaserModel lm = new LaserModel(line.gameObject,line.gameObject.GetComponent<LaserTrail>());
-					lineModelDictionary.Add(line.name,lm);
+				
 				}
 			}
 		}
 	
-	}
-
-	public float getConvertedLengthToTime(Transform laser, float speed,float distance){
-
-
-
-		float time = ((laser.rigidbody2D.velocity.normalized/(laser.rigidbody2D.velocity.magnitude)).magnitude);
-		time = time* distance;
-
-		return time;
-	}
-
-	float getSpeedOfLine(float distance, float startTime , float endTime){
-		float diffTime = endTime - startTime;
-		float speed = 1;
-		
-		if (diffTime != 0) {
-			speed =  distance/ diffTime;
-			speed = speed / 2;
-		}
-		return speed;
 	}
 
 	void shootLaserSound(){
 		audio.PlayOneShot (laserSound, 0.5f);
 		nextShot = Time.time;
 	} 
-
-	public IEnumerator emptyAbsorb(Touch t){
-		Vector3 positionAbosrb = Camera.main.ScreenToWorldPoint (t.position);
-		positionAbosrb.z = 0.0f;
-		GameObject circle = (GameObject) Instantiate(circleAbsorb, positionAbosrb,Quaternion.identity);
-		circle.GetComponent<ParticleSystem>().Emit(10);
-		//Animator anim = circle.GetComponent<Animator> ();
-		//float length = anim.animation.clip.length;
-		float durationTime = circle.GetComponent<ParticleSystem>().duration;
-		yield return new WaitForSeconds (durationTime);
-		Destroy (circle);
-	}
-	
-	public bool findZoneContainingForCircle(Vector3 touchposition){
-		
-		RaycastHit2D[] hit = Physics2D.CircleCastAll (Camera.main.ScreenToWorldPoint (touchposition),2.0f,Vector2.zero);
-		Collider2D collOfHead = null;
-		
-		for (int i =0; i < hit.Length; i++) {
-			if(hit[i].collider.gameObject.tag.Equals("laserHead")){
-				collOfHead = hit[i].collider;
-				i=hit.Length;
-			}		
-		}
-		
-		//Collider2D = hit.collider.tag
-		if (collOfHead != null) {
-			
-			GameObject line;
-			/*
-			foreach (KeyValuePair<string, LaserModel> entry in laserModelDictionary) {
-					line = entry.Value.head;
-					string lasername = line.name;
-				if (line.name.Equals(collOfHead.gameObject.name)) {
-					line.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
-					return true;
-				}
-			}
-			*/
-			LaserModel lm = lineModelDictionary[collOfHead.gameObject.name];
-			line = lm.head;
-			line.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
-			return true;
-		}
-		
-		return false;
-	}
-
 
 
 

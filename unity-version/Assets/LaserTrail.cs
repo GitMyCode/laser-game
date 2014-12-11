@@ -85,7 +85,8 @@ public class LaserTrail : MonoBehaviour {
 		lineID = trailId;
 		//create an object and mesh for the trail
 		GameObject trail = new GameObject("Trail"+trailId, new[] { typeof(MeshRenderer), typeof(MeshFilter), 
-																   typeof(PolygonCollider2D),typeof(Rigidbody2D)});
+			typeof(PolygonCollider2D),typeof(Rigidbody2D), typeof(Collidable)}
+																   );
 		mesh = trail.GetComponent<MeshFilter>().mesh = new Mesh();
 		Rigidbody2D body = trail.GetComponent<Rigidbody2D>();
 		body.mass= 0;
@@ -98,7 +99,7 @@ public class LaserTrail : MonoBehaviour {
 		trail.layer = LayerMask.NameToLayer("Default");
 		trail.renderer.material = trailMaterial;
 		trail.transform.tag = "lineTrail";
-		trail.name = PlayerController.lineNameBase+lineID;
+		trail.name =  "line"+lineID;
 		//trail.AddComponent("Collidable");
 		//trail.AddComponent("DontGoThroughThings");
 		//trail.GetComponent<Collidable>().explosion = Resources.Load("Assets/Standard\ Assets/Particles/Legacy\ Particles/explosion") as GameObject;
