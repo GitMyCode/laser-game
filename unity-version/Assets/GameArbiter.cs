@@ -81,4 +81,43 @@ public class GameArbiter : MonoBehaviour {
 		return time;
 	}
 
+	
+	
+	public bool findZoneContainingForCircle(Vector3 touchposition){
+		
+		RaycastHit2D[] hit = Physics2D.CircleCastAll (Camera.main.ScreenToWorldPoint (touchposition),2.0f,Vector2.zero);
+		Collider2D collOfHead = null;
+		
+		for (int i =0; i < hit.Length; i++) {
+			if(hit[i].collider.gameObject.tag.Equals("laserHead")){
+				collOfHead = hit[i].collider;
+				i=hit.Length;
+			}		
+		}
+		
+		//Collider2D = hit.collider.tag
+		if (collOfHead != null) {
+			
+			GameObject line;
+			/*
+			foreach (KeyValuePair<string, LaserModel> entry in laserModelDictionary) {
+					line = entry.Value.head;
+					string lasername = line.name;
+				if (line.name.Equals(collOfHead.gameObject.name)) {
+					line.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
+					return true;
+				}
+			}
+			*/
+			LaserModel lm = lineModelDictionary[collOfHead.gameObject.name];
+			line = lm.head;
+			line.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
+			return true;
+		}
+		
+		return false;
+	}
+	
+
+
 }
