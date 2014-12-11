@@ -87,7 +87,7 @@ public class GameArbiter : MonoBehaviour {
 				LaserModel lm = lineModelDictionary[gm.name];
 				lm.head.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
 
-				StartCoroutine(absorbeCircle(a.endPos));
+				StartCoroutine(absorbeCircle(a.endPos,gm));
 			}
 		}else{
 
@@ -95,11 +95,12 @@ public class GameArbiter : MonoBehaviour {
 		}
 
 	}
-	public IEnumerator absorbeCircle(Vector3 pos){
+	public IEnumerator absorbeCircle(Vector3 pos,GameObject gm){
 		GameObject circle = (GameObject) Instantiate(absorbePref, pos,Quaternion.identity);
 		circle.GetComponent<ParticleSystem>().Emit(10);
 		float durationTime = circle.GetComponent<ParticleSystem>().duration;
 		yield return new WaitForSeconds (durationTime);
+		DestroyLine(gm);
 		Destroy (circle);
 	}
 
@@ -108,6 +109,7 @@ public class GameArbiter : MonoBehaviour {
 		circle.GetComponent<ParticleSystem>().Emit(10);
 		float durationTime = circle.GetComponent<ParticleSystem>().duration;
 		yield return new WaitForSeconds (durationTime);
+
 		Destroy (circle);
 	}
 
