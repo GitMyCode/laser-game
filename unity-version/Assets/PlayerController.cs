@@ -78,6 +78,14 @@ public class PlayerController : MonoBehaviour, IPlayer {
 		goal = GameObject.FindGameObjectWithTag("goalP1");
 		textOutput = GetComponent<GUIText>();
 
+		float scalex = (float) (Screen.width) / 320.0f; //your scale x
+		float scaley = (float) (Screen.height) / 480.0f; //your scale y
+		Vector2 pixOff = textOutput.pixelOffset; //your pixel offset on screen
+		int origSizeText = textOutput.fontSize;
+		textOutput.pixelOffset = new Vector2(pixOff.x*scalex, pixOff.y*scaley);
+		textOutput.fontSize = (int) (origSizeText * scalex);
+
+
 	}
 	 
 	// Update is called once per frame
