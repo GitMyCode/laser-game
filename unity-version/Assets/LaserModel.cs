@@ -16,15 +16,19 @@ public class LaserModel {
 	public string name;
 	public string lineNameBase = "line";
 
-
+	public IPlayer owner; 
 
 	public LaserModel(Action action,Vector3 birthPlace){
 		float distance = Vector3.Distance(action.startPos,action.endPos);
 		float speed    = getSpeedOfLine(distance,action.timeInterval);
 
+		this.owner = action.owner;
+
 		idCounter++;
 		this.id  = idCounter; 
 		head = (GameObject) GameObject.Instantiate(GameArbiter.linePref, birthPlace,(Quaternion.identity));
+		head.GetComponent<Collidable>().collisionType = ECollidable.LINE;
+
 
 		float angleX = action.endPos.x - action.startPos.x;
 		float angleY = action.endPos.y - action.startPos.y;
@@ -62,6 +66,10 @@ public class LaserModel {
 		if (interval != 0) {
 			speed =  distance/ interval;
 			speed = speed / 2;
+		}
+
+		if(speed > 80){
+			speed = 80;
 		}
 		return speed;
 	}

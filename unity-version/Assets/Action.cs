@@ -15,11 +15,14 @@ public class Action {
 
 	public ActionType action;
 
-	public Action(Vector3 startPos, Vector3 endPos, float time, ActionType type){
+	public IPlayer owner;
+
+	public Action(Vector3 startPos, Vector3 endPos, float time, ActionType type,IPlayer _owner){
 		action = type;
 		this.startPos = startPos;
 		this.endPos = endPos;
 		this.timeInterval = time;
+		this.owner = _owner;
 	}
 
 }

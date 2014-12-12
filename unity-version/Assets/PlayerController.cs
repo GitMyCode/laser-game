@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour, IPlayer {
 
 	public GameObject circleAbsorb;
 
@@ -36,6 +36,15 @@ public class PlayerController : MonoBehaviour {
 
 	Vector3 swipeStartPosition;
 	Vector3 swipeEndPosition;
+
+
+	public GameObject zone;
+	public GameObject goal;
+	public int life;
+	public int energy;
+
+	GUIText textOutput;
+
 	void OnGUI() { 
 		/*
 		Texture2D texture = new Texture2D(1, 1);
@@ -65,11 +74,27 @@ public class PlayerController : MonoBehaviour {
 
 	void Start () {
 
+		zone = GameObject.Find("ZonePlayer1");
+		goal = GameObject.FindGameObjectWithTag("goalP1");
+		textOutput = GetComponent<GUIText>();
 
+		setLife(5);
+		setEnergy(5);
+
+
+		float scalex = (float) (Screen.width) / 320.0f; //your scale x
+		float scaley = (float) (Screen.height) / 480.0f; //your scale y
+		Vector2 pixOff = textOutput.pixelOffset; //your pixel offset on screen
+		int origSizeText = textOutput.fontSize;
+		textOutput.pixelOffset = new Vector2(pixOff.x*scalex, pixOff.y*scaley);
+		textOutput.fontSize = (int) (origSizeText * scalex);
+
+		GameArbiter.players[0] = this;
 	}
 	 
 	// Update is called once per frame
 	void Update () {
+		textOutput.text = ToString();
 
 		if(Input.touchCount == 0){
 			return;
@@ -108,12 +133,12 @@ public class PlayerController : MonoBehaviour {
 					float intervalTime = endTime - startTime;
 
 					if(distance< 10){
-						GameArbiter.actionQueue.Enqueue(new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.DEFENSIVE));
+						GameArbiter.actionQueue.Enqueue(new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.DEFENSIVE,this));
 						return;
 					}
 
 
-					Action attackAction = new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.ATTACK);
+					Action attackAction = new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.ATTACK,this);
 					GameArbiter.actionQueue.Enqueue(attackAction);
 
 				
@@ -127,7 +152,61 @@ public class PlayerController : MonoBehaviour {
 		audio.PlayOneShot (laserSound, 0.5f);
 		nextShot = Time.time;
 	} 
+	public GameObject getZone ()
+	{
+		return zone;
+	}
 
 
+	public GameObject getGoal ()
+	{
+		return goal;
+	}
+	public int getLifeRemaining ()
+	{
+		return life;
+	}
 
+	public void setLife (int life)
+	{
+		this.life = life;
+	}
+
+
+	public int getEnergyRemaining ()
+	{
+		return energy;
+	}
+
+	public void setEnergy (int energy)
+	{
+		this.energy = energy;
+	}
+
+
+	public override string ToString ()
+	{
+		return string.Format ("[P1: life={0},\n energy={1}]", life, energy);
+	}
+
+	public int Life {
+		get {
+			return this.life;
+		}
+		set {
+			this.life = value;
+		}
+	}
+
+	public int Energy {
+		get {
+			return energy;
+		}
+		set {
+			this.energy = value;
+		}
+	}
+
+
+	
 }
