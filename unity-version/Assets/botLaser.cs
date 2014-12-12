@@ -32,7 +32,30 @@ public class botLaser : MonoBehaviour, IPlayer {
 		textOutput.fontSize = (int) (origSizeText * scalex);
 		GameArbiter.players[1] = this;
 	}
-	
+
+	public int blockCheckRate = 20;
+	public int blockCounter = 1;
+	void FixedUpdate() {
+
+		if (blockCounter % blockCheckRate ==0){ 
+
+			foreach(LaserModel lm in GameArbiter.lineModelDictionary.Values){
+				if(lm.owner != (IPlayer) this){
+					if(zone.transform.collider2D.bounds.Contains(lm.head.transform.position)){
+						GameArbiter.actionQueue.Enqueue(new Action(lm.head.transform.position,
+						                                           lm.head.transform.position,
+						                                           0.1f,Action.ActionType.DEFENSIVE,
+						                                           this));
+					}
+
+				}
+			}
+			blockCounter=0;
+		} 
+			blockCounter++;
+
+	}
+
 	// Update is called once per frame
 	void Update () {
 
@@ -57,12 +80,12 @@ public class botLaser : MonoBehaviour, IPlayer {
 		Vector3 end   = new Vector3(randomX,randomY,0);
 
 		Debug.DrawRay(start,end,Color.red,2,false);
-		GameArbiter.actionQueue.Enqueue(new Action(start,end,Random.Range(0.2f,0.5f),Action.ActionType.ATTACK,this));
+		GameArbiter.actionQueue.Enqueue(new Action(start,end,Random.Range(0.38f,0.5f),Action.ActionType.ATTACK,this));
 	
 	}
 
 	IEnumerator reload(){
-		yield return new WaitForSeconds(2);
+		yield return new WaitForSeconds(1);
 		CanShoot = true;
 	}
 
