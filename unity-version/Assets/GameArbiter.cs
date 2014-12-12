@@ -24,7 +24,9 @@ public class GameArbiter : MonoBehaviour {
 
 	private GameObject explosion;
 
-	
+	private VectorGrid m_vectorGrid;
+	private VectorGrid m_vectorGrid2;
+
 	public int energyRegeneration;
 	private int regenerateCounter = 1;
 	// Use this for initialization
@@ -34,6 +36,8 @@ public class GameArbiter : MonoBehaviour {
 		linePref = lineReference;
 		energyRegeneration = 120;
 
+		m_vectorGrid = GameObject.Find("VectorGrid").GetComponent<VectorGrid>();
+		m_vectorGrid2 = GameObject.Find("VectorGrid2").GetComponent<VectorGrid>();
 		explosion = (GameObject) Resources.Load("explosion2") as GameObject;
 
 	}
@@ -97,6 +101,12 @@ public class GameArbiter : MonoBehaviour {
 			IPlayer hurtPlayer = (type1 == ECollidable.GOAL)? players[(int)e.coll1.playerOwner] : players[(int)e.coll2.playerOwner] ;
 			GameObject line = (type1 == ECollidable.GOAL)? e.coll2.gameObject : e.coll1.gameObject ;
 			if(lineModelDictionary.ContainsKey(line.name) && tryRemoveLife(hurtPlayer,1)){
+				Instantiate (explosion, line.transform.position, Quaternion.identity);
+
+				VectorGrid affectedZone = (type1 == ECollidable.GOAL && e.coll1.playerOwner == EPlayer.Player1)? m_vectorGrid : m_vectorGrid2;
+				affectedZone.AddGridForce(line.transform.position, -3 * 0.1f, 4.0f, Color.blue, true);
+
+
 				DestroyLine(line);		
 			}
 		}
