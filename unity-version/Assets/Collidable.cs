@@ -6,39 +6,22 @@ public class Collidable : MonoBehaviour , ICollidable {
 	// Use this for initialization
 	public GameObject explosion;
 
+	void start(){
+
+	}
+
+
 	void awake() { 
 
 	}
 
 	void Update() { 
-		if (Input.touchCount > 0 )
-		{
-			Touch tap = Input.GetTouch(0);
-			if(tap.phase == TouchPhase.Ended ){ 
-				return;
-			}
 
-			Vector3 wp = Camera.main.ScreenToWorldPoint(tap.position);
-			Vector2 touchPos = new Vector2(wp.x, wp.y);
-
-
-			Collider2D c = Physics2D.OverlapPoint(touchPos); 	
-			if (c != null && 
-			    c.tag == "lineTarget" &&
-			    PlayerController.lineModelDictionary.ContainsKey(c.name))
-				{
-				Debug.Log("blocked");
-				LaserModel laserModel = PlayerController.lineModelDictionary[c.name];
-				Destroy(laserModel.head);
-				Destroy(laserModel.trail.reference);
-				Destroy(laserModel.trail);
-				Instantiate (explosion, laserModel.head.transform.position,Quaternion.identity );
-
-			}
-			
-			
-		}
 	}
+
+
+
+
 
 	void OnCollisionEnter2D(Collision2D coll) {
 
@@ -47,11 +30,11 @@ public class Collidable : MonoBehaviour , ICollidable {
 			Debug.Log("dsfsdf");
 		}
 
-
-		if(coll.gameObject.tag =="lineTrail" && this.tag == "lineTrail" ){
-		//	Debug.Log("tien tien Collision :"+coll.gameObject.tag+ "   " +this.tag);
-			
+		if(coll.gameObject.tag == "lineHead" && this.tag == "lineHead"){ 
+			GameArbiter.DestroyLine(this.gameObject);
+			GameArbiter.DestroyLine(coll.gameObject);
 		}
+
 
 
 		
@@ -76,7 +59,6 @@ public class Collidable : MonoBehaviour , ICollidable {
 			GameObject head = (this.tag =="lineHead")? this.gameObject : coll.gameObject;
 			if((thisModel.id != otherModel.id)){
 				
-				Debug.Log("Detruire!");
 				Instantiate (explosion, head.transform.position, Quaternion.identity);
 				GameArbiter.DestroyLine(this.gameObject);
 				GameArbiter.DestroyLine(coll.gameObject);

@@ -32,7 +32,11 @@ public class GameArbiter : MonoBehaviour {
 	// Update is called once per frame
 	void LateUpdate () {
 
-		if(actionQueue.Count >0){
+
+			while(collidableQueue.Count > 0){
+				
+
+			}
 
 			while(actionQueue.Count>0){
 				Action a = actionQueue.Dequeue();
@@ -47,7 +51,6 @@ public class GameArbiter : MonoBehaviour {
 						}break;
 				}
 			}
-		}
 	}
 
 

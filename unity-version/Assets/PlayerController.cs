@@ -40,7 +40,8 @@ public class PlayerController : MonoBehaviour, IPlayer {
 
 	public GameObject zone;
 	public GameObject goal;
-
+	public int life;
+	public int energy;
 
 	void OnGUI() { 
 		/*

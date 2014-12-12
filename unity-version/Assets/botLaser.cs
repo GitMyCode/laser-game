@@ -20,6 +20,9 @@ public class botLaser : MonoBehaviour, IPlayer {
 	void Start () {
 		zone = GameObject.Find("ZonePlayer2");
 		goal = GameObject.FindGameObjectWithTag("goalP2");
+		setLife(5);
+		setEnergy(5);
+
 	}
 	
 	// Update is called once per frame
@@ -64,22 +67,22 @@ public class botLaser : MonoBehaviour, IPlayer {
 	}
 	public int getLifeRemaining ()
 	{
-		throw new System.NotImplementedException ();
+		return life;
 	}
 
 	public void setLife (int life)
 	{
-		throw new System.NotImplementedException ();
+		this.life = life;
 	}
 
 	public int getEnergyRemaining ()
 	{
-		throw new System.NotImplementedException ();
+		return this.energy;
 	}
 
 	public void setEnergy (int energy)
 	{
-		throw new System.NotImplementedException ();
+		this.energy = energy;
 	}
 
 
