@@ -80,18 +80,19 @@ public class GameArbiter : MonoBehaviour {
 		ECollidable type2 = e.coll2.collisionType;
 
 		if(type1 == type2){
-			LaserModel thisModel =  GameArbiter.lineModelDictionary[e.coll1.name];  	
-			LaserModel otherModel = GameArbiter.lineModelDictionary[e.coll2.name];
-			
-			GameObject head = (this.tag =="lineHead")? e.coll1.gameObject : e.coll2.gameObject;
-			if((thisModel.id != otherModel.id)){
+			if(lineModelDictionary.ContainsKey(e.coll1.name) && lineModelDictionary.ContainsKey(e.coll2.name)){
+				LaserModel thisModel =  GameArbiter.lineModelDictionary[e.coll1.name];  	
+				LaserModel otherModel = GameArbiter.lineModelDictionary[e.coll2.name];
 				
-				Instantiate (explosion, head.transform.position, Quaternion.identity);
-				GameArbiter.DestroyLine(e.coll1.gameObject);
-				GameArbiter.DestroyLine(e.coll2.gameObject);
-				
-				
+				GameObject head = (this.tag =="lineHead")? e.coll1.gameObject : e.coll2.gameObject;
+				if((thisModel.id != otherModel.id)){
+					Instantiate (explosion, head.transform.position, Quaternion.identity);
+					GameArbiter.DestroyLine(e.coll1.gameObject);
+					GameArbiter.DestroyLine(e.coll2.gameObject);
+
+				}
 			}
+
 		}	
 	}
 	

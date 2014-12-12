@@ -30,7 +30,7 @@ public class Collidable : MonoBehaviour, ICollidable {
 
 	void OnCollisionEnter2D(Collision2D coll) {
 		trySendCollidableEvent(coll.gameObject);
-
+		/*
 		if(coll is ICollidable){
 			Debug.Log("dsfsdf");
 		}
@@ -39,7 +39,7 @@ public class Collidable : MonoBehaviour, ICollidable {
 			GameArbiter.DestroyLine(this.gameObject);
 			GameArbiter.DestroyLine(coll.gameObject);
 		}
-
+*/
 
 
 		
