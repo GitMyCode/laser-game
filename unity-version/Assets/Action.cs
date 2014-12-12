@@ -15,9 +15,9 @@ public class Action {
 
 	public ActionType action;
 
-	public GameObject owner;
+	public IPlayer owner;
 
-	public Action(Vector3 startPos, Vector3 endPos, float time, ActionType type,GameObject _owner){
+	public Action(Vector3 startPos, Vector3 endPos, float time, ActionType type,IPlayer _owner){
 		action = type;
 		this.startPos = startPos;
 		this.endPos = endPos;

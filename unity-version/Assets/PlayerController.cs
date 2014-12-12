@@ -71,8 +71,8 @@ public class PlayerController : MonoBehaviour, IPlayer {
 
 	void Start () {
 
-		zone = GameObject.Find("ZonePlayer2");
-		goal = GameObject.FindGameObjectWithTag("goalP2");
+		zone = GameObject.Find("ZonePlayer1");
+		goal = GameObject.FindGameObjectWithTag("goalP1");
 	}
 	 
 	// Update is called once per frame
@@ -115,12 +115,12 @@ public class PlayerController : MonoBehaviour, IPlayer {
 					float intervalTime = endTime - startTime;
 
 					if(distance< 10){
-						GameArbiter.actionQueue.Enqueue(new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.DEFENSIVE,gameObject));
+						GameArbiter.actionQueue.Enqueue(new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.DEFENSIVE,this));
 						return;
 					}
 
 
-					Action attackAction = new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.ATTACK,gameObject);
+					Action attackAction = new Action(swipeStartPosition,swipeEndPosition,intervalTime,Action.ActionType.ATTACK,this);
 					GameArbiter.actionQueue.Enqueue(attackAction);
 
 				
@@ -144,7 +144,25 @@ public class PlayerController : MonoBehaviour, IPlayer {
 	{
 		return goal;
 	}
+	public int getLifeRemaining ()
+	{
+		throw new System.NotImplementedException ();
+	}
 
+	public void setLife (int life)
+	{
+		throw new System.NotImplementedException ();
+	}
+
+	public int getEnergyRemaining ()
+	{
+		throw new System.NotImplementedException ();
+	}
+
+	public void setEnergy (int energy)
+	{
+		throw new System.NotImplementedException ();
+	}
 
 
 }

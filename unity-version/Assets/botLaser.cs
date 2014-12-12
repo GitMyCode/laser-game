@@ -13,6 +13,9 @@ public class botLaser : MonoBehaviour, IPlayer {
 
 	GameObject zone;
 	GameObject goal;
+	public int life;
+	public int energy;
+
 
 	void Start () {
 		zone = GameObject.Find("ZonePlayer2");
@@ -41,7 +44,7 @@ public class botLaser : MonoBehaviour, IPlayer {
 		Vector3 end   = new Vector3(randomX,randomY,0);
 
 		Debug.DrawRay(start,end,Color.red,2,false);
-		GameArbiter.actionQueue.Enqueue(new Action(start,end,Random.Range(0.2f,0.5f),Action.ActionType.ATTACK,gameObject));
+		GameArbiter.actionQueue.Enqueue(new Action(start,end,Random.Range(0.2f,0.5f),Action.ActionType.ATTACK,this));
 	
 	}
 
@@ -59,5 +62,25 @@ public class botLaser : MonoBehaviour, IPlayer {
 	{
 		return goal;
 	}
+	public int getLifeRemaining ()
+	{
+		throw new System.NotImplementedException ();
+	}
+
+	public void setLife (int life)
+	{
+		throw new System.NotImplementedException ();
+	}
+
+	public int getEnergyRemaining ()
+	{
+		throw new System.NotImplementedException ();
+	}
+
+	public void setEnergy (int energy)
+	{
+		throw new System.NotImplementedException ();
+	}
+
 
 }

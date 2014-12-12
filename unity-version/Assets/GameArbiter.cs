@@ -55,7 +55,18 @@ public class GameArbiter : MonoBehaviour {
 
 	public void createLine(Action a){
 
-		LaserModel lm = new LaserModel(a,a.endPos);
+
+//		GameObject p = a.owner.getGoal();
+//		Vector3 line = new Vector3();
+//		Debug.DrawLine(line,Color.red,2,false);
+
+		Vector3 birthPosition = a.endPos;
+		if(a.owner.getGoal().tag == "goalP2"){
+			Transform goalTran = a.owner.getGoal().transform;
+			birthPosition.y = (goalTran.position.y - goalTran.localScale.y / 2);
+		}
+
+		LaserModel lm = new LaserModel(a,birthPosition);
 		lineModelDictionary.Add(lm.name,lm);
 
 	}
@@ -89,21 +100,22 @@ public class GameArbiter : MonoBehaviour {
 			foreach (GameObject gm in trappedLines){
 				LaserModel lm = lineModelDictionary[gm.name];
 				lm.head.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
-
-				StartCoroutine(absorbeCircle(a.endPos,gm));
 			}
+			StartCoroutine(absorbeCircle(a.endPos,trappedLines));
 		}else{
 
 			StartCoroutine(defensiveCircle(a.endPos));
 		}
 
 	}
-	public IEnumerator absorbeCircle(Vector3 pos,GameObject gm){
+	public IEnumerator absorbeCircle(Vector3 pos,List<GameObject> lines){
 		GameObject circle = (GameObject) Instantiate(absorbePref, pos,Quaternion.identity);
 		circle.GetComponent<ParticleSystem>().Emit(10);
 		float durationTime = circle.GetComponent<ParticleSystem>().duration;
 		yield return new WaitForSeconds (durationTime);
-		DestroyLine(gm);
+		foreach (GameObject gm in lines){
+			DestroyLine(gm);
+		}
 		Destroy (circle);
 	}
 
@@ -145,6 +157,37 @@ public class GameArbiter : MonoBehaviour {
 			lineModelDictionary.Remove(line.name);
 		}
 	}
+
+
+	/*
+	//This function returns a point which is a projection from a point to a line.
+		//The line is regarded infinite. If the line is finite, use ProjectPointOnLineSegment() instead.
+	public static Vector3 ProjectPointOnLine(Vector3 linePoint, Vector3 lineVec, Vector3 point){		
+		
+		//get vector from point on line to point in space
+		Vector3 linePointToPoint = point - linePoint;
+		
+		float t = Vector3.Dot(linePointToPoint, lineVec);
+		
+		return linePoint + lineVec * t;
+	}
+
+
+
+	//This function returns a point which is a projection from a point to a line.
+	//The line is regarded infinite. If the line is finite, use ProjectPointOnLineSegment() instead.
+	public static Vector3 ProjectPointOnLine(Vector3 linePoint, Vector3 lineVec, Vector3 point){		
+		
+		//get vector from point on line to point in space
+		Vector3 linePointToPoint = point - linePoint;
+		
+		float t = Vector3.Dot(linePointToPoint, lineVec);
+		
+		return linePoint + lineVec * t;
+	}
+
+
+*/
 	
 
 
