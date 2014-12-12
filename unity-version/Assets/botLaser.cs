@@ -80,7 +80,7 @@ public class botLaser : MonoBehaviour, IPlayer {
 		Vector3 end   = new Vector3(randomX,randomY,0);
 
 		Debug.DrawRay(start,end,Color.red,2,false);
-		GameArbiter.actionQueue.Enqueue(new Action(start,end,Random.Range(0.38f,0.5f),Action.ActionType.ATTACK,this));
+		GameArbiter.actionQueue.Enqueue(new Action(start,end,Random.Range(0.1f,0.3f),Action.ActionType.ATTACK,this));
 	
 	}
 

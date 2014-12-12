@@ -93,7 +93,9 @@ public class GameArbiter : MonoBehaviour {
 				}
 			}
 
-		}	
+		}else if(type1 == ECollidable.GOAL || type2 == ECollidable.GOAL){
+
+		}
 	}
 	
 
