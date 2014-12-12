@@ -167,7 +167,9 @@ public class LaserTrail : MonoBehaviour {
 	/// </summary>
 	private bool TryAddVertices() {
 		bool vertsAdded = false;
-		
+		if(trans == null){
+			return false;
+		}
 		//check if the current position is far enough away (> 'vertexDistanceMin') from the most recent position where two vertices were added
 		if ( (centerPositions.First.Value - trans.position).sqrMagnitude > vertexDistanceMin * vertexDistanceMin) {
 			//calculate the normalized direction from the 1) most recent position of vertex creation to the 2) current position

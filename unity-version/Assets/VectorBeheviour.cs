@@ -3,9 +3,9 @@ using System.Collections;
 
 public class VectorBeheviour : MonoBehaviour 
 {
-	float m_ExplosiveForce = 1.0f;
-	float m_ImplosiveForce = 1.0f;
-	float m_ForceRadius = 1.0f;
+	public float m_ExplosiveForce = 1.0f;
+	public float m_ImplosiveForce = 1.0f;
+	public float m_ForceRadius = 0.2f;
 
 	float m_Red = 0.0f;
 	float m_Green = 0.0f;
