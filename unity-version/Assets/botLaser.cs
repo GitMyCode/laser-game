@@ -16,13 +16,14 @@ public class botLaser : MonoBehaviour, IPlayer {
 	public int life;
 	public int energy;
 
-
+	GUIText textOutput;
 	void Start () {
 		zone = GameObject.Find("ZonePlayer2");
 		goal = GameObject.FindGameObjectWithTag("goalP2");
 		setLife(5);
 		setEnergy(5);
 
+		textOutput = GetComponent<GUIText>();
 	}
 	
 	// Update is called once per frame
@@ -33,6 +34,7 @@ public class botLaser : MonoBehaviour, IPlayer {
 			CanShoot = false;
 			StartCoroutine(reload());
 		}
+		textOutput.text = ToString();
 
 	}
 
@@ -84,6 +86,12 @@ public class botLaser : MonoBehaviour, IPlayer {
 	{
 		this.energy = energy;
 	}
+
+	public override string ToString ()
+	{
+		return string.Format ("[P2: life={0},\n energy={1}]", life, energy);
+	}
+	
 
 
 }

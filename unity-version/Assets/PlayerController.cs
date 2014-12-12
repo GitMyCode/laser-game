@@ -43,6 +43,8 @@ public class PlayerController : MonoBehaviour, IPlayer {
 	public int life;
 	public int energy;
 
+	GUIText textOutput;
+
 	void OnGUI() { 
 		/*
 		Texture2D texture = new Texture2D(1, 1);
@@ -74,10 +76,13 @@ public class PlayerController : MonoBehaviour, IPlayer {
 
 		zone = GameObject.Find("ZonePlayer1");
 		goal = GameObject.FindGameObjectWithTag("goalP1");
+		textOutput = GetComponent<GUIText>();
+
 	}
 	 
 	// Update is called once per frame
 	void Update () {
+		textOutput.text = ToString();
 
 		if(Input.touchCount == 0){
 			return;
@@ -165,5 +170,9 @@ public class PlayerController : MonoBehaviour, IPlayer {
 		throw new System.NotImplementedException ();
 	}
 
-
+	public override string ToString ()
+	{
+		return string.Format ("[P1: life={0},\n energy={1}]", life, energy);
+	}
+	
 }
