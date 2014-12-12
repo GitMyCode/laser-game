@@ -94,7 +94,11 @@ public class GameArbiter : MonoBehaviour {
 			}
 
 		}else if(type1 == ECollidable.GOAL || type2 == ECollidable.GOAL){
-
+			IPlayer hurtPlayer = (type1 == ECollidable.GOAL)? players[(int)e.coll1.playerOwner] : players[(int)e.coll2.playerOwner] ;
+			GameObject line = (type1 == ECollidable.GOAL)? e.coll2.gameObject : e.coll1.gameObject ;
+			if(lineModelDictionary.ContainsKey(line.name) && tryRemoveLife(hurtPlayer,1)){
+				DestroyLine(line);		
+			}
 		}
 	}
 	
@@ -189,6 +193,16 @@ public class GameArbiter : MonoBehaviour {
 			lineModelDictionary[line.name].Destroy();
 			lineModelDictionary.Remove(line.name);
 		}
+	}
+
+
+	private bool tryRemoveLife(IPlayer player, int quantite){
+		if(player.Life - quantite >0){
+			player.Life -= quantite;
+			return true;
+		}
+		player.Life = 0;
+		return false;
 	}
 
 

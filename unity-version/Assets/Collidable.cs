@@ -8,6 +8,9 @@ public class Collidable : MonoBehaviour, ICollidable {
 
 
 	public ECollidable collisionType;
+	public EPlayer playerOwner;
+
+
 
 	void Start(){
 		explosion = (GameObject) Resources.Load("explosion") as GameObject;

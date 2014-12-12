@@ -41,7 +41,9 @@ public class PlayerController : MonoBehaviour, IPlayer {
 	public GameObject zone;
 	public GameObject goal;
 	public int life;
-	public int energy;
+	public int energy;	
+	private EPlayer player;
+
 
 	GUIText textOutput;
 
@@ -204,6 +206,15 @@ public class PlayerController : MonoBehaviour, IPlayer {
 		}
 		set {
 			this.energy = value;
+		}
+	}
+
+	public EPlayer Player {
+		get {
+			return player;
+		}
+		set {
+			this.player = value;
 		}
 	}
 

@@ -15,6 +15,7 @@ public class botLaser : MonoBehaviour, IPlayer {
 	GameObject goal;
 	public int life;
 	public int energy;
+	private EPlayer player;
 
 	GUIText textOutput;
 	void Start () {
@@ -140,6 +141,13 @@ public class botLaser : MonoBehaviour, IPlayer {
 			this.energy = value;
 		}
 	}
-
+	public EPlayer Player {
+		get {
+			return player;
+		}
+		set {
+			this.player = value;
+		}
+	}
 
 }

@@ -13,6 +13,8 @@ public interface IPlayer {
 	int Life{get;set;}
 	int Energy{get;set;}
 
+	EPlayer Player{get;set;}
+
 	GameObject getZone();
 	GameObject getGoal();
 }

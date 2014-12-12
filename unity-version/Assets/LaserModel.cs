@@ -27,7 +27,7 @@ public class LaserModel {
 		idCounter++;
 		this.id  = idCounter; 
 		head = (GameObject) GameObject.Instantiate(GameArbiter.linePref, birthPlace,(Quaternion.identity));
-		head.GetComponent<Collidable>().collisionType = ECollidable.LINE;
+		head.GetComponent<Collidable>().playerOwner = owner.Player;
 
 
 		float angleX = action.endPos.x - action.startPos.x;
