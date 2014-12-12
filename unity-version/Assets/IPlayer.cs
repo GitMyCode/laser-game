@@ -10,6 +10,8 @@ public interface IPlayer {
 	void setEnergy(int energy);
 
 
+	int Life{get;set;}
+	int Energy{get;set;}
 
 	GameObject getZone();
 	GameObject getGoal();

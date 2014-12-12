@@ -78,6 +78,10 @@ public class PlayerController : MonoBehaviour, IPlayer {
 		goal = GameObject.FindGameObjectWithTag("goalP1");
 		textOutput = GetComponent<GUIText>();
 
+		setLife(5);
+		setEnergy(5);
+
+
 		float scalex = (float) (Screen.width) / 320.0f; //your scale x
 		float scaley = (float) (Screen.height) / 480.0f; //your scale y
 		Vector2 pixOff = textOutput.pixelOffset; //your pixel offset on screen
@@ -85,7 +89,7 @@ public class PlayerController : MonoBehaviour, IPlayer {
 		textOutput.pixelOffset = new Vector2(pixOff.x*scalex, pixOff.y*scaley);
 		textOutput.fontSize = (int) (origSizeText * scalex);
 
-
+		GameArbiter.players[0] = this;
 	}
 	 
 	// Update is called once per frame
@@ -160,27 +164,49 @@ public class PlayerController : MonoBehaviour, IPlayer {
 	}
 	public int getLifeRemaining ()
 	{
-		throw new System.NotImplementedException ();
+		return life;
 	}
 
 	public void setLife (int life)
 	{
-		throw new System.NotImplementedException ();
+		this.life = life;
 	}
+
 
 	public int getEnergyRemaining ()
 	{
-		throw new System.NotImplementedException ();
+		return energy;
 	}
 
 	public void setEnergy (int energy)
 	{
-		throw new System.NotImplementedException ();
+		this.energy = energy;
 	}
+
 
 	public override string ToString ()
 	{
 		return string.Format ("[P1: life={0},\n energy={1}]", life, energy);
 	}
+
+	public int Life {
+		get {
+			return this.life;
+		}
+		set {
+			this.life = value;
+		}
+	}
+
+	public int Energy {
+		get {
+			return energy;
+		}
+		set {
+			this.energy = value;
+		}
+	}
+
+
 	
 }

@@ -8,10 +8,12 @@ public class GameArbiter : MonoBehaviour {
 	public GameObject circleReference;
 	public GameObject absorbeReference;
 	public GameObject lineReference;
+	public IPlayer[] playersReference;
 
 	public static GameObject circlePref ;
 	public static GameObject absorbePref;
 	public static GameObject linePref;
+	public static IPlayer[]  players = new IPlayer[2];
 
 
 	public static Queue collidableQueue = new Queue();
@@ -22,11 +24,26 @@ public class GameArbiter : MonoBehaviour {
 
 
 
+	public int energyRegeneration;
+	private int regenerateCounter = 1;
 	// Use this for initialization
 	void Start () {
 		circlePref = circleReference;
 		absorbePref = absorbeReference;
 		linePref = lineReference;
+		energyRegeneration = 120;
+	}
+
+	void FixedUpdate(){
+
+		if(regenerateCounter % energyRegeneration == 0){
+			foreach(IPlayer p in players){
+				tryAddEnergy(p,1);
+			}
+			regenerateCounter=1;
+		}
+		regenerateCounter++;
+	
 	}
 	
 	// Update is called once per frame
@@ -63,36 +80,20 @@ public class GameArbiter : MonoBehaviour {
 //		Vector3 line = new Vector3();
 //		Debug.DrawLine(line,Color.red,2,false);
 
-		Vector3 birthPosition = a.endPos;
-		if(a.owner.getGoal().tag == "goalP2"){
-			Transform goalTran = a.owner.getGoal().transform;
-			birthPosition.y = (goalTran.position.y - goalTran.localScale.y / 2);
+		if(tryRemoveEnergy(a.owner,1)){
+			Vector3 birthPosition = a.endPos;
+			
+			if(a.owner.getGoal().tag == "goalP2"){
+				Transform goalTran = a.owner.getGoal().transform;
+				birthPosition.y = (goalTran.position.y - goalTran.localScale.y / 2);
+			}
+			
+			LaserModel lm = new LaserModel(a,birthPosition);
+			lineModelDictionary.Add(lm.name,lm);
+
 		}
 
-		LaserModel lm = new LaserModel(a,birthPosition);
-		lineModelDictionary.Add(lm.name,lm);
 
-	}
-
-	float getSpeedOfLine(float distance, float interval){
-		float speed = 1;
-		
-		if (interval != 0) {
-			speed =  distance/ interval;
-			speed = speed / 2;
-		}
-		return speed;
-	}
-
-
-	public float getConvertedLengthToTime(Transform laser, float speed,float distance){
-		
-		
-		
-		float time = ((laser.rigidbody2D.velocity.normalized/(laser.rigidbody2D.velocity.magnitude)).magnitude);
-		time = time* distance;
-		
-		return time;
 	}
 
 
@@ -101,12 +102,12 @@ public class GameArbiter : MonoBehaviour {
 		if(trappedLines.Count > 0){
 			Debug.Log("absorbe!");
 			foreach (GameObject gm in trappedLines){
+				tryAddEnergy(a.owner,2);
 				LaserModel lm = lineModelDictionary[gm.name];
 				lm.head.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
 			}
 			StartCoroutine(absorbeCircle(a.endPos,trappedLines));
 		}else{
-
 			StartCoroutine(defensiveCircle(a.endPos));
 		}
 
@@ -162,36 +163,23 @@ public class GameArbiter : MonoBehaviour {
 	}
 
 
-	/*
-	//This function returns a point which is a projection from a point to a line.
-		//The line is regarded infinite. If the line is finite, use ProjectPointOnLineSegment() instead.
-	public static Vector3 ProjectPointOnLine(Vector3 linePoint, Vector3 lineVec, Vector3 point){		
-		
-		//get vector from point on line to point in space
-		Vector3 linePointToPoint = point - linePoint;
-		
-		float t = Vector3.Dot(linePointToPoint, lineVec);
-		
-		return linePoint + lineVec * t;
+	private bool tryAddEnergy(IPlayer player,int quantite){
+		if( player.Energy < 5 ){
+			player.Energy+= quantite;
+			if(player.Energy >5){
+				player.Energy = 5;
+			}
+			return true;
+		}
+		return false;
 	}
-
-
-
-	//This function returns a point which is a projection from a point to a line.
-	//The line is regarded infinite. If the line is finite, use ProjectPointOnLineSegment() instead.
-	public static Vector3 ProjectPointOnLine(Vector3 linePoint, Vector3 lineVec, Vector3 point){		
-		
-		//get vector from point on line to point in space
-		Vector3 linePointToPoint = point - linePoint;
-		
-		float t = Vector3.Dot(linePointToPoint, lineVec);
-		
-		return linePoint + lineVec * t;
+	private bool tryRemoveEnergy(IPlayer player,int quantite){
+		if(quantite >0 && player.Energy >= quantite ){
+			player.Energy -= quantite;
+			return true;
+		}
+		return false;
 	}
-
-
-*/
-	
 
 
 }

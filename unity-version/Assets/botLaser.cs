@@ -30,6 +30,7 @@ public class botLaser : MonoBehaviour, IPlayer {
 		int origSizeText = textOutput.fontSize;
 		textOutput.pixelOffset = new Vector2(pixOff.x*scalex, pixOff.y*scaley);
 		textOutput.fontSize = (int) (origSizeText * scalex);
+		GameArbiter.players[1] = this;
 	}
 	
 	// Update is called once per frame
@@ -98,7 +99,24 @@ public class botLaser : MonoBehaviour, IPlayer {
 	{
 		return string.Format ("[P2: life={0},\n energy={1}]", life, energy);
 	}
+
+	public int Life {
+		get {
+			return this.life;
+		}
+		set {
+			this.life = value;
+		}
+	}
 	
+	public int Energy {
+		get {
+			return energy;
+		}
+		set {
+			this.energy = value;
+		}
+	}
 
 
 }

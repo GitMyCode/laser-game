@@ -65,6 +65,10 @@ public class LaserModel {
 			speed =  distance/ interval;
 			speed = speed / 2;
 		}
+
+		if(speed > 80){
+			speed = 80;
+		}
 		return speed;
 	}
 	
