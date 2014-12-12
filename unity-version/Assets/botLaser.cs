@@ -32,6 +32,7 @@ public class botLaser : MonoBehaviour, IPlayer {
 		textOutput.pixelOffset = new Vector2(pixOff.x*scalex, pixOff.y*scaley);
 		textOutput.fontSize = (int) (origSizeText * scalex);
 		GameArbiter.players[1] = this;
+		player = EPlayer.Player2;
 	}
 
 	public int blockCheckRate = 20;

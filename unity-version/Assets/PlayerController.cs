@@ -92,6 +92,7 @@ public class PlayerController : MonoBehaviour, IPlayer {
 		textOutput.fontSize = (int) (origSizeText * scalex);
 
 		GameArbiter.players[0] = this;
+		player = EPlayer.Player1;
 	}
 	 
 	// Update is called once per frame
