@@ -34,7 +34,7 @@ public class GameArbiter : MonoBehaviour {
 		linePref = lineReference;
 		energyRegeneration = 120;
 
-		explosion = (GameObject) Resources.Load("explosion") as GameObject;
+		explosion = (GameObject) Resources.Load("explosion2") as GameObject;
 
 	}
 
