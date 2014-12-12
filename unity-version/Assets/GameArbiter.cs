@@ -16,14 +16,15 @@ public class GameArbiter : MonoBehaviour {
 	public static IPlayer[]  players = new IPlayer[2];
 
 
-	public static Queue collidableQueue = new Queue();
+	public static Queue<CollidableEvent> collidableQueue = new Queue<CollidableEvent>();
 	public static Queue<Action> actionQueue = new Queue<Action>();
 
 	public static Dictionary<string, LaserModel> lineModelDictionary = new Dictionary<string,LaserModel >();
 
 
+	private GameObject explosion;
 
-
+	
 	public int energyRegeneration;
 	private int regenerateCounter = 1;
 	// Use this for initialization
@@ -32,6 +33,9 @@ public class GameArbiter : MonoBehaviour {
 		absorbePref = absorbeReference;
 		linePref = lineReference;
 		energyRegeneration = 120;
+
+		explosion = (GameObject) Resources.Load("explosion") as GameObject;
+
 	}
 
 	void FixedUpdate(){
@@ -51,8 +55,8 @@ public class GameArbiter : MonoBehaviour {
 
 
 			while(collidableQueue.Count > 0){
-				
-
+				CollidableEvent e = collidableQueue.Dequeue();	
+				eventHandling(e);
 			}
 
 			while(actionQueue.Count>0){
@@ -69,6 +73,28 @@ public class GameArbiter : MonoBehaviour {
 				}
 			}
 	}
+
+
+	public void eventHandling(CollidableEvent e){
+		ECollidable type1 = e.coll1.collisionType;
+		ECollidable type2 = e.coll2.collisionType;
+
+		if(type1 == type2){
+			LaserModel thisModel =  GameArbiter.lineModelDictionary[e.coll1.name];  	
+			LaserModel otherModel = GameArbiter.lineModelDictionary[e.coll2.name];
+			
+			GameObject head = (this.tag =="lineHead")? e.coll1.gameObject : e.coll2.gameObject;
+			if((thisModel.id != otherModel.id)){
+				
+				Instantiate (explosion, head.transform.position, Quaternion.identity);
+				GameArbiter.DestroyLine(e.coll1.gameObject);
+				GameArbiter.DestroyLine(e.coll2.gameObject);
+				
+				
+			}
+		}	
+	}
+	
 
 
 

@@ -87,6 +87,9 @@ public class LaserTrail : MonoBehaviour {
 		GameObject trail = new GameObject("Trail"+trailId, new[] { typeof(MeshRenderer), typeof(MeshFilter), 
 			typeof(PolygonCollider2D),typeof(Rigidbody2D), typeof(Collidable)}
 																   );
+
+
+		trail.GetComponent<Collidable>().collisionType = ECollidable.LINE;
 		mesh = trail.GetComponent<MeshFilter>().mesh = new Mesh();
 		Rigidbody2D body = trail.GetComponent<Rigidbody2D>();
 		body.mass= 0;

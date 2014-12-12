@@ -1,18 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Collidable : MonoBehaviour , ICollidable {
+public class Collidable : MonoBehaviour, ICollidable {
 
 	// Use this for initialization
-	public GameObject explosion;
+	private GameObject explosion;
 
-	void start(){
 
+	public ECollidable collisionType;
+
+	void Start(){
+		explosion = (GameObject) Resources.Load("explosion") as GameObject;
 	}
+
 
 
 	void awake() { 
 
+		//explosion = (GameObject) Resources.Load("Assets\\Prefabs\\explosion.prefab") as GameObject;
 	}
 
 	void Update() { 
@@ -24,7 +29,7 @@ public class Collidable : MonoBehaviour , ICollidable {
 
 
 	void OnCollisionEnter2D(Collision2D coll) {
-
+		trySendCollidableEvent(coll.gameObject);
 
 		if(coll is ICollidable){
 			Debug.Log("dsfsdf");
@@ -42,30 +47,17 @@ public class Collidable : MonoBehaviour , ICollidable {
 
 	//On trigger peut etre la zone ou le trail d'un laser
 	void OnTriggerEnter2D(Collider2D coll){
+
 		//Debug.Log("Trigger :"+coll.name + " this :"+this.name);
-		if(this.tag == "zoneP1" && coll.tag == "lineHead") {
-			coll.gameObject.GetComponent<rotatingAim>().reference.gameObject.renderer.enabled = true;
+		//if(this.tag == "zoneP1" && coll.tag == "lineHead") {
+		//	coll.gameObject.GetComponent<rotatingAim>().reference.gameObject.renderer.enabled = true;
 			
-		}
+	//	}
 
 
 
+		trySendCollidableEvent(coll.gameObject);
 
-
-		if( (this.tag =="lineHead" || this.tag == "lineTrail") && (coll.tag == "lineTrail" || coll.tag == "lineHead")){
-			LaserModel thisModel =  GameArbiter.lineModelDictionary[this.name];  	
-			LaserModel otherModel = GameArbiter.lineModelDictionary[coll.name];
-
-			GameObject head = (this.tag =="lineHead")? this.gameObject : coll.gameObject;
-			if((thisModel.id != otherModel.id)){
-				
-				Instantiate (explosion, head.transform.position, Quaternion.identity);
-				GameArbiter.DestroyLine(this.gameObject);
-				GameArbiter.DestroyLine(coll.gameObject);
-
-
-			}
-		}
 
 
 
@@ -78,6 +70,17 @@ public class Collidable : MonoBehaviour , ICollidable {
 			coll.gameObject.GetComponent<rotatingAim>().reference.gameObject.renderer.enabled = false;
 			//coll.GetComponent<TargetBehaviorScript>().gameObject.renderer.enabled = false;
 		}
+	}
+
+
+
+	bool trySendCollidableEvent(GameObject other){
+
+		if(this is Collidable && ((GameObject)other).GetComponent<Collidable>() !=null ){
+			GameArbiter.collidableQueue.Enqueue(new CollidableEvent(this,other.GetComponent<Collidable>() ));
+			return true;
+		}
+		return false;
 	}
 
 
