@@ -31,7 +31,7 @@ public class VectorBeheviour : MonoBehaviour
 		bool modifierPressed = Input.GetKey(KeyCode.LeftCommand);
 		Color color = new Color(m_Red/255.0f, m_Green/255.0f, m_Blue/255.0f, 1.0f);
 
-		if(Input.mousePosition.x > 250)
+		if(true)//Input.mousePosition.x > 250)
 		{
 			if(Input.GetMouseButton(0) && !modifierPressed)
 			{
@@ -48,11 +48,12 @@ public class VectorBeheviour : MonoBehaviour
 				m_VectorGrid.AddGridForce(worldPosition, -m_ImplosiveForce * 0.1f, m_ForceRadius, color, true);
 			}
 		}
-
-		if(m_RandomiseColor)
+		/*
+		if(true)
 		{
 			UpdateRandomColor();
 		}
+		*/
 	}
 
 	void UpdateRandomColor()
