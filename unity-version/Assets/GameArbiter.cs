@@ -131,8 +131,11 @@ public class GameArbiter : MonoBehaviour {
 					VectorGrid affectedZone = (type1 == ECollidable.GOAL && e.coll1.playerOwner == EPlayer.Player1)? m_vectorGrid : m_vectorGrid2;
 					affectedZone.AddGridForce(line.transform.position, -3 * 0.1f, 4.0f, Color.blue, true);
 					
-					
-					DestroyLine(line);		
+
+					foreach(LaserModel lm in lineModelDictionary.Values){
+						Instantiate (explosion, lm.head.transform.position, Quaternion.identity);
+					}
+					DestroyAllLines();		
 				}else{
 					Collidable goalColl = e.getCollidableOfType(ECollidable.GOAL);
 					winner = (goalColl.playerOwner == EPlayer.Player1)? "Winner Player 2!" : "Winner Player 1!"; 
