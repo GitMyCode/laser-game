@@ -42,6 +42,29 @@ public class GameArbiter : MonoBehaviour {
 
 	}
 
+
+	public Rect windowRect = new Rect(20, 20, 120, 50);
+	private bool showEndGamePopUp = false;
+	private string winner= "";
+	void OnGUI(){
+		if(showEndGamePopUp){
+			windowRect = GUI.Window(0 , centerRectangle(windowRect), DoMyWindow, "Finish!");
+		}
+	}
+	public  void DoMyWindow(int windowID) {
+		if (GUI.Button(new Rect(10, 20, 100, 20), winner)){
+			showEndGamePopUp = false;
+			resetGame();
+		}
+
+	}
+	Rect centerRectangle ( Rect someRect  ) {
+		someRect.x = ( Screen.width - someRect.width ) / 2; 
+		someRect.y = ( Screen.height - someRect.height ) / 2;
+		
+		return someRect;
+	}
+
 	void FixedUpdate(){
 
 		if(regenerateCounter % energyRegeneration == 0){
@@ -100,15 +123,24 @@ public class GameArbiter : MonoBehaviour {
 		}else if(type1 == ECollidable.GOAL || type2 == ECollidable.GOAL){
 			IPlayer hurtPlayer = (type1 == ECollidable.GOAL)? players[(int)e.coll1.playerOwner] : players[(int)e.coll2.playerOwner] ;
 			GameObject line = (type1 == ECollidable.GOAL)? e.coll2.gameObject : e.coll1.gameObject ;
-			if(lineModelDictionary.ContainsKey(line.name) && tryRemoveLife(hurtPlayer,1)){
-				Instantiate (explosion, line.transform.position, Quaternion.identity);
 
-				VectorGrid affectedZone = (type1 == ECollidable.GOAL && e.coll1.playerOwner == EPlayer.Player1)? m_vectorGrid : m_vectorGrid2;
-				affectedZone.AddGridForce(line.transform.position, -3 * 0.1f, 4.0f, Color.blue, true);
+			if(lineModelDictionary.ContainsKey(line.name)){
+				if(tryRemoveLife(hurtPlayer,1)){
+					Instantiate (explosion, line.transform.position, Quaternion.identity);
+					
+					VectorGrid affectedZone = (type1 == ECollidable.GOAL && e.coll1.playerOwner == EPlayer.Player1)? m_vectorGrid : m_vectorGrid2;
+					affectedZone.AddGridForce(line.transform.position, -3 * 0.1f, 4.0f, Color.blue, true);
+					
+					
+					DestroyLine(line);		
+				}else{
+					Collidable goalColl = e.getCollidableOfType(ECollidable.GOAL);
+					winner = (goalColl.playerOwner == EPlayer.Player1)? "Winner Player 2!" : "Winner Player 1!"; 
+					showEndGamePopUp= true;
 
-
-				DestroyLine(line);		
+				}
 			}
+
 		}
 	}
 	
@@ -194,6 +226,15 @@ public class GameArbiter : MonoBehaviour {
 		return allLines;
 	}
 
+	public void resetGame(){
+		DestroyAllLines();
+		foreach(IPlayer player in players){
+			player.Life = 5;
+			player.Energy = 5;
+		}
+
+	}
+
 	/*
 		Methode qui aurait du etre dans l'objet Grid
 		Temporairement ici
@@ -203,6 +244,13 @@ public class GameArbiter : MonoBehaviour {
 			lineModelDictionary[line.name].Destroy();
 			lineModelDictionary.Remove(line.name);
 		}
+	}
+	public static void DestroyAllLines(){
+		foreach(LaserModel lm in lineModelDictionary.Values){
+			lm.Destroy();
+		}
+		lineModelDictionary.Clear();
+
 	}
 
 

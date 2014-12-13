@@ -11,4 +11,15 @@ public struct CollidableEvent {
 		coll2 = c2;
 	}
 
+
+	public Collidable getCollidableOfType(ECollidable type){
+		if(coll1.collisionType == type){
+			return coll1;
+		}
+		if(coll2.collisionType == type){
+			return coll2;
+		}
+		return null;
+	}
+
 }
