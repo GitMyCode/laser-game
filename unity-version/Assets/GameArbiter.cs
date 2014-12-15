@@ -29,8 +29,19 @@ public class GameArbiter : MonoBehaviour {
 
 	public int energyRegeneration;
 	private int regenerateCounter = 1;
+
+
+
+	float _oldWidth;
+	float _oldHeight;
+	float _fontSize = 16;
+	float Ratio= 20; // public
+
 	// Use this for initialization
 	void Start () {
+		Application.targetFrameRate = 60;
+
+
 		circlePref = circleReference;
 		absorbePref = absorbeReference;
 		linePref = lineReference;
@@ -43,16 +54,30 @@ public class GameArbiter : MonoBehaviour {
 	}
 
 
-	public Rect windowRect = new Rect(20, 20, 120, 50);
 	private bool showEndGamePopUp = false;
 	private string winner= "";
 	void OnGUI(){
+
+
+		
 		if(showEndGamePopUp){
-			windowRect = GUI.Window(0 , centerRectangle(windowRect), DoMyWindow, "Finish!");
+			float scalex = (float) (Screen.width) / 320.0f; //your scale x
+			float scaley = (float) (Screen.height) / 480.0f; //your scale y
+			// substitute matrix - only scale is altered from standard
+			GUI.skin.textField.fontSize = (int)_fontSize;
+			GUI.skin.label.fontSize = (int)_fontSize;
+			GUIStyle g = GUI.skin.GetStyle("label");
+			g.fontSize = (int)(20.0f + 10.0f * Mathf.Sin(Time.time));
+
+
+			Rect  w =	GUI.Window(0 , centerRectangle(new Rect(20,20,120*scalex,50*scaley)), DoMyWindow, "Finish!");
+			_fontSize = Mathf.Min(Screen.width, Screen.height) / Ratio;
+
+		
 		}
 	}
 	public  void DoMyWindow(int windowID) {
-		if (GUI.Button(new Rect(10, 20, 100, 20), winner)){
+				if (GUI.Button(new Rect(10, 20,  100, 20), winner)){
 			showEndGamePopUp = false;
 			resetGame();
 		}
