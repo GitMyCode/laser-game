@@ -80,7 +80,7 @@ public class Collidable : MonoBehaviour, ICollidable {
 	bool trySendCollidableEvent(GameObject other){
 
 		if(this is Collidable && ((GameObject)other).GetComponent<Collidable>() !=null ){
-			GameArbiter.collidableQueue.Enqueue(new CollidableEvent(this,other.GetComponent<Collidable>() ));
+			GameArbiter.Instance.collidableQueue.Enqueue(new CollidableEvent(this,other.GetComponent<Collidable>() ));
 			return true;
 		}
 		return false;

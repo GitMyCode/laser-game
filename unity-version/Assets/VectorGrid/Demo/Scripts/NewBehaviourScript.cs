@@ -12,8 +12,4 @@ public class NewBehaviourScript : MonoBehaviour {
 	void Update () {
 	
 	}
-
-	void OnParticleCollision(GameObject test) {
-		Debug.Log("Got hit");
-	}
 }

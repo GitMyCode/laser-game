@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 public class GameArbiter : MonoBehaviour {
 
+
+    private static GameArbiter instance;
+
+
 	public GameObject circleReference;
 	public GameObject absorbeReference;
 	public GameObject lineReference;
@@ -16,8 +20,8 @@ public class GameArbiter : MonoBehaviour {
 	public static IPlayer[]  players = new IPlayer[2];
 
 
-	public static Queue<CollidableEvent> collidableQueue = new Queue<CollidableEvent>();
-	public static Queue<Action> actionQueue = new Queue<Action>();
+	public Queue<CollidableEvent> collidableQueue = new Queue<CollidableEvent>();
+	public Queue<Action> actionQueue = new Queue<Action>();
 
 	public static Dictionary<string, LaserModel> lineModelDictionary = new Dictionary<string,LaserModel >();
 
@@ -34,13 +38,27 @@ public class GameArbiter : MonoBehaviour {
 
 	float _oldWidth;
 	float _oldHeight;
-	float _fontSize = 16;
+	float _fontSize = 96;
 	float Ratio= 20; // public
+
+
+    public static GameArbiter Instance
+    {
+        get { return instance; }
+    }
+
+    void Awake()
+    {
+        instance = this;
+    }
 
 	// Use this for initialization
 	void Start () {
 		Application.targetFrameRate = 60;
+        collidableQueue = new Queue<CollidableEvent>();
+	    actionQueue = new Queue<Action>();
 
+        //players = initPlayers();
 
 		circlePref = circleReference;
 		absorbePref = absorbeReference;
@@ -92,6 +110,40 @@ public class GameArbiter : MonoBehaviour {
 
 	void FixedUpdate(){
 
+        while (collidableQueue.Count > 0)
+        {
+            CollidableEvent e = collidableQueue.Dequeue();
+            eventHandling(e);
+        }
+
+
+
+        /*foreach(IPlayer p in players){
+             p.playerTurn();
+        }*/
+
+        while (actionQueue.Count >0)
+        {
+            Action a = actionQueue.Dequeue();
+            switch (a.action)
+            {
+                case Action.ActionType.DEFENSIVE:
+                    {
+                        defensiveAction(a);
+                    } break;
+                case Action.ActionType.ATTACK:
+                    {
+                        createLine(a);
+                    } break;
+            }
+        }
+      
+
+
+
+
+
+
 		if(regenerateCounter % energyRegeneration == 0){
 			foreach(IPlayer p in players){
 				tryAddEnergy(p,1);
@@ -102,29 +154,7 @@ public class GameArbiter : MonoBehaviour {
 	
 	}
 	
-	// Update is called once per frame
-	void LateUpdate () {
-
-
-			while(collidableQueue.Count > 0){
-				CollidableEvent e = collidableQueue.Dequeue();	
-				eventHandling(e);
-			}
-
-			while(actionQueue.Count>0){
-				Action a = actionQueue.Dequeue();
-				switch(a.action){
-					case Action.ActionType.DEFENSIVE:
-						{
-							defensiveAction(a);
-						}break;
-					case Action.ActionType.ATTACK:
-						{
-							createLine(a);
-						}break;
-				}
-			}
-	}
+	
 
 
 	public void eventHandling(CollidableEvent e){
@@ -186,8 +216,8 @@ public class GameArbiter : MonoBehaviour {
 		if(tryRemoveEnergy(a.owner,1)){
 			Vector3 birthPosition = a.endPos;
 			
-			if(a.owner.getGoal().tag == "goalP2"){
-				Transform goalTran = a.owner.getGoal().transform;
+			if(a.owner.Goal.tag == "goalP2"){
+				Transform goalTran = a.owner.Goal.transform;
 				birthPosition.y = (goalTran.position.y - goalTran.localScale.y / 2);
 			}
 			
@@ -309,6 +339,26 @@ public class GameArbiter : MonoBehaviour {
 		}
 		return false;
 	}
+
+    /*
+    private IPlayer[] initPlayers()
+    {
+        IPlayer[] allPlayers = new IPlayer[2];
+
+        GameObject goal = GameObject.FindGameObjectWithTag("goalP1");
+        GameObject zone = GameObject.FindGameObjectWithTag("zoneP1");
+        IPlayer player1 = new HumanPlayer(5, 5, zone, goal);
+        goal = GameObject.FindGameObjectWithTag("goalP2");
+        zone = GameObject.FindGameObjectWithTag("zoneP2");
+        IPlayer player2 = new AIPlayer(5, 5, zone, goal);
+
+        allPlayers[0] = player1;
+        allPlayers[1] = player2;
+
+        return allPlayers;
+        
+    }
+    */
 
 
 }
