@@ -173,16 +173,18 @@ public class GameArbiter : GameBehaviours {
 			}
 
 		}else if(type1 == ECollidable.GOAL || type2 == ECollidable.GOAL){
-			IPlayer hurtPlayer = (type1 == ECollidable.GOAL)? players[(int)e.coll1.playerOwner] : players[(int)e.coll2.playerOwner] ;
+            Player hurtPlayer = (type1 == ECollidable.GOAL) ? e.coll1.playerOwner: e.coll2.playerOwner;
+            Player attackPlayer = (type1 != ECollidable.GOAL) ? e.coll1.playerOwner: e.coll2.playerOwner;
+
 			GameObject line = (type1 == ECollidable.GOAL)? e.coll2.gameObject : e.coll1.gameObject ;
 
 			if(lineModelDictionary.ContainsKey(line.name)){
 				if(tryRemoveLife(hurtPlayer,1)){
 					Instantiate (explosion, line.transform.position, Quaternion.identity);
 					
-					VectorGrid affectedZone = (type1 == ECollidable.GOAL && e.coll1.playerOwner == EPlayer.Player1)? m_vectorGrid : m_vectorGrid2;
-					affectedZone.AddGridForce(line.transform.position, -3 * 0.1f, 4.0f, Color.blue, true);
-					
+					//vectorGrid affectedZone = (type1 == ECollidable.GOAL && e.coll1.playerOwner == EPlayer.Player1)? m_vectorGrid : m_vectorGrid2;
+					//affectedZone.AddGridForce(line.transform.position, -3 * 0.1f, 4.0f, Color.blue, true);
+                    hurtPlayer.damageEffect(line.transform.position);
 
 					foreach(LaserModel lm in lineModelDictionary.Values){
 						Instantiate (explosion, lm.head.transform.position, Quaternion.identity);
@@ -190,7 +192,7 @@ public class GameArbiter : GameBehaviours {
 					DestroyAllLines();		
 				}else{
 					Collidable goalColl = e.getCollidableOfType(ECollidable.GOAL);
-					winner = (goalColl.playerOwner == EPlayer.Player1)? "Winner Player 2!" : "Winner Player 1!"; 
+                    winner = attackPlayer.Name;//(goalColl.playerOwner == EPlayer.Player1)? "Winner Player 2!" : "Winner Player 1!"; 
 					showEndGamePopUp= true;
 
 				}

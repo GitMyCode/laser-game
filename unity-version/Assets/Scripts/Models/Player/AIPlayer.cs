@@ -25,6 +25,7 @@ public class AIPlayer : Player
     protected override void Start()
     {
         base.Start();
+        Name = "Player 2";
 
 
     }

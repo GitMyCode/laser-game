@@ -8,7 +8,6 @@ public class EnergyRegen : GameBehaviours {
     private int regenerateCounter = 1;
 	// Use this for initialization
 	void Start () {
-        Debug.Log("sdfgsdfgdfg");
         player = transform.GetComponent<Player>();
 	}
 	

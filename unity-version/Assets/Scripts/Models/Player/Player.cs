@@ -7,9 +7,11 @@ public class Player : GameBehaviours, IPlayer{
     private int life;
     private int energy;
     private EPlayer playerEnum;
+    private string name;
 
     public GameObject[] zones;
     public GameObject[] goals;
+    public VectorGrid vectorGrid;
 
     protected GUIText textOutput;
 
@@ -55,7 +57,15 @@ public class Player : GameBehaviours, IPlayer{
     }
 
 
+
+
     #region helper methods
+
+    public void damageEffect(Vector3 point)
+    {
+        vectorGrid.AddGridForce(point, -3 * 0.1f, 4.0f, Color.blue, true);
+    }
+
     public Vector3 pointToWorlCam(Vector3 p)
     {
         Vector3 convertedPoint = Camera.main.ScreenToWorldPoint(p);
@@ -77,6 +87,18 @@ public class Player : GameBehaviours, IPlayer{
     #endregion
 
     #region Interface implement
+
+    public string Name
+    {
+        get
+        {
+            return name;
+        }
+        set
+        {
+            name = value;
+        }
+    }
 
     public int Life
     {
@@ -143,13 +165,18 @@ public class Player : GameBehaviours, IPlayer{
         }
     }
 
+   
+
 
     #endregion
 
+
+
     public override string ToString()
     {
-        return string.Format("life : 0,\n energy: 1 ", Life, Energy);
+        return string.Format("life : {0},\n energy: {1} ", Life, Energy);
     }
+
 
 
 

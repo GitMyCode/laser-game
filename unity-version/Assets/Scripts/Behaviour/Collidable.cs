@@ -8,18 +8,19 @@ public class Collidable : MonoBehaviour, ICollidable {
 
 
 	public ECollidable collisionType;
-	public EPlayer playerOwner;
-
+	public EPlayer ePlayerOwner;
+    public Player playerOwner;
 
 
 	void Start(){
 		explosion = (GameObject) Resources.Load("explosion") as GameObject;
+        playerOwner = transform.parent.GetComponent(typeof(Player)) as Player;
 	}
 
 
 
-	void awake() { 
-
+	void awake() {
+        playerOwner = gameObject.transform.GetComponent<Player>();
 		//explosion = (GameObject) Resources.Load("Assets\\Prefabs\\explosion.prefab") as GameObject;
 	}
 

@@ -20,6 +20,7 @@ public class HumanPlayer : Player {
     protected override void Start()
     {
         base.Start();
+        Name = "Player 1";
         Life = 5;
         Energy = 5;
        
