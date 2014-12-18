@@ -45,11 +45,8 @@ public class AIPlayer : Player
 
 
 
-
-    protected override void GameUpdate()
+    protected override void GameFixedUpdate()
     {
-        base.GameUpdate();
-
         if (blockCounter % blockCheckRate == 0)
         {
 
@@ -59,6 +56,7 @@ public class AIPlayer : Player
                 {
                     if (isInZone(lm.head.transform.position))
                     {
+
                         GameArbiter.Instance.actionQueue.Enqueue(new Action(lm.head.transform.position,
                                                                    lm.head.transform.position,
                                                                    0.1f, Action.ActionType.DEFENSIVE,
@@ -71,6 +69,14 @@ public class AIPlayer : Player
             blockCounter = 0;
         }
         blockCounter++;
+    }
+
+
+    protected override void GameUpdate()
+    {
+        base.GameUpdate();
+
+        
 
 
         if (CanShoot)

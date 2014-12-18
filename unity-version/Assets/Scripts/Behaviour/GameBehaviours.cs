@@ -7,6 +7,7 @@ public class GameBehaviours : MonoBehaviour {
         if (SceneRoot.Instance.SceneState.State != StateBase.ESubState.Pause)
         {
             GameUpdate();
+            GameArbiter.Instance.ProcessTurnEvents();
         }
 
     }
@@ -24,8 +25,17 @@ public class GameBehaviours : MonoBehaviour {
         if (SceneRoot.Instance.SceneState.State != StateBase.ESubState.Pause)
         {
             GameFixedUpdate();
+           // GameArbiter.Instance.ProcessTurnEvents();
+        }
+    }
+    private void LateUpdate()
+    {
+        if (SceneRoot.Instance.SceneState.State != StateBase.ESubState.Pause)
+        {
+            GameLateUpdate();
             GameArbiter.Instance.ProcessTurnEvents();
         }
+
     }
 
     /// <summary>
@@ -40,6 +50,10 @@ public class GameBehaviours : MonoBehaviour {
     /// Games the update.
     /// </summary>
     protected virtual void GameFixedUpdate()
+    {
+
+    }
+    protected virtual void GameLateUpdate()
     {
 
     }
