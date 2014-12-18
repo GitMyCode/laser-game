@@ -69,6 +69,8 @@ public class AIPlayer : Player
             blockCounter = 0;
         }
         blockCounter++;
+
+        base.textOutput.text = ToString();
     }
 
 

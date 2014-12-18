@@ -1,21 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnergyRegen : MonoBehaviour {
+public class EnergyRegen : GameBehaviours {
 
     Player player;
     public int energyRegeneration = 120;
     private int regenerateCounter = 1;
 	// Use this for initialization
 	void Start () {
-        player = GetComponent<Player>();
+        Debug.Log("sdfgsdfgdfg");
+        player = transform.GetComponent<Player>();
 	}
 	
 	// Update is called once per frame
-	void Update () {
 	
-	}
-    void OnFixedUpdate()
+    protected override void GameFixedUpdate()
     {
         if (regenerateCounter % energyRegeneration == 0)
         {

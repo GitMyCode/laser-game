@@ -11,7 +11,7 @@ public class Player : GameBehaviours, IPlayer{
     public GameObject[] zones;
     public GameObject[] goals;
 
-    GUIText textOutput;
+    protected GUIText textOutput;
 
     public Typee choose;
     public IPlayer playerImpl;
