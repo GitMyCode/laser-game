@@ -70,7 +70,7 @@ public class Collidable : MonoBehaviour, ICollidable {
 	void OnTriggerExit2D(Collider2D coll){
 		if(this.tag == "zoneP1" && coll.tag =="lineHead") {
 			//coll.renderer.enabled = false;
-			coll.gameObject.GetComponent<rotatingAim>().reference.gameObject.renderer.enabled = false;
+			//coll.gameObject.GetComponent<rotatingAim>().reference.gameObject.renderer.enabled = false;
 			//coll.GetComponent<TargetBehaviorScript>().gameObject.renderer.enabled = false;
 		}
 	}
