@@ -63,7 +63,7 @@ public class GameArbiter : GameBehaviours {
 
         m_vectorGrid = GameObject.Find("VectorGrid").GetComponent<VectorGrid>();
         m_vectorGrid2 = GameObject.Find("VectorGrid2").GetComponent<VectorGrid>();
-        explosion = (GameObject)Resources.Load("explosion2") as GameObject;
+        explosion = (GameObject)Resources.Load("explosion3") as GameObject;
     }
 
 	// Use this for initialization
