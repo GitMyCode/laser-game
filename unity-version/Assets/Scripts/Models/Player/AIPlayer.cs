@@ -44,16 +44,16 @@ public class AIPlayer : Player
     public int tapLength = 3;
     //methods
 
-
+    HashSet<string> alreadyBlocked = new HashSet<string>();
 
     protected override void GameFixedUpdate()
     {
         if (blockCounter % blockCheckRate == 0)
         {
 
-            foreach (LaserModel lm in GameArbiter.lineModelDictionary.Values)
+            foreach (LaserModel lm in GameArbiter.lineModelDictionary.Values )
             {
-                if (lm.owner != (IPlayer)this)
+                if (lm.owner != (IPlayer)this && (!alreadyBlocked.Contains(lm.head.name)))
                 {
                     if (isInZone(lm.head.transform.position))
                     {
@@ -63,6 +63,7 @@ public class AIPlayer : Player
                                                                    0.1f, Action.ActionType.DEFENSIVE,
                                                                    this
                                                                    ));
+                        alreadyBlocked.Add(lm.head.name);
                     }
 
                 }

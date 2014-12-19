@@ -78,6 +78,7 @@ public class GameArbiter : GameBehaviours {
 	void OnGUI(){
 
 
+
 		
 		if(showEndGamePopUp){
 			float scalex = (float) (Screen.width) / 320.0f; //your scale x
@@ -137,28 +138,19 @@ public class GameArbiter : GameBehaviours {
        
     }
 
-    void FixedUpdate()
-    {
-     
-    }
-
-    void Update()
-    {
-        
-    }
-
-	void LateUpdate(){
-
-	}
-	
 	
 
 
 	public void eventHandling(CollidableEvent e){
+
+        e.coll1.Accept(e.coll2);
+        e.coll2.Accept(e.coll1);
+
+        /*
 		ECollidable type1 = e.coll1.collisionType;
 		ECollidable type2 = e.coll2.collisionType;
 
-		if(type1 == type2){
+		if(type1 == type2){//Line collision
 			if(lineModelDictionary.ContainsKey(e.coll1.name) && lineModelDictionary.ContainsKey(e.coll2.name)){
 				LaserModel thisModel =  GameArbiter.lineModelDictionary[e.coll1.name];  	
 				LaserModel otherModel = GameArbiter.lineModelDictionary[e.coll2.name];
@@ -172,6 +164,7 @@ public class GameArbiter : GameBehaviours {
 				}
 			}
 
+            //Line and Goal collision
 		}else if(type1 == ECollidable.GOAL || type2 == ECollidable.GOAL){
             Player hurtPlayer = (type1 == ECollidable.GOAL) ? e.coll1.playerOwner: e.coll2.playerOwner;
             Player attackPlayer = (type1 != ECollidable.GOAL) ? e.coll1.playerOwner: e.coll2.playerOwner;
@@ -182,8 +175,6 @@ public class GameArbiter : GameBehaviours {
 				if(tryRemoveLife(hurtPlayer,1)){
 					Instantiate (explosion, line.transform.position, Quaternion.identity);
 					
-					//vectorGrid affectedZone = (type1 == ECollidable.GOAL && e.coll1.playerOwner == EPlayer.Player1)? m_vectorGrid : m_vectorGrid2;
-					//affectedZone.AddGridForce(line.transform.position, -3 * 0.1f, 4.0f, Color.blue, true);
                     hurtPlayer.damageEffect(line.transform.position);
 
 					foreach(LaserModel lm in lineModelDictionary.Values){
@@ -191,14 +182,14 @@ public class GameArbiter : GameBehaviours {
 					}
 					DestroyAllLines();		
 				}else{
-					Collidable goalColl = e.getCollidableOfType(ECollidable.GOAL);
-                    winner = attackPlayer.Name;//(goalColl.playerOwner == EPlayer.Player1)? "Winner Player 2!" : "Winner Player 1!"; 
+                    winner = attackPlayer.Name;
 					showEndGamePopUp= true;
 
 				}
 			}
 
 		}
+        */
 	}
 	
 
@@ -206,11 +197,6 @@ public class GameArbiter : GameBehaviours {
 
 
 	public void createLine(Action a){
-
-
-//		GameObject p = a.owner.getGoal();
-//		Vector3 line = new Vector3();
-//		Debug.DrawLine(line,Color.red,2,false);
 
 		if(tryRemoveEnergy(a.owner,1)){
 			Vector3 birthPosition = a.endPos;
@@ -311,7 +297,7 @@ public class GameArbiter : GameBehaviours {
 	}
 
 
-	private bool tryRemoveLife(IPlayer player, int quantite){
+	public bool tryRemoveLife(IPlayer player, int quantite){
 		if(player.Life - quantite >0){
 			player.Life -= quantite;
 			return true;
@@ -321,7 +307,7 @@ public class GameArbiter : GameBehaviours {
 	}
 
 
-	private bool tryAddEnergy(IPlayer player,int quantite){
+	public bool tryAddEnergy(IPlayer player,int quantite){
 		if( player.Energy < 5 ){
 			player.Energy+= quantite;
 			if(player.Energy >5){
@@ -331,7 +317,7 @@ public class GameArbiter : GameBehaviours {
 		}
 		return false;
 	}
-	private bool tryRemoveEnergy(IPlayer player,int quantite){
+	public bool tryRemoveEnergy(IPlayer player,int quantite){
 		if(quantite >0 && player.Energy >= quantite ){
 			player.Energy -= quantite;
 			return true;

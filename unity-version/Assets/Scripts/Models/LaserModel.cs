@@ -28,15 +28,17 @@ public class LaserModel {
 		idCounter++;
 		this.id  = idCounter; 
 		head = (GameObject) GameObject.Instantiate(GameArbiter.linePref, birthPlace,(Quaternion.identity));
-		//head.GetComponent<Collidable>().playerOwner = owner.PlayerEnumType;
+        head.GetComponent<CollisionLine>().lm = this;
 
         
 		float angleX = action.endPos.x - action.startPos.x;
 		float angleY = action.endPos.y - action.startPos.y;
 		head.rigidbody2D.velocity = new Vector2(angleX,angleY).normalized *speed;
+       // head.gameObject.GetComponent<CollidableBase>().playerOwner = (Player)owner;
 
 		head.name = lineNameBase+id;
-		trail = head.gameObject.GetComponent<LaserTrail>();
+	  	trail = head.gameObject.GetComponent<LaserTrail>();
+      //  trail.gameObject.GetComponent<CollidableBase>().playerOwner = (Player) owner;
 		trail.lifeTime = getConvertedLengthToTime(head,speed,distance); 
 		trail.nameWithId = head.name;
 		head.gameObject.name = head.name;
