@@ -48,7 +48,7 @@ public class AIPlayer : Player
 
     protected override void GameFixedUpdate()
     {
-        if (blockCounter % blockCheckRate == 0)
+       if (blockCounter % blockCheckRate == 0)
         {
 
             foreach (LaserModel lm in GameArbiter.lineModelDictionary.Values )

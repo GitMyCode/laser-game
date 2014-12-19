@@ -224,7 +224,6 @@ public class GameArbiter : GameBehaviours {
 	public void defensiveAction(Action a ){
 		List<GameObject> trappedLines = findZoneContainingForCircle(a.endPos);
 		if(trappedLines.Count > 0){
-			Debug.Log("absorbe!");
 			foreach (GameObject gm in trappedLines){
 				tryAddEnergy(a.owner,2);
 				LaserModel lm = lineModelDictionary[gm.name];
@@ -326,7 +325,7 @@ public class GameArbiter : GameBehaviours {
 		return false;
 	}
 	public bool tryRemoveEnergy(IPlayer player,int quantite){
-		if(quantite >0 && player.Energy >= quantite ){
+		if(quantite >=0 && player.Energy >= quantite ){
 			player.Energy -= quantite;
 			return true;
 		}

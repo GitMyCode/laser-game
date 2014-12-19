@@ -127,11 +127,12 @@ public class LaserTrail : MonoBehaviour {
 		//PlayerController.lineTrailDictionary.Add(trail.name,this);
 
 
+
 	}
 
 	//int count =0;
 	private void Update() {
-
+        
 		//float time = ((trans.gameObject.rigidbody2D.velocity.normalized/(trans.gameObject.rigidbody2D.velocity.magnitude)).magnitude);
 		//lifeTime = time* distance;
 		if (!pausing) {
@@ -152,7 +153,7 @@ public class LaserTrail : MonoBehaviour {
 			//distance = Vector3.Distance(leftVertices.First.Value,leftVertices.Last.Value );
 			Debug.Log("Trail DistanceVertice: "+ (leftVertices.Last.Value.Position - trans.position).sqrMagnitude);	
 		}*/
-
+        
 	}
 	
 	//************
