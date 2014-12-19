@@ -14,14 +14,23 @@ public class CollisionLine : CollidableBase, ICollidable {
 
     public void VisitCollision(CollisionGoal cg)
     {
-        GameArbiter.DestroyLine(this.gameObject);
+        if (GameArbiter.DestroyLine(this.gameObject))
+        {
+            lm.showDieEffect();
+        }
        
     }
 
     public void VisitCollision(CollisionLine cl)
     {
+        if (cl.name != this.name)
+        {
 
-        GameArbiter.DestroyLine(this.gameObject);
+            if (GameArbiter.DestroyLine(this.gameObject))
+            {
+                lm.showDieEffect();
+            }
+        }
       
     }
 

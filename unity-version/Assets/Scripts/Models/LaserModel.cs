@@ -11,12 +11,16 @@ public class LaserModel {
 	public GameObject head;
 	public LaserTrail trail;
 	public static int idCounter=0;
+    public static GameObject explosion = (GameObject)Resources.Load("explosion2") as GameObject;
+
 	public int id;
 
 	public string name;
 	public string lineNameBase = "line";
 
 	public IPlayer owner; 
+
+
 
 	public LaserModel(Action action,Vector3 birthPlace){
         
@@ -91,6 +95,10 @@ public class LaserModel {
 		GameObject.Destroy(trail.reference);
 		GameObject.Destroy(trail);
 	}
+    public void showDieEffect()
+    {
+        GameObject.Instantiate (explosion, head.transform.position, Quaternion.identity);
+    }
 
 
 

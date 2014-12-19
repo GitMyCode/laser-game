@@ -116,17 +116,7 @@ public class GameArbiter : GameBehaviours {
         while (actionQueue.Count > 0)
         {
             Action a = actionQueue.Dequeue();
-            switch (a.action)
-            {
-                case Action.ActionType.DEFENSIVE:
-                    {
-                        defensiveAction(a);
-                    } break;
-                case Action.ActionType.ATTACK:
-                    {
-                        createLine(a);
-                    } break;
-            }
+            actionHandling(a);
         }
         while (collidableQueue.Count > 0)
         {
@@ -138,6 +128,22 @@ public class GameArbiter : GameBehaviours {
        
     }
 
+
+    public void actionHandling(Action a)
+    {
+        switch (a.action)
+        {
+            case Action.ActionType.DEFENSIVE:
+                {
+                    defensiveAction(a);
+                } break;
+            case Action.ActionType.ATTACK:
+                {
+                    createLine(a);
+                } break;
+        }
+
+    }
 	
 
 
@@ -282,11 +288,13 @@ public class GameArbiter : GameBehaviours {
 		Methode qui aurait du etre dans l'objet Grid
 		Temporairement ici
 	 */
-	public static void DestroyLine(GameObject line){
+	public static bool DestroyLine(GameObject line){
 		if(line != null && lineModelDictionary.ContainsKey(line.name)){
 			lineModelDictionary[line.name].Destroy();
 			lineModelDictionary.Remove(line.name);
+            return true;
 		}
+        return false;
 	}
 	public static void DestroyAllLines(){
 		foreach(LaserModel lm in lineModelDictionary.Values){
