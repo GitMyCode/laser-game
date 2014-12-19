@@ -14,14 +14,15 @@ public class CollisionLine : CollidableBase, ICollidable {
 
     public void VisitCollision(CollisionGoal cg)
     {
-        if (lm != null)
-            lm.Destroy();
+        GameArbiter.DestroyLine(this.gameObject);
+       
     }
 
     public void VisitCollision(CollisionLine cl)
     {
-        if(lm!=null)
-            lm.Destroy();
+
+        GameArbiter.DestroyLine(this.gameObject);
+      
     }
 
 
