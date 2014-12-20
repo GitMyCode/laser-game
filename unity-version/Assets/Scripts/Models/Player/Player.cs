@@ -174,7 +174,8 @@ public class Player : GameBehaviours, IPlayer{
 
     public override string ToString()
     {
-        return string.Format("life : {0},\n energy: {1} ", Life, Energy);
+        return "";
+        //return string.Format("life : {0},\n energy: {1} ", Life, Energy);
     }
 
 

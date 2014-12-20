@@ -26,7 +26,8 @@ public class AIPlayer : Player
     {
         base.Start();
         Name = "Player 2";
-
+        Life = 5;
+        Energy = 5;
 
     }
 
@@ -48,6 +49,7 @@ public class AIPlayer : Player
 
     protected override void GameFixedUpdate()
     {
+        base.GameFixedUpdate();
        if (blockCounter % blockCheckRate == 0)
         {
 
@@ -72,7 +74,7 @@ public class AIPlayer : Player
         }
         blockCounter++;
 
-        base.textOutput.text = ToString();
+       // textOutput.text = ToString();
     }
 
 
