@@ -20,11 +20,8 @@ public class CollisionGoal : CollidableBase, ICollidable
 
     public void VisitCollision(CollisionLine cl)
     {
-        if (GameArbiter.lineModelDictionary.ContainsKey(cl.lm.name))
-        {
             GameArbiter.Instance.tryRemoveLife(player, 1);
             player.damageEffect(cl.lm.head.transform.position); 
-        }
         
     }
 
