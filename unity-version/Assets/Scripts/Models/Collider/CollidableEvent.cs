@@ -12,13 +12,13 @@ public struct CollidableEvent {
 	}
 
 
-	public CollidableBase getCollidableOfType(ECollidable type){
-		/*if(coll1.collisionType == type){
+	public ICollidable getCollidableOfType(ECollidable type){
+		if(coll1.CollisionType == type){
 			return coll1;
 		}
-		if(coll2.collisionType == type){
+		if(coll2.CollisionType == type){
 			return coll2;
-		}*/
+		}
 		return null;
 	}
 

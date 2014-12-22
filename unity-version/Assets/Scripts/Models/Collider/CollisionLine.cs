@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+/*
 public class CollisionLine : CollidableBase, ICollidable {
 
 
@@ -40,3 +40,4 @@ public class CollisionLine : CollidableBase, ICollidable {
         visitor.VisitCollision(this);
     }
 }
+*/

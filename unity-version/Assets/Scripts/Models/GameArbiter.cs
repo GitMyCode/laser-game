@@ -148,9 +148,13 @@ public class GameArbiter : GameBehaviours {
 
 
 	public void eventHandling(CollidableEvent e){
-
-        e.coll1.Accept(e.coll2);
-        e.coll2.Accept(e.coll1);
+        ECollidable key = e.coll1.CollisionType | e.coll2.CollisionType;
+        if (Rules.rules.ContainsKey(key))
+        {
+            Rules.rules[key].DynamicInvoke(e);
+        }
+       // e.coll1.Accept(e.coll2);
+       // e.coll2.Accept(e.coll1);
 
         /*
 		ECollidable type1 = e.coll1.collisionType;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class CollidableBase : GameBehaviours, ICollidable{
+public class Collidable : GameBehaviours, ICollidable{
 
 	// Use this for initialization
 	private GameObject explosion;
@@ -10,7 +10,7 @@ public abstract class CollidableBase : GameBehaviours, ICollidable{
 	public ECollidable collisionType;
 	public EPlayer ePlayerOwner;
     public Player playerOwner;
-
+    public GameObject owner;
 
 
     protected virtual void Start()
@@ -43,7 +43,7 @@ public abstract class CollidableBase : GameBehaviours, ICollidable{
 
 	bool trySendCollidableEvent(GameObject other){
         
-		if(this is CollidableBase && ((GameObject)other).GetComponent(typeof(ICollidable)) !=null ){
+		if(this is Collidable && ((GameObject)other).GetComponent(typeof(ICollidable)) !=null ){
             ICollidable a = ((GameObject)other).GetComponent(typeof(ICollidable)) as ICollidable;
 			GameArbiter.Instance.collidableQueue.Enqueue(new CollidableEvent(this ,a));
 			return true;
@@ -52,19 +52,28 @@ public abstract class CollidableBase : GameBehaviours, ICollidable{
     }
     #endregion
 
-
-    public void VisitCollision(CollisionGoal cg)
+    ECollidable ICollidable.CollisionType
     {
-        throw new System.NotImplementedException();
+        get
+        {
+            return collisionType;
+        }
+        set
+        {
+            collisionType = value;
+        }
     }
 
-    public void VisitCollision(CollisionLine cl)
+    public GameObject Owner
     {
-        throw new System.NotImplementedException();
-    }
+        get
+        {
+            return owner;
 
-    public void Accept(ICollidable visitor)
-    {
-        throw new System.NotImplementedException();
+        }
+        set
+        {
+            owner = value;
+        }
     }
 }

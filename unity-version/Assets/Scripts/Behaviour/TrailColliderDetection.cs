@@ -43,7 +43,7 @@ public class TrailColliderDetection : MonoBehaviour {
  public void Update() {
      if (Hit())
      {
-         if (collidableHead is CollidableBase && ((GameObject)hit.collider.gameObject).GetComponent(typeof(ICollidable)) != null)
+         if (collidableHead is Collidable && ((GameObject)hit.collider.gameObject).GetComponent(typeof(ICollidable)) != null)
          {
              ICollidable a = ((GameObject)hit.collider.gameObject).GetComponent(typeof(ICollidable)) as ICollidable;
              GameArbiter.Instance.collidableQueue.Enqueue(new CollidableEvent(collidableHead, a));

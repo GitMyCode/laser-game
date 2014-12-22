@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+/*
 public class CollisionGoal : CollidableBase, ICollidable
 {
 
@@ -31,3 +31,4 @@ public class CollisionGoal : CollidableBase, ICollidable
         visitor.VisitCollision(this);
     }
 }
+*/

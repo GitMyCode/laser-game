@@ -85,7 +85,7 @@ public class LaserTrail : MonoBehaviour {
 		lineID = trailId;
 		//create an object and mesh for the trail
 		GameObject trail = new GameObject("Trail"+trailId, new[] { typeof(MeshRenderer), typeof(MeshFilter), 
-			typeof(PolygonCollider2D),typeof(Rigidbody2D), typeof(CollisionLine)}
+			typeof(PolygonCollider2D),typeof(Rigidbody2D), typeof(ICollidable)}
 																   );
 
 
