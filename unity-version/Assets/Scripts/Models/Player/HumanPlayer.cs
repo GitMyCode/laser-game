@@ -68,7 +68,7 @@ public class HumanPlayer : Player {
                     activeTouch = touch.fingerId;
                     swipeCompleteArray[touch.fingerId] = true;
 
-                    GameArbiter.Instance.actionQueue.Enqueue(new Action(fingerTrackArray[touch.fingerId], touchPos, intervalTime, Action.ActionType.ATTACK, this));
+                    GameArbiter.Instance.actionQueue.Enqueue(new Action(fingerTrackArray[touch.fingerId], touchPos, intervalTime, Action.ActionType.ATTACK, gameObject));
 
                 }
 
@@ -81,7 +81,7 @@ public class HumanPlayer : Player {
                     activeTouch = touch.fingerId;
                     //	Debug.Log(touch.fingerId + " " + fingerTrackArray[touch.fingerId] + " " +  touch.position);
                     swipeCompleteArray[touch.fingerId] = true;
-                    GameArbiter.Instance.actionQueue.Enqueue(new Action(fingerTrackArray[touch.fingerId], touchPos, intervalTime, Action.ActionType.DEFENSIVE, this));
+                    GameArbiter.Instance.actionQueue.Enqueue(new Action(fingerTrackArray[touch.fingerId], touchPos, intervalTime, Action.ActionType.DEFENSIVE, gameObject));
                     DebugDraw.DrawSphere(touch.position, 10, Color.yellow);
 
                 }

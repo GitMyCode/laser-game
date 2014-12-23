@@ -21,6 +21,18 @@ public class Rules : MonoBehaviour
     {
 
         Debug.Log("event line avec line");
+        if (GameArbiter.lineModelDictionary.ContainsKey(e.coll1.Owner.name) && 
+            GameArbiter.lineModelDictionary.ContainsKey(e.coll2.Owner.name))
+        {
+            LaserModel thisModel = GameArbiter.lineModelDictionary[e.coll1.Owner.name];
+            LaserModel otherModel = GameArbiter.lineModelDictionary[e.coll2.Owner.name];
+
+            thisModel.showDieEffect();
+            otherModel.showDieEffect();
+
+            GameArbiter.DestroyLine(e.coll1.Owner);
+            GameArbiter.DestroyLine(e.coll2.Owner);
+        }
     }
 
     public static void LineWithGoal(CollidableEvent e)

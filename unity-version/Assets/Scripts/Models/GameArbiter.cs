@@ -67,11 +67,12 @@ public class GameArbiter : GameBehaviours {
     }
 
 	// Use this for initialization
-	void Start () {
-		
+    void Start()
+    {
+        
 
-	}
-
+    }
+    
 
 	private bool showEndGamePopUp = false;
 	private string winner= "";
@@ -208,11 +209,12 @@ public class GameArbiter : GameBehaviours {
 
 	public void createLine(Action a){
 
-		if(tryRemoveEnergy(a.owner,1)){
+            
+        IPlayer p = a.owner.GetComponent<Player>();
+		if(tryRemoveEnergy(p,1)){
 			Vector3 birthPosition = a.endPos;
-			
-			if(a.owner.Goals[0].tag == "goalP2"){
-				Transform goalTran = a.owner.Goals[0].transform;
+			if(p.Goals[0].tag == "goalP2"){
+				Transform goalTran = p.Goals[0].transform;
 				birthPosition.y = (goalTran.position.y - goalTran.localScale.y / 2);
 			}
 			
@@ -229,7 +231,7 @@ public class GameArbiter : GameBehaviours {
 		List<GameObject> trappedLines = findZoneContainingForCircle(a.endPos);
 		if(trappedLines.Count > 0){
 			foreach (GameObject gm in trappedLines){
-				tryAddEnergy(a.owner,2);
+				tryAddEnergy(a.owner.GetComponent<Player>(),2);
 				LaserModel lm = lineModelDictionary[gm.name];
 				lm.head.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
 			}

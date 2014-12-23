@@ -55,7 +55,7 @@ public class AIPlayer : Player
 
             foreach (LaserModel lm in GameArbiter.lineModelDictionary.Values )
             {
-                if (lm.owner != (IPlayer)this && (!alreadyBlocked.Contains(lm.head.name)))
+                if (lm.owner != this && (!alreadyBlocked.Contains(lm.head.name)))
                 {
                     if (isInZone(lm.head.transform.position))
                     {
@@ -63,7 +63,7 @@ public class AIPlayer : Player
                         GameArbiter.Instance.actionQueue.Enqueue(new Action(lm.head.transform.position,
                                                                    lm.head.transform.position,
                                                                    0.1f, Action.ActionType.DEFENSIVE,
-                                                                   this
+                                                                   gameObject
                                                                    ));
                         alreadyBlocked.Add(lm.head.name);
                     }
@@ -105,7 +105,7 @@ public class AIPlayer : Player
         Vector3 end = new Vector3(randomX, randomY, 0);
 
         Debug.DrawRay(start, end, Color.red, 2, false);
-        GameArbiter.Instance.actionQueue.Enqueue(new Action(start, end, Random.Range(0.1f, 0.3f), Action.ActionType.ATTACK, this));
+        GameArbiter.Instance.actionQueue.Enqueue(new Action(start, end, Random.Range(0.1f, 0.3f), Action.ActionType.ATTACK, gameObject));
 
     }
 

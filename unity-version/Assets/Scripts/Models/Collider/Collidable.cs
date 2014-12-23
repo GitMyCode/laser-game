@@ -11,7 +11,7 @@ public class Collidable : GameBehaviours, ICollidable{
 	public EPlayer ePlayerOwner;
     public Player playerOwner;
     public GameObject owner;
-
+    public GameObject origin;
 
     protected virtual void Start()
     {

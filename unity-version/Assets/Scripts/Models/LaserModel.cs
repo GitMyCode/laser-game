@@ -18,7 +18,7 @@ public class LaserModel {
 	public string name;
 	public string lineNameBase = "line";
 
-	public IPlayer owner; 
+	public GameObject owner; 
 
 
 
@@ -32,7 +32,8 @@ public class LaserModel {
 		idCounter++;
 		this.id  = idCounter; 
 		head = (GameObject) GameObject.Instantiate(GameArbiter.linePref, birthPlace,(Quaternion.identity));
-        head.GetComponent<Collidable>().Owner = GameObject.Find(owner.Name);
+        Collidable collidable = head.GetComponent<Collidable>();
+        collidable.Owner = head;
         
 		float angleX = action.endPos.x - action.startPos.x;
 		float angleY = action.endPos.y - action.startPos.y;
