@@ -154,53 +154,7 @@ public class GameArbiter : GameBehaviours {
         {
             Rules.rules[key].DynamicInvoke(e);
         }
-       // e.coll1.Accept(e.coll2);
-       // e.coll2.Accept(e.coll1);
-
-        /*
-		ECollidable type1 = e.coll1.collisionType;
-		ECollidable type2 = e.coll2.collisionType;
-
-		if(type1 == type2){//Line collision
-			if(lineModelDictionary.ContainsKey(e.coll1.name) && lineModelDictionary.ContainsKey(e.coll2.name)){
-				LaserModel thisModel =  GameArbiter.lineModelDictionary[e.coll1.name];  	
-				LaserModel otherModel = GameArbiter.lineModelDictionary[e.coll2.name];
-				
-				GameObject head = (this.tag =="lineHead")? e.coll1.gameObject : e.coll2.gameObject;
-				if((thisModel.id != otherModel.id)){
-					Instantiate (explosion, head.transform.position, Quaternion.identity);
-					GameArbiter.DestroyLine(e.coll1.gameObject);
-					GameArbiter.DestroyLine(e.coll2.gameObject);
-
-				}
-			}
-
-            //Line and Goal collision
-		}else if(type1 == ECollidable.GOAL || type2 == ECollidable.GOAL){
-            Player hurtPlayer = (type1 == ECollidable.GOAL) ? e.coll1.playerOwner: e.coll2.playerOwner;
-            Player attackPlayer = (type1 != ECollidable.GOAL) ? e.coll1.playerOwner: e.coll2.playerOwner;
-
-			GameObject line = (type1 == ECollidable.GOAL)? e.coll2.gameObject : e.coll1.gameObject ;
-
-			if(lineModelDictionary.ContainsKey(line.name)){
-				if(tryRemoveLife(hurtPlayer,1)){
-					Instantiate (explosion, line.transform.position, Quaternion.identity);
-					
-                    hurtPlayer.damageEffect(line.transform.position);
-
-					foreach(LaserModel lm in lineModelDictionary.Values){
-						Instantiate (explosion, lm.head.transform.position, Quaternion.identity);
-					}
-					DestroyAllLines();		
-				}else{
-                    winner = attackPlayer.Name;
-					showEndGamePopUp= true;
-
-				}
-			}
-
-		}
-        */
+     
 	}
 	
 
@@ -211,7 +165,7 @@ public class GameArbiter : GameBehaviours {
 
             
         IPlayer p = a.owner.GetComponent<Player>();
-		if(tryRemoveEnergy(p,1)){
+		if(p.tryRemoveEnergy(1)){
 			Vector3 birthPosition = a.endPos;
 			if(p.Goals[0].tag == "goalP2"){
 				Transform goalTran = p.Goals[0].transform;
@@ -231,7 +185,7 @@ public class GameArbiter : GameBehaviours {
 		List<GameObject> trappedLines = findZoneContainingForCircle(a.endPos);
 		if(trappedLines.Count > 0){
 			foreach (GameObject gm in trappedLines){
-				tryAddEnergy(a.owner.GetComponent<Player>(),2);
+				a.owner.GetComponent<Player>().tryAddEnergy(2);
 				LaserModel lm = lineModelDictionary[gm.name];
 				lm.head.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
 			}
@@ -308,55 +262,6 @@ public class GameArbiter : GameBehaviours {
 		lineModelDictionary.Clear();
 
 	}
-
-
-	public bool tryRemoveLife(IPlayer player, int quantite){
-		if(player.Life - quantite >0){
-			player.Life -= quantite;
-			return true;
-		}
-		player.Life = 0;
-		return false;
-	}
-
-
-	public bool tryAddEnergy(IPlayer player,int quantite){
-		if( player.Energy < 5 ){
-			player.Energy+= quantite;
-			if(player.Energy >5){
-				player.Energy = 5;
-			}
-			return true;
-		}
-		return false;
-	}
-	public bool tryRemoveEnergy(IPlayer player,int quantite){
-		if(quantite >=0 && player.Energy >= quantite ){
-			player.Energy -= quantite;
-			return true;
-		}
-		return false;
-	}
-
-    /*
-    private IPlayer[] initPlayers()
-    {
-        IPlayer[] allPlayers = new IPlayer[2];
-
-        GameObject goal = GameObject.FindGameObjectWithTag("goalP1");
-        GameObject zone = GameObject.FindGameObjectWithTag("zoneP1");
-        IPlayer player1 = new HumanPlayer(5, 5, zone, goal);
-        goal = GameObject.FindGameObjectWithTag("goalP2");
-        zone = GameObject.FindGameObjectWithTag("zoneP2");
-        IPlayer player2 = new AIPlayer(5, 5, zone, goal);
-
-        allPlayers[0] = player1;
-        allPlayers[1] = player2;
-
-        return allPlayers;
-        
-    }
-    */
 
 
 }

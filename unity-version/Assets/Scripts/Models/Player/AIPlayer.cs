@@ -55,7 +55,7 @@ public class AIPlayer : Player
 
             foreach (LaserModel lm in GameArbiter.lineModelDictionary.Values )
             {
-                if (lm.owner != this && (!alreadyBlocked.Contains(lm.head.name)))
+                if (lm.owner != this.gameObject && (!alreadyBlocked.Contains(lm.head.name)))
                 {
                     if (isInZone(lm.head.transform.position))
                     {

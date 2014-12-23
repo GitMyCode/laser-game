@@ -19,6 +19,11 @@ public interface IPlayer {
     GameObject[] Goals { get;set;}
     GameObject[] Zones { get; set; }
 
+    bool tryAddEnergy(int quantite);
+    bool tryRemoveEnergy(int quantite);
+    bool tryRemoveLife(int quantite);
+
+
 	EPlayer PlayerEnumType{get;set;}
 
 }

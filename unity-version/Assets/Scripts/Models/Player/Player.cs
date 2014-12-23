@@ -58,6 +58,46 @@ public class Player : GameBehaviours, IPlayer{
 
 
 
+    public bool tryRemoveLife( int quantite)
+    {
+        if (Life - quantite > 0)
+        {
+            Life -= quantite;
+            return true;
+        }
+        Life = 0;
+        return false;
+    }
+
+
+    public bool tryAddEnergy( int quantite)
+    {
+        if (Energy < 5)
+        {
+            Energy += quantite;
+            if (Energy > 5)
+            {
+                Energy = 5;
+            }
+            return true;
+        }
+        return false;
+    }
+    public bool tryRemoveEnergy( int quantite)
+    {
+        if (quantite >= 0 && Energy >= quantite)
+        {
+            Energy -= quantite;
+            return true;
+        }
+        return false;
+    }
+
+
+
+
+
+
 
     #region helper methods
 

@@ -41,10 +41,11 @@ public class LaserModel {
        // head.gameObject.GetComponent<CollidableBase>().playerOwner = (Player)owner;
 
 		head.name = lineNameBase+id;
-	  	trail = head.gameObject.GetComponent<LaserTrail>();
+	  	/*trail = head.gameObject.GetComponent<LaserTrail>();
       //  trail.gameObject.GetComponent<CollidableBase>().playerOwner = (Player) owner;
 		trail.lifeTime = getConvertedLengthToTime(head,speed,distance); 
 		trail.nameWithId = head.name;
+         */
 		head.gameObject.name = head.name;
 		name = head.name;
 
@@ -92,8 +93,8 @@ public class LaserModel {
 
 	public void Destroy(){
 		GameObject.Destroy(head);
-		GameObject.Destroy(trail.reference);
-		GameObject.Destroy(trail);
+	//	GameObject.Destroy(trail.reference);
+    //		GameObject.Destroy(trail);
 	}
     public void showDieEffect()
     {
