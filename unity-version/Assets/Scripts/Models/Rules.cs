@@ -8,6 +8,24 @@ public class Rules : MonoBehaviour
 {
 
     public static Dictionary<ECollidable, Delegate> rules;
+
+
+    public bool hasRules(CollidableEvent e)
+    {
+        ECollidable type1 = e.coll1.collisionType;
+        ECollidable type2 = e.coll2.collisionType;
+        return rules.ContainsKey((type1 | type2));
+    }
+
+    public void applyRules(CollidableEvent e)
+    {
+        ECollidable key = e.coll1.collisionType | e.coll2.collisionType;
+        if (Rules.rules.ContainsKey(key))
+        {
+            Rules.rules[key].DynamicInvoke(e);
+        }
+    }
+    
     static Rules()
     {
         rules = new Dictionary<ECollidable, Delegate>();
