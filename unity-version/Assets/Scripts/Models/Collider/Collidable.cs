@@ -8,10 +8,7 @@ public class Collidable : GameBehaviours, ICollidable{
 
 
 	public ECollidable collisionType;
-	public EPlayer ePlayerOwner;
-    public Player playerOwner;
     public GameObject owner;
-    public GameObject origin;
 
     protected virtual void Start()
     {
