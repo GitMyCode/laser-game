@@ -13,12 +13,12 @@ public class TrailColliderDetection : MonoBehaviour {
  private int tail = 0;
  private float sliceTime = ( 1.0f);
  private RaycastHit2D hit ;
- ICollidable collidableHead;
+ Collidable collidableHead;
  public void Start () {
      //trail.gameObject.layer = 6;
      
      
-     collidableHead = gameObject.GetComponent(typeof(ICollidable)) as ICollidable;
+     collidableHead = gameObject.GetComponent(typeof(Collidable)) as Collidable;
      sliceTime = sliceTime/rate;
 
      arv3 = new Vector3[(Mathf.RoundToInt(time * rate) + 1)];
@@ -43,10 +43,10 @@ public class TrailColliderDetection : MonoBehaviour {
  public void Update() {
      if (Hit())
      {
-         if (collidableHead is Collidable && ((GameObject)hit.collider.gameObject).GetComponent(typeof(ICollidable)) != null)
+         Collidable hitCollidable = hit.collider.gameObject.GetComponent<Collidable>();
+         if (hitCollidable != null)
          {
-             ICollidable a = ((GameObject)hit.collider.gameObject).GetComponent(typeof(ICollidable)) as ICollidable;
-             GameArbiter.Instance.collidableQueue.Enqueue(new CollidableEvent(collidableHead, a));
+             GameArbiter.Instance.collidableQueue.Enqueue(new CollidableEvent(collidableHead, hitCollidable));
          }
          Debug.Log("I hit: "+hit.collider.name);
      }

@@ -3,20 +3,20 @@ using System.Collections;
 
 public struct CollidableEvent {
 
-	public ICollidable coll1;
-	public ICollidable coll2;
+	public Collidable coll1;
+	public Collidable coll2;
 
-	public CollidableEvent(ICollidable c1, ICollidable c2){
+	public CollidableEvent(Collidable c1, Collidable c2){
 		coll1 = c1;
 		coll2 = c2;
 	}
 
 
-	public ICollidable getCollidableOfType(ECollidable type){
-		if(coll1.CollisionType == type){
+	public Collidable getCollidableOfType(ECollidable type){
+		if(coll1.collisionType == type){
 			return coll1;
 		}
-		if(coll2.CollisionType == type){
+		if(coll2.collisionType == type){
 			return coll2;
 		}
 		return null;

@@ -21,8 +21,8 @@ public class Rules : MonoBehaviour
     {
 
         Debug.Log("event line avec line");
-        if (GameArbiter.lineModelDictionary.ContainsKey(e.coll1.Owner.name) && 
-            GameArbiter.lineModelDictionary.ContainsKey(e.coll2.Owner.name))
+        if (GameArbiter.lineModelDictionary.ContainsKey(e.coll1.name) && 
+            GameArbiter.lineModelDictionary.ContainsKey(e.coll2.name))
         {
             LaserModel thisModel = GameArbiter.lineModelDictionary[e.coll1.Owner.name];
             LaserModel otherModel = GameArbiter.lineModelDictionary[e.coll2.Owner.name];

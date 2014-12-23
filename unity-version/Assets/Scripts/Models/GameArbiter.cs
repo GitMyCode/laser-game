@@ -149,7 +149,7 @@ public class GameArbiter : GameBehaviours {
 
 
 	public void eventHandling(CollidableEvent e){
-        ECollidable key = e.coll1.CollisionType | e.coll2.CollisionType;
+        ECollidable key = e.coll1.collisionType | e.coll2.collisionType;
         if (Rules.rules.ContainsKey(key))
         {
             Rules.rules[key].DynamicInvoke(e);

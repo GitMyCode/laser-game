@@ -42,10 +42,10 @@ public class Collidable : GameBehaviours, ICollidable{
 
 
 	bool trySendCollidableEvent(GameObject other){
-        
-		if(this is Collidable && ((GameObject)other).GetComponent(typeof(ICollidable)) !=null ){
-            ICollidable a = ((GameObject)other).GetComponent(typeof(ICollidable)) as ICollidable;
-			GameArbiter.Instance.collidableQueue.Enqueue(new CollidableEvent(this ,a));
+
+        Collidable otherCollidable = other.GetComponent<Collidable>();
+		if(otherCollidable != null){
+			GameArbiter.Instance.collidableQueue.Enqueue(new CollidableEvent(this ,otherCollidable));
 			return true;
 		}
 		return false;
