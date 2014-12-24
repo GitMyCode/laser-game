@@ -96,8 +96,21 @@ public class Rules : IRules
             }
             else //EndGame!
             {
-                SceneRoot.Instance.SceneState.State = StateBase.ESubState.Pause;
+                LaserModel lineAtGoal = GameArbiter.lineModelDictionary[lineCol.name];
+                hurtPlayer.damageEffect(lineAtGoal.head.transform.position);
+
+
+                foreach (LaserModel lm in GameArbiter.lineModelDictionary.Values)
+                {
+                    if (lm.head != null)
+                    {
+                        lm.showDieEffect();
+                    }
+                }
+
                 GameArbiter.Instance.clearArena();
+
+                SceneRoot.Instance.SceneState.State = StateBase.ESubState.Pause;
                 GameArbiter.Instance.endGame();
             }
 
