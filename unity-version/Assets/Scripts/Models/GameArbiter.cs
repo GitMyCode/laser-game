@@ -25,7 +25,7 @@ public class GameArbiter : GameBehaviours {
 
     public static List<Player> mPlayers;
 
-
+    public IRules rules;
 	
     public static GameArbiter Instance
     {
@@ -38,7 +38,7 @@ public class GameArbiter : GameBehaviours {
         Application.targetFrameRate = 60;
         collidableQueue = new Queue<CollidableEvent>();
         actionQueue = new Queue<Action>();
-
+        rules = new Rules();
 
         circlePref = circleReference;
         absorbePref = absorbeReference;
@@ -57,6 +57,7 @@ public class GameArbiter : GameBehaviours {
             eventHandling(e);
         }
     }
+
 
 
     public void actionHandling(Action a)
@@ -78,14 +79,21 @@ public class GameArbiter : GameBehaviours {
 
 
 	public void eventHandling(CollidableEvent e){
-        
+
+        if (rules.hasRules(e))
+        {
+            rules.applyRules(e);
+        }
         
      
 	}
-	
 
+    public void gameRest()
+    {
+        StartCoroutine(pauseGame());
+    }
 
-
+    
 
 	public void createLine(Action a){
 
@@ -140,6 +148,16 @@ public class GameArbiter : GameBehaviours {
 
 		Destroy (circle);
 	}
+
+    IEnumerator pauseGame()
+    {
+        SceneRoot.Instance.SceneState.State = StateBase.ESubState.Pause;
+        yield return new WaitForSeconds(1);
+
+        SceneRoot.Instance.SceneState.State = StateBase.ESubState.Default;
+        yield return new WaitForSeconds(1);
+    }
+
 
 	
 	public List<GameObject> findZoneContainingForCircle(Vector3 touchposition){

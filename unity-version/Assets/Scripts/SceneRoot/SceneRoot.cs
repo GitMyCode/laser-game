@@ -40,6 +40,11 @@ public class SceneRoot : MonoBehaviour {
 
 
 
+    public void EndGame()
+    {
+
+    }
+
 
     #region SceneRoot properties
     public StateBase SceneState
@@ -61,6 +66,8 @@ public class SceneRoot : MonoBehaviour {
             mPlayers = value;
         }
     }
+
+
 
 
     #endregion

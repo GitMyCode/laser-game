@@ -10,8 +10,12 @@ public class StateBase {
     protected ESubState mCurrentState;
 
 
-    private void Pause() { }
-    private void UnPause() { }
+    private void Pause() {
+        mCurrentState = ESubState.Pause;
+    }
+    private void UnPause() {
+        mCurrentState = ESubState.Default;
+    }
 
 
     public override string ToString()

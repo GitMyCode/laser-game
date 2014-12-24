@@ -4,10 +4,19 @@ using System;
 
 using System.Collections.Generic;
 
-public class Rules : MonoBehaviour
+public class Rules : IRules
 {
 
-    public static Dictionary<ECollidable, Delegate> rules;
+    private  Dictionary<ECollidable, Delegate> rules;
+
+
+    public Rules()
+    {
+        rules = new Dictionary<ECollidable, Delegate>();
+
+        rules[(ECollidable.LINE | ECollidable.LINE)] = new Action<CollidableEvent>(LineWithLine);
+        rules[(ECollidable.LINE | ECollidable.GOAL)] = new Action<CollidableEvent>(LineWithGoal);
+    }
 
 
     public bool hasRules(CollidableEvent e)
@@ -20,22 +29,19 @@ public class Rules : MonoBehaviour
     public void applyRules(CollidableEvent e)
     {
         ECollidable key = e.coll1.collisionType | e.coll2.collisionType;
-        if (Rules.rules.ContainsKey(key))
+        if (rules.ContainsKey(key))
         {
-            Rules.rules[key].DynamicInvoke(e);
+            rules[key].DynamicInvoke(e);
         }
     }
     
     static Rules()
     {
-        rules = new Dictionary<ECollidable, Delegate>();
-
-        rules[(ECollidable.LINE | ECollidable.LINE)] = new Action<CollidableEvent>(LineWithLine);
-        rules[(ECollidable.LINE | ECollidable.GOAL)] = new Action<CollidableEvent>(LineWithGoal);
+        
     }
 
 
-    public static void LineWithLine(CollidableEvent e)
+    public  void LineWithLine(CollidableEvent e)
     {
 
         Debug.Log("event line avec line");
@@ -56,7 +62,7 @@ public class Rules : MonoBehaviour
         }
     }
 
-    public static void LineWithGoal(CollidableEvent e)
+    public void LineWithGoal(CollidableEvent e)
     {
 
         Collidable lineCol = e.getCollidableOfType(ECollidable.LINE);
@@ -68,12 +74,18 @@ public class Rules : MonoBehaviour
             Player hurtPlayer = goalCol.owner.GetComponent<Player>();
             if (hurtPlayer.tryRemoveLife(1))
             {
-                LaserModel lm = GameArbiter.lineModelDictionary[lineCol.name];
-                lm.showDieEffect();
-                hurtPlayer.damageEffect(lm.head.transform.position);
+                LaserModel lineAtGoal = GameArbiter.lineModelDictionary[lineCol.name];
+                hurtPlayer.damageEffect(lineAtGoal.head.transform.position);
 
-                GameArbiter.lineModelDictionary.Remove(lineCol.name);
-                lm.Destroy();
+
+                foreach (LaserModel lm in GameArbiter.lineModelDictionary.Values)
+                {
+                    lm.showDieEffect();
+                    lm.Destroy();
+                }
+                GameArbiter.lineModelDictionary.Clear();
+                GameArbiter.Instance.gameRest();
+                
 
             }
             else //EndGame!
