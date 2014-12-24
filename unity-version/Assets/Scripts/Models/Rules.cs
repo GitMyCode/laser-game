@@ -76,6 +76,10 @@ public class Rules : MonoBehaviour
                 lm.Destroy();
 
             }
+            else //EndGame!
+            {
+
+            }
 
         }
 

@@ -12,6 +12,7 @@ public class LaserModel {
 	public LaserTrail trail;
 	public static int idCounter=0;
     public static GameObject explosion = (GameObject)Resources.Load("explosion2") as GameObject;
+    public static GameObject linePrefab = (GameObject)Resources.Load("Prefabs/LaserWithTrailPref2") as GameObject;
 
 	public int id;
 
@@ -20,7 +21,9 @@ public class LaserModel {
 
 	public GameObject owner; 
 
-
+    static LaserModel(){
+        
+    }
 
 	public LaserModel(Action action,Vector3 birthPlace){
         
@@ -31,7 +34,7 @@ public class LaserModel {
         
 		idCounter++;
 		this.id  = idCounter; 
-		head = (GameObject) GameObject.Instantiate(GameArbiter.linePref, birthPlace,(Quaternion.identity));
+		head = (GameObject) GameObject.Instantiate(linePrefab, birthPlace,(Quaternion.identity));
         Collidable collidable = head.GetComponent<Collidable>();
         collidable.Owner = owner;
         
@@ -41,29 +44,11 @@ public class LaserModel {
        // head.gameObject.GetComponent<CollidableBase>().playerOwner = (Player)owner;
 
 		head.name = lineNameBase+id;
-	  	/*trail = head.gameObject.GetComponent<LaserTrail>();
-      //  trail.gameObject.GetComponent<CollidableBase>().playerOwner = (Player) owner;
-		trail.lifeTime = getConvertedLengthToTime(head,speed,distance); 
-		trail.nameWithId = head.name;
-         */
 		head.gameObject.name = head.name;
 		name = head.name;
 
 
 	}
-
-
-	/*
-	public LaserModel (GameObject head, LaserTrail trail) {
-		idCounter++;
-		id = idCounter;
-		this.head = head;
-		this.trail = trail;
-
-
-
-	}
-*/
 
 
 	float getSpeedOfLine(float distance, float interval){

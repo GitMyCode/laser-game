@@ -5,11 +5,6 @@ using System.Collections.Generic;
 public interface IPlayer {
 
 
-    void playerTurn();
-
-
-
-
 
 	int Life{get;set;}
 	int Energy{get;set;}
@@ -22,8 +17,5 @@ public interface IPlayer {
     bool tryAddEnergy(int quantite);
     bool tryRemoveEnergy(int quantite);
     bool tryRemoveLife(int quantite);
-
-
-	EPlayer PlayerEnumType{get;set;}
 
 }

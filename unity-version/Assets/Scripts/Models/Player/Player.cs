@@ -3,10 +3,17 @@ using System.Collections;
 
 public class Player : GameBehaviours, IPlayer{
 
+    public enum PlayerState
+    {
+        Idle = 0,
+        Playing = 1,
+        Dead = 2,
+        Winner = 3
+    }
 
+    private PlayerState state;
     private int life;
     private int energy;
-    private EPlayer playerEnum;
     private string name;
 
     public GameObject[] zones;
@@ -94,7 +101,10 @@ public class Player : GameBehaviours, IPlayer{
     }
 
 
+    public virtual void Die()
+    {
 
+    }
 
 
 
@@ -164,25 +174,8 @@ public class Player : GameBehaviours, IPlayer{
         }
     }
 
-    public EPlayer PlayerEnumType
-    {
-        get
-        {
-            return playerEnum;
-        }
-        set
-        {
-            playerEnum = value;
-        }
-    }
-
-
-    public void playerTurn()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public GameObject[] Goals
+    
+        public GameObject[] Goals
     {
         get
         {
@@ -220,6 +213,23 @@ public class Player : GameBehaviours, IPlayer{
 
 
 
-
+    public PlayerState State
+    {
+        get
+        {
+            return state;
+        }
+        set
+        {
+            if (value != State)
+            {
+                if (value == Player.PlayerState.Dead)
+                {
+                    Die();
+                }
+                state = value;
+            }
+        }
+    }
 
 }

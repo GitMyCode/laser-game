@@ -12,12 +12,9 @@ public class GameArbiter : GameBehaviours {
 	public GameObject circleReference;
 	public GameObject absorbeReference;
 	public GameObject lineReference;
-	public IPlayer[] playersReference;
 
 	public static GameObject circlePref ;
 	public static GameObject absorbePref;
-	public static GameObject linePref;
-	public static IPlayer[]  players = new IPlayer[2];
 
 
 	public Queue<CollidableEvent> collidableQueue = new Queue<CollidableEvent>();
@@ -26,23 +23,10 @@ public class GameArbiter : GameBehaviours {
 	public static Dictionary<string, LaserModel> lineModelDictionary = new Dictionary<string,LaserModel >();
 
 
-	private GameObject explosion;
-
-	private VectorGrid m_vectorGrid;
-	private VectorGrid m_vectorGrid2;
-
-	public int energyRegeneration;
-	private int regenerateCounter = 1;
-
     public static List<Player> mPlayers;
 
 
-	float _oldWidth;
-	float _oldHeight;
-	float _fontSize = 96;
-	float Ratio= 20; // public
-
-
+	
     public static GameArbiter Instance
     {
         get { return instance; }
@@ -55,62 +39,10 @@ public class GameArbiter : GameBehaviours {
         collidableQueue = new Queue<CollidableEvent>();
         actionQueue = new Queue<Action>();
 
-        //players = initPlayers();
 
         circlePref = circleReference;
         absorbePref = absorbeReference;
-        linePref = lineReference;
-
-        m_vectorGrid = GameObject.Find("VectorGrid").GetComponent<VectorGrid>();
-        m_vectorGrid2 = GameObject.Find("VectorGrid2").GetComponent<VectorGrid>();
-        explosion = (GameObject)Resources.Load("explosion3") as GameObject;
     }
-
-	// Use this for initialization
-    void Start()
-    {
-        
-
-    }
-    
-
-	private bool showEndGamePopUp = false;
-	private string winner= "";
-	void OnGUI(){
-
-
-
-		
-		if(showEndGamePopUp){
-			float scalex = (float) (Screen.width) / 320.0f; //your scale x
-			float scaley = (float) (Screen.height) / 480.0f; //your scale y
-			// substitute matrix - only scale is altered from standard
-			GUI.skin.textField.fontSize = (int)_fontSize;
-			GUI.skin.label.fontSize = (int)_fontSize;
-			GUIStyle g = GUI.skin.GetStyle("label");
-			g.fontSize = (int)(20.0f + 10.0f * Mathf.Sin(Time.time));
-
-
-			Rect  w =	GUI.Window(0 , centerRectangle(new Rect(20,20,120*scalex,50*scaley)), DoMyWindow, "Finish!");
-			_fontSize = Mathf.Min(Screen.width, Screen.height) / Ratio;
-
-		
-		}
-	}
-	public  void DoMyWindow(int windowID) {
-				if (GUI.Button(new Rect(10, 20,  100, 20), winner)){
-			showEndGamePopUp = false;
-			resetGame();
-		}
-
-	}
-	Rect centerRectangle ( Rect someRect  ) {
-		someRect.x = ( Screen.width - someRect.width ) / 2; 
-		someRect.y = ( Screen.height - someRect.height ) / 2;
-		
-		return someRect;
-	}
-
 
     public void ProcessTurnEvents()
     {
@@ -124,9 +56,6 @@ public class GameArbiter : GameBehaviours {
             CollidableEvent e = collidableQueue.Dequeue();
             eventHandling(e);
         }
-
-
-       
     }
 
 
@@ -231,14 +160,14 @@ public class GameArbiter : GameBehaviours {
 		return allLines;
 	}
 
-	public void resetGame(){
+	/*public void resetGame(){
 		DestroyAllLines();
 		foreach(IPlayer player in players){
 			player.Life = 5;
 			player.Energy = 5;
 		}
 
-	}
+	}*/
 
 	/*
 		Methode qui aurait du etre dans l'objet Grid
