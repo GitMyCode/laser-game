@@ -109,8 +109,6 @@ public class Rules : IRules
                 }
 
                 GameArbiter.Instance.clearArena();
-                Player winner = lineAtGoal.owner.GetComponent<Player>();
-                winner.State = Player.PlayerState.Winner;
                 SceneRoot.Instance.SceneState.State = StateBase.ESubState.EndGame;
                 
             }

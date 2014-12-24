@@ -59,32 +59,42 @@ public class HumanPlayer : Player {
                 }
                 Vector3 touchPos = pointToWorlCam(touch.position);
                 float dist = Vector2.Distance(touchPos, fingerTrackArray[touch.fingerId]);
-              
 
-                float intervalTime = Time.time - startTimeArray[touch.fingerId];
-                if (dist >= tapLength && !swipeCompleteArray[touch.fingerId] &&
-                   activeTouch == -1 && touch.phase == TouchPhase.Ended && fingerTrackArray[touch.fingerId] != Vector3.zero)
+
+                if (touch.phase == TouchPhase.Ended && isInZone(touchPos))
                 {
-                    activeTouch = touch.fingerId;
-                    swipeCompleteArray[touch.fingerId] = true;
+                    float intervalTime = Time.time - startTimeArray[touch.fingerId];
+                    if (dist >= tapLength && !swipeCompleteArray[touch.fingerId] &&
+                       activeTouch == -1 &&
+                       touch.phase == TouchPhase.Ended &&
+                       fingerTrackArray[touch.fingerId] != Vector3.zero)
+                    {
+                        activeTouch = touch.fingerId;
+                        swipeCompleteArray[touch.fingerId] = true;
 
-                    GameArbiter.Instance.actionQueue.Enqueue(new Action(fingerTrackArray[touch.fingerId], touchPos, intervalTime, Action.ActionType.ATTACK, gameObject));
+                        GameArbiter.Instance.actionQueue.Enqueue(new Action(fingerTrackArray[touch.fingerId],
+                            touchPos, intervalTime, Action.ActionType.ATTACK, gameObject));
+
+                    }
+
+                    if (dist < tapLength && !swipeCompleteArray[touch.fingerId] &&
+                       activeTouch == -1 && touch.phase == TouchPhase.Ended)
+                    {
+
+                        //				Debug.Log("distance :"+dist);
+                        //	Debug.Log("tracker.tapCount="+touch.tapCount);
+                        activeTouch = touch.fingerId;
+                        //	Debug.Log(touch.fingerId + " " + fingerTrackArray[touch.fingerId] + " " +  touch.position);
+                        swipeCompleteArray[touch.fingerId] = true;
+                        GameArbiter.Instance.actionQueue.Enqueue(new Action(fingerTrackArray[touch.fingerId], touchPos, intervalTime, Action.ActionType.DEFENSIVE, gameObject));
+                        DebugDraw.DrawSphere(touch.position, 10, Color.yellow);
+
+                    }
 
                 }
 
-                if (dist < tapLength && !swipeCompleteArray[touch.fingerId] &&
-                   activeTouch == -1 && touch.phase == TouchPhase.Ended)
-                {
 
-                    //				Debug.Log("distance :"+dist);
-                    //	Debug.Log("tracker.tapCount="+touch.tapCount);
-                    activeTouch = touch.fingerId;
-                    //	Debug.Log(touch.fingerId + " " + fingerTrackArray[touch.fingerId] + " " +  touch.position);
-                    swipeCompleteArray[touch.fingerId] = true;
-                    GameArbiter.Instance.actionQueue.Enqueue(new Action(fingerTrackArray[touch.fingerId], touchPos, intervalTime, Action.ActionType.DEFENSIVE, gameObject));
-                    DebugDraw.DrawSphere(touch.position, 10, Color.yellow);
-
-                }
+                
 
 
                 //when the touch has ended we can start accepting swipes again

@@ -72,6 +72,7 @@ public class Player : GameBehaviours, IPlayer{
             Life -= quantite;
             return true;
         }
+        State = PlayerState.Dead;
         Life = 0;
         return false;
     }
