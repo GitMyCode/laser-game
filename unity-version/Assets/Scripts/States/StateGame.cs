@@ -20,4 +20,20 @@ public class StateGame : StateBase {
     }
 
 
+    public override void OnUIInteract(GameObject reference)
+    {
+        if (reference.name == "replay")
+        {
+            foreach (Player p in SceneRoot.Instance.AllPlayers)
+            {
+                p.Life = 5;
+                p.Energy = 5;
+            }
+            GameArbiter.Instance.pop.SetActive(false);
+            SceneRoot.Instance.SceneState.State = ESubState.Default;
+        }
+
+    }
+
+
 }

@@ -189,16 +189,16 @@ public class GameArbiter : GameBehaviours {
 		}
 		return allLines;
 	}
-
-	/*public void resetGame(){
+    /*
+	public void resetGame(){
 		DestroyAllLines();
 		foreach(IPlayer player in players){
 			player.Life = 5;
 			player.Energy = 5;
 		}
 
-	}*/
-
+	}
+    */
 	/*
 		Methode qui aurait du etre dans l'objet Grid
 		Temporairement ici

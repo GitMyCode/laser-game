@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Players : IEnumerable<IPlayer> {
+public class Players : IEnumerable<Player> {
 
 
     private List<Player> players; 
@@ -20,13 +20,16 @@ public class Players : IEnumerable<IPlayer> {
     }
 
 
-    public IEnumerator<IPlayer> GetEnumerator()
+    public IEnumerator<Player> GetEnumerator()
     {
-        throw new System.NotImplementedException();
+        foreach (Player p in players)
+        {
+            yield return p;
+        }
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        throw new System.NotImplementedException();
+        return GetEnumerator();
     }
 }

@@ -40,7 +40,7 @@ public class StateBase {
 
     }
 
-    public void OnUIInteract(GameObject reference)
+    public virtual void OnUIInteract(GameObject reference)
     {
 
     }
