@@ -34,7 +34,7 @@ public class SceneRoot : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-	
+        mCurrentState.Update();
 	}
 
 
@@ -48,6 +48,18 @@ public class SceneRoot : MonoBehaviour {
 
     }
 
+    public void LoadLevel(string levelName)
+    {
+        //LevelToLoad = levelName;
+        Application.LoadLevel(levelName);
+    }
+	
+
+
+    public StateBase StateBase
+    {
+        get { return mCurrentState; }
+    }
 
     #region SceneRoot properties
     public StateBase SceneState

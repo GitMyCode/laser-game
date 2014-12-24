@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class StateBase {
 
-    public enum ESubState { Entering, Pause, Default, Exiting };
+    public enum ESubState { Entering, Pause, Default, Exiting, EndGame };
     public virtual string Name { get { return "Default"; } }
 
 
@@ -37,6 +37,8 @@ public class StateBase {
     }
     public virtual void Update()
     {
+
+        
 
     }
 
@@ -83,6 +85,10 @@ public class StateBase {
                 SetCursor(false);
 
                 mAudioFadeoutSpeed = 0.35f / (1f - mFadeInOutSprite.color.a) / AudioListener.volume;*/
+            }
+            else if (value == ESubState.EndGame)
+            {
+                
             }
 
             mCurrentState = value;

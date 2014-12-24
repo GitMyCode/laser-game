@@ -4,7 +4,8 @@ using System.Collections;
 public class GameBehaviours : MonoBehaviour {
     private void Update()
     {
-        if (SceneRoot.Instance.SceneState.State != StateBase.ESubState.Pause)
+        if (
+            SceneRoot.Instance.SceneState.State == StateBase.ESubState.Default)
         {
             GameUpdate();
             GameArbiter.Instance.ProcessTurnEvents();
@@ -22,7 +23,8 @@ public class GameBehaviours : MonoBehaviour {
     /// </summary>
     private void FixedUpdate()
     {
-        if (SceneRoot.Instance.SceneState.State != StateBase.ESubState.Pause)
+        if (
+            SceneRoot.Instance.SceneState.State == StateBase.ESubState.Default)
         {
             GameFixedUpdate();
            // GameArbiter.Instance.ProcessTurnEvents();
@@ -30,7 +32,8 @@ public class GameBehaviours : MonoBehaviour {
     }
     private void LateUpdate()
     {
-        if (SceneRoot.Instance.SceneState.State != StateBase.ESubState.Pause)
+        if (
+            SceneRoot.Instance.SceneState.State == StateBase.ESubState.Default)
         {
             GameLateUpdate();
             GameArbiter.Instance.ProcessTurnEvents();

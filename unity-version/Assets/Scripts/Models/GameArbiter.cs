@@ -28,7 +28,6 @@ public class GameArbiter : GameBehaviours {
 
     public IRules rules;
 
-    public GameObject pop;
 
 
     public static GameArbiter Instance
@@ -48,7 +47,6 @@ public class GameArbiter : GameBehaviours {
         absorbePref = absorbeReference;
 
         Debug.Log("Awake gamearbiter");
-        pop.gameObject.SetActive(false);
     }
 
     public void ProcessTurnEvents()
@@ -102,8 +100,6 @@ public class GameArbiter : GameBehaviours {
 
     public void endGame()
     {
-        pop.transform.Find("Text").GetComponent<Text>().text = "TEST";
-        pop.SetActive(true);
     }
     
 

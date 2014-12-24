@@ -98,7 +98,7 @@ public class Rules : IRules
             {
                 LaserModel lineAtGoal = GameArbiter.lineModelDictionary[lineCol.name];
                 hurtPlayer.damageEffect(lineAtGoal.head.transform.position);
-
+                
 
                 foreach (LaserModel lm in GameArbiter.lineModelDictionary.Values)
                 {
@@ -109,9 +109,10 @@ public class Rules : IRules
                 }
 
                 GameArbiter.Instance.clearArena();
-
-                SceneRoot.Instance.SceneState.State = StateBase.ESubState.Pause;
-                GameArbiter.Instance.endGame();
+                Player winner = lineAtGoal.owner.GetComponent<Player>();
+                winner.State = Player.PlayerState.Winner;
+                SceneRoot.Instance.SceneState.State = StateBase.ESubState.EndGame;
+                
             }
 
         }
