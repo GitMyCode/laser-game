@@ -30,7 +30,7 @@ public class StateGame : StateBase {
                     winnerName = p.Name;
                 }
             }
-            popUp.gameObject.GetComponent<Text>().text = winnerName;
+            popUp.transform.Find("Text").GetComponent<Text>().text = winnerName;
             popUp.SetActive(true);
         }
     }
