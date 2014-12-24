@@ -78,6 +78,8 @@ public class LaserModel {
 
 	public void Destroy(){
 		GameObject.Destroy(head);
+         
+
 	//	GameObject.Destroy(trail.reference);
     //		GameObject.Destroy(trail);
 	}

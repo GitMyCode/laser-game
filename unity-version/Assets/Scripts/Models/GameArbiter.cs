@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 
 public class GameArbiter : GameBehaviours {
@@ -26,7 +27,10 @@ public class GameArbiter : GameBehaviours {
     public static List<Player> mPlayers;
 
     public IRules rules;
-	
+
+    public GameObject pop;
+
+
     public static GameArbiter Instance
     {
         get { return instance; }
@@ -42,6 +46,9 @@ public class GameArbiter : GameBehaviours {
 
         circlePref = circleReference;
         absorbePref = absorbeReference;
+
+        Debug.Log("Awake gamearbiter");
+        pop.gameObject.SetActive(false);
     }
 
     public void ProcessTurnEvents()
@@ -88,11 +95,16 @@ public class GameArbiter : GameBehaviours {
      
 	}
 
-    public void gameRest()
+    public void restGame()
     {
         StartCoroutine(pauseGame());
     }
 
+    public void endGame()
+    {
+        pop.transform.Find("Text").GetComponent<Text>().text = "TEST";
+        pop.SetActive(true);
+    }
     
 
 	public void createLine(Action a){
@@ -199,11 +211,14 @@ public class GameArbiter : GameBehaviours {
 		}
         return false;
 	}
-	public static void DestroyAllLines(){
+	public void clearArena(){
 		foreach(LaserModel lm in lineModelDictionary.Values){
 			lm.Destroy();
+
 		}
 		lineModelDictionary.Clear();
+        collidableQueue.Clear();
+        actionQueue.Clear();
 
 	}
 

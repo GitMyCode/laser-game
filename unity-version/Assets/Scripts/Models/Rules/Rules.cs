@@ -56,15 +56,18 @@ public class Rules : IRules
 
             GameArbiter.lineModelDictionary.Remove(e.coll1.name);
             GameArbiter.lineModelDictionary.Remove(e.coll2.name);
-
+            
             thisModel.Destroy();
             otherModel.Destroy();
+            thisModel = null;
+            otherModel = null;
         }
     }
 
     public void LineWithGoal(CollidableEvent e)
     {
 
+        Debug.Log("event line avec goal");
         Collidable lineCol = e.getCollidableOfType(ECollidable.LINE);
         Collidable goalCol = e.getCollidableOfType(ECollidable.GOAL);
 
@@ -80,17 +83,22 @@ public class Rules : IRules
 
                 foreach (LaserModel lm in GameArbiter.lineModelDictionary.Values)
                 {
+                    if (lm.head != null)
+                    {
                     lm.showDieEffect();
-                    lm.Destroy();
+                    }
                 }
-                GameArbiter.lineModelDictionary.Clear();
-                GameArbiter.Instance.gameRest();
+
+                GameArbiter.Instance.clearArena();
+                GameArbiter.Instance.restGame();
                 
 
             }
             else //EndGame!
             {
-
+                SceneRoot.Instance.SceneState.State = StateBase.ESubState.Pause;
+                GameArbiter.Instance.clearArena();
+                GameArbiter.Instance.endGame();
             }
 
         }

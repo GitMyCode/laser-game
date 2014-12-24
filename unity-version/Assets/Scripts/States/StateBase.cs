@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class StateBase {
 
@@ -38,6 +39,21 @@ public class StateBase {
     {
 
     }
+
+    public void OnUIInteract(GameObject reference)
+    {
+
+    }
+    public void OnUIAction()
+    {
+        Debug.Log("click sur replay");
+    }
+
+    public virtual void OnUIAction(GameObject sender, Object data)
+    {
+       
+    }
+
 
 
 

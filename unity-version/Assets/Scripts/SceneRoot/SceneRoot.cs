@@ -38,7 +38,10 @@ public class SceneRoot : MonoBehaviour {
 	}
 
 
-
+    public void OnUIInteract(GameObject reference)
+    {
+        mCurrentState.OnUIInteract(reference);
+    }
 
     public void EndGame()
     {
