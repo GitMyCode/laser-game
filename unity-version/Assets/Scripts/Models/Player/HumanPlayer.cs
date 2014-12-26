@@ -52,22 +52,23 @@ public class HumanPlayer : Player {
         {
             foreach (Touch touch in Input.touches)
             {
-                if (touch.phase == TouchPhase.Began)
+
+                Vector3 touchPos = pointToWorlCam(touch.position);
+                if (touch.phase == TouchPhase.Began && isInZone(touchPos))
                 {
                     fingerTrackArray[touch.fingerId] = pointToWorlCam(touch.position);
                     startTimeArray[touch.fingerId] = Time.time;
                 }
-                Vector3 touchPos = pointToWorlCam(touch.position);
                 float dist = Vector2.Distance(touchPos, fingerTrackArray[touch.fingerId]);
 
 
-                if (touch.phase == TouchPhase.Ended && isInZone(touchPos))
+                if((!isInZone(touchPos) || touch.phase == TouchPhase.Ended) &&
+                    fingerTrackArray[touch.fingerId] != Vector3.zero
+                    )
                 {
                     float intervalTime = Time.time - startTimeArray[touch.fingerId];
                     if (dist >= tapLength && !swipeCompleteArray[touch.fingerId] &&
-                       activeTouch == -1 &&
-                       touch.phase == TouchPhase.Ended &&
-                       fingerTrackArray[touch.fingerId] != Vector3.zero)
+                       activeTouch == -1)
                     {
                         activeTouch = touch.fingerId;
                         swipeCompleteArray[touch.fingerId] = true;
@@ -76,6 +77,11 @@ public class HumanPlayer : Player {
                             touchPos, intervalTime, Action.ActionType.ATTACK, gameObject));
 
                     }
+                }
+
+                if (touch.phase == TouchPhase.Ended && isInZone(touchPos))
+                {
+                    float intervalTime = Time.time - startTimeArray[touch.fingerId];
 
                     if (dist < tapLength && !swipeCompleteArray[touch.fingerId] &&
                        activeTouch == -1 && touch.phase == TouchPhase.Ended)
