@@ -24,7 +24,6 @@ public class GameArbiter : GameBehaviours {
 	public static Dictionary<string, LaserModel> lineModelDictionary = new Dictionary<string,LaserModel >();
 
 
-    public static List<Player> mPlayers;
 
     public IRules rules;
 
@@ -41,6 +40,11 @@ public class GameArbiter : GameBehaviours {
         Application.targetFrameRate = 60;
         collidableQueue = new Queue<CollidableEvent>();
         actionQueue = new Queue<Action>();
+
+        /*
+         TODO
+         * Devrait etre initialiser par le SceneRoot
+         */
         rules = new Rules();
 
         circlePref = circleReference;
@@ -113,14 +117,28 @@ public class GameArbiter : GameBehaviours {
 				Transform goalTran = p.Goals[0].transform;
 				birthPosition.y = (goalTran.position.y - goalTran.localScale.y / 2);
 			}
-			
+
+
+
+            var direction = (a.endPos - a.startPos);
+            var distance = Vector2.Distance(a.startPos, a.endPos);
+            Debug.DrawRay(a.startPos,direction, Color.green,1);
 			LaserModel lm = new LaserModel(a,birthPosition);
-			lineModelDictionary.Add(lm.name,lm);
+			
+            lineModelDictionary.Add(lm.name,lm);
 
 		}
 
 
 	}
+
+    public Vector3 pointToWorlCam(Vector3 p)
+    {
+        Vector3 convertedPoint =  p ;//Camera.main.ScreenToWorldPoint(p);
+        convertedPoint.z = 0.0f;
+        return convertedPoint;
+    }
+    
 
 
 	public void defensiveAction(Action a ){

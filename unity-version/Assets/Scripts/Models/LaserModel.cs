@@ -37,11 +37,15 @@ public class LaserModel {
 		head = (GameObject) GameObject.Instantiate(linePrefab, birthPlace,(Quaternion.identity));
         Collidable collidable = head.GetComponent<Collidable>();
         collidable.Owner = owner;
-        
+
+
 		float angleX = action.endPos.x - action.startPos.x;
 		float angleY = action.endPos.y - action.startPos.y;
 		head.rigidbody2D.velocity = new Vector2(angleX,angleY).normalized *speed;
        // head.gameObject.GetComponent<CollidableBase>().playerOwner = (Player)owner;
+
+        head.gameObject.GetComponent<TrailRenderer>().time = getConvertedLengthToTime(head, speed, distance);
+
 
 		head.name = lineNameBase+id;
 		head.gameObject.name = head.name;
@@ -73,7 +77,7 @@ public class LaserModel {
 		float time = ((laser.transform.rigidbody2D.velocity.normalized/(laser.rigidbody2D.velocity.magnitude)).magnitude);
 		time = time* distance;
 		
-		return time;
+		return time - (time/5);
 	}
 
 	public void Destroy(){

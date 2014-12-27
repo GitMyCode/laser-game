@@ -8,6 +8,12 @@ public class StateGame : StateBase {
     GameObject popUp;
     public override void Awake()
     {
+
+        /*
+         * TOTO
+         Tout l'initiation necessaire au jeu doit etre fait ici
+         */
+
         base.Awake();
         State = ESubState.Default;
         SceneRoot.Instance.AllPlayers = new Players();
