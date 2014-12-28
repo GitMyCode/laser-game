@@ -3,12 +3,12 @@ using System.Collections;
 
 public class EnergyRegen : GameBehaviours {
 
-    Player player;
+    MyPlayer player;
     public int energyRegeneration = 120;
     private int regenerateCounter = 1;
 	// Use this for initialization
 	void Start () {
-        player = transform.GetComponent<Player>();
+        player = transform.GetComponent<MyPlayer>();
 	}
 	
 	// Update is called once per frame

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TestPlayer : Player {
+public class TestPlayer : MyPlayer {
 
 
 

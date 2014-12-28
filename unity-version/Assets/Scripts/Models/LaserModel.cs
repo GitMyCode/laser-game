@@ -25,7 +25,7 @@ public class LaserModel {
         
     }
 
-	public LaserModel(Action action,Vector3 birthPlace){
+	public LaserModel(MyAction action,Vector3 birthPlace){
         
 		float distance = Vector3.Distance(action.startPos,action.endPos);
 		float speed    = getSpeedOfLine(distance,action.timeInterval);

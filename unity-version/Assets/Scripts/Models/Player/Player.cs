@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : GameBehaviours, IPlayer{
+public class MyPlayer : GameBehaviours, IPlayer{
 
     public enum PlayerState
     {
@@ -224,7 +224,7 @@ public class Player : GameBehaviours, IPlayer{
         {
             if (value != State)
             {
-                if (value == Player.PlayerState.Dead)
+                if (value == MyPlayer.PlayerState.Dead)
                 {
                     Die();
                 }

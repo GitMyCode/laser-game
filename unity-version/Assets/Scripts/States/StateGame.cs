@@ -23,9 +23,9 @@ public class StateGame : StateBase {
         if (SceneRoot.Instance.SceneState.State == ESubState.EndGame)
         {
             string winnerName = "";
-            foreach (Player p in SceneRoot.Instance.AllPlayers)
+            foreach (MyPlayer p in SceneRoot.Instance.AllPlayers)
             {
-                if (p.State != Player.PlayerState.Dead)
+                if (p.State != MyPlayer.PlayerState.Dead)
                 {
                     winnerName = p.Name;
                 }

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class HumanPlayer : Player {
+public class HumanPlayer : MyPlayer {
 
 
     
@@ -73,8 +73,8 @@ public class HumanPlayer : Player {
                         activeTouch = touch.fingerId;
                         swipeCompleteArray[touch.fingerId] = true;
 
-                        GameArbiter.Instance.actionQueue.Enqueue(new Action(fingerTrackArray[touch.fingerId],
-                            touchPos, intervalTime, Action.ActionType.ATTACK, gameObject));
+                        GameArbiter.Instance.actionQueue.Enqueue(new MyAction(fingerTrackArray[touch.fingerId],
+                            touchPos, intervalTime, MyAction.ActionType.ATTACK, gameObject));
 
                     }
                 }
@@ -92,7 +92,7 @@ public class HumanPlayer : Player {
                         activeTouch = touch.fingerId;
                         //	Debug.Log(touch.fingerId + " " + fingerTrackArray[touch.fingerId] + " " +  touch.position);
                         swipeCompleteArray[touch.fingerId] = true;
-                        GameArbiter.Instance.actionQueue.Enqueue(new Action(fingerTrackArray[touch.fingerId], touchPos, intervalTime, Action.ActionType.DEFENSIVE, gameObject));
+                        GameArbiter.Instance.actionQueue.Enqueue(new MyAction(fingerTrackArray[touch.fingerId], touchPos, intervalTime, MyAction.ActionType.DEFENSIVE, gameObject));
                         DebugDraw.DrawSphere(touch.position, 10, Color.yellow);
 
                     }

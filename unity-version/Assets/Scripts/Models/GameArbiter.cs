@@ -19,12 +19,12 @@ public class GameArbiter : GameBehaviours {
 
 
 	public Queue<CollidableEvent> collidableQueue = new Queue<CollidableEvent>();
-	public Queue<Action> actionQueue = new Queue<Action>();
+	public Queue<MyAction> actionQueue = new Queue<MyAction>();
 
 	public static Dictionary<string, LaserModel> lineModelDictionary = new Dictionary<string,LaserModel >();
 
 
-    public static List<Player> mPlayers;
+    public static List<MyPlayer> mPlayers;
 
     public IRules rules;
 
@@ -40,7 +40,7 @@ public class GameArbiter : GameBehaviours {
         instance = this;
         Application.targetFrameRate = 60;
         collidableQueue = new Queue<CollidableEvent>();
-        actionQueue = new Queue<Action>();
+        actionQueue = new Queue<MyAction>();
         rules = new Rules();
 
         circlePref = circleReference;
@@ -53,7 +53,7 @@ public class GameArbiter : GameBehaviours {
     {
         while (actionQueue.Count > 0)
         {
-            Action a = actionQueue.Dequeue();
+            MyAction a = actionQueue.Dequeue();
             actionHandling(a);
         }
         while (collidableQueue.Count > 0)
@@ -65,15 +65,15 @@ public class GameArbiter : GameBehaviours {
 
 
 
-    public void actionHandling(Action a)
+    public void actionHandling(MyAction a)
     {
         switch (a.action)
         {
-            case Action.ActionType.DEFENSIVE:
+            case MyAction.ActionType.DEFENSIVE:
                 {
                     defensiveAction(a);
                 } break;
-            case Action.ActionType.ATTACK:
+            case MyAction.ActionType.ATTACK:
                 {
                     createLine(a);
                 } break;
@@ -103,10 +103,10 @@ public class GameArbiter : GameBehaviours {
     }
     
 
-	public void createLine(Action a){
+	public void createLine(MyAction a){
 
             
-        IPlayer p = a.owner.GetComponent<Player>();
+        IPlayer p = a.owner.GetComponent<MyPlayer>();
 		if(p.tryRemoveEnergy(1)){
 			Vector3 birthPosition = a.endPos;
 			if(p.Goals[0].tag == "goalP2"){
@@ -123,11 +123,11 @@ public class GameArbiter : GameBehaviours {
 	}
 
 
-	public void defensiveAction(Action a ){
+	public void defensiveAction(MyAction a ){
 		List<GameObject> trappedLines = findZoneContainingForCircle(a.endPos);
 		if(trappedLines.Count > 0){
 			foreach (GameObject gm in trappedLines){
-				a.owner.GetComponent<Player>().tryAddEnergy(2);
+				a.owner.GetComponent<MyPlayer>().tryAddEnergy(2);
 				LaserModel lm = lineModelDictionary[gm.name];
 				lm.head.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
 			}
