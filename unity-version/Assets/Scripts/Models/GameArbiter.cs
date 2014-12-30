@@ -145,7 +145,7 @@ public class GameArbiter : GameBehaviours {
 		List<GameObject> trappedLines = findZoneContainingForCircle(a.endPos);
 		if(trappedLines.Count > 0){
 			foreach (GameObject gm in trappedLines){
-				a.owner.GetComponent<Player>().tryAddEnergy(2);
+				a.owner.GetComponent<Player>().tryAddEnergy(1);
 				LaserModel lm = lineModelDictionary[gm.name];
 				lm.head.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
 			}

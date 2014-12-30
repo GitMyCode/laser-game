@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts.Interfaces;
 
-public class Player : GameBehaviours, IPlayer{
+public class Player : GameBehaviours, IPlayer, ISubject{
 
     public enum PlayerState
     {
@@ -11,6 +12,7 @@ public class Player : GameBehaviours, IPlayer{
         Winner = 3
     }
 
+    public ArrayList observers = new ArrayList();
     private PlayerState state;
     private int life;
     private int energy;
@@ -48,6 +50,16 @@ public class Player : GameBehaviours, IPlayer{
         int origSizeText = textOutput.fontSize;
         textOutput.pixelOffset = new Vector2(pixOff.x * scalex, pixOff.y * scaley);
         textOutput.fontSize = (int)(origSizeText * scalex);
+
+        this.attach(transform.GetComponent<Energy>());
+    }
+
+    public void attach(Observer energy)
+    {
+        if (observers.Contains(energy) == false)
+        {
+            observers.Add(energy);
+        }
     }
         
 
@@ -83,6 +95,11 @@ public class Player : GameBehaviours, IPlayer{
         if (Energy < 5)
         {
             Energy += quantite;
+            if (this.name == "Player1")
+            {
+                notifyObservers();
+            }
+
             if (Energy > 5)
             {
                 Energy = 5;
@@ -91,11 +108,17 @@ public class Player : GameBehaviours, IPlayer{
         }
         return false;
     }
+
     public bool tryRemoveEnergy( int quantite)
     {
         if (quantite >= 0 && Energy >= quantite)
         {
             Energy -= quantite;
+            if (this.name == "Player1")
+            {
+                notifyObservers();
+            }
+
             return true;
         }
         return false;
@@ -233,4 +256,17 @@ public class Player : GameBehaviours, IPlayer{
         }
     }
 
+
+    public void notifyObservers()
+    {
+        foreach (Observer item in observers)
+        {
+            item.updateBar(this.Energy);
+        }
+    }
+
+    public void detach(Observer observer)
+    {
+        throw new System.NotImplementedException();
+    }
 }
