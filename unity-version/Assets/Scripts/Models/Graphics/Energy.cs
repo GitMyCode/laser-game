@@ -22,7 +22,8 @@ using UnityEngine;
 
           cachedY = energyTransform.position.y;
           maxValue = energyTransform.position.x; // start position of energy bar
-          minValue = energyTransform.position.x - energyTransform.rect.width;
+       //   minValue = energyTransform.position.x - energyTransform.rect.width;
+          minValue = energyTransform.rect.xMin - energyTransform.rect.xMax;
           maxEnergy = 5;
       }
 
