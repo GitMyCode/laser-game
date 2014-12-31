@@ -12,7 +12,7 @@ public class Player : GameBehaviours, IPlayer, ISubject{
         Winner = 3
     }
 
-    public ArrayList observers = new ArrayList();
+    public  ArrayList observers = new ArrayList();
     private PlayerState state;
     private int life;
     private int energy;
@@ -28,7 +28,7 @@ public class Player : GameBehaviours, IPlayer, ISubject{
     public IPlayer playerImpl;
     public enum Typee{AI, HUMAN} 
     // peut etre ajouter une prefab pour un style de ligne et cercle
-
+    GameObject barIndicator;
 
 
     protected void Awake()
@@ -50,8 +50,8 @@ public class Player : GameBehaviours, IPlayer, ISubject{
         int origSizeText = textOutput.fontSize;
         textOutput.pixelOffset = new Vector2(pixOff.x * scalex, pixOff.y * scaley);
         textOutput.fontSize = (int)(origSizeText * scalex);
-
-        this.attach(transform.GetComponent<Energy>());
+        barIndicator = GameObject.Find("BarIndicator");
+        this.attach(barIndicator.GetComponent<Energy>());
     }
 
     public void attach(Observer energy)
@@ -82,10 +82,12 @@ public class Player : GameBehaviours, IPlayer, ISubject{
         if (Life - quantite > 0)
         {
             Life -= quantite;
+            notifyObservers();
             return true;
         }
         State = PlayerState.Dead;
         Life = 0;
+        notifyObservers();
         return false;
     }
 
@@ -95,10 +97,9 @@ public class Player : GameBehaviours, IPlayer, ISubject{
         if (Energy < 5)
         {
             Energy += quantite;
-            if (this.name == "Player1")
-            {
-                notifyObservers();
-            }
+
+           notifyObservers();
+
 
             if (Energy > 5)
             {
@@ -114,10 +115,7 @@ public class Player : GameBehaviours, IPlayer, ISubject{
         if (quantite >= 0 && Energy >= quantite)
         {
             Energy -= quantite;
-            if (this.name == "Player1")
-            {
-                notifyObservers();
-            }
+            notifyObservers();
 
             return true;
         }
@@ -261,7 +259,7 @@ public class Player : GameBehaviours, IPlayer, ISubject{
     {
         foreach (Observer item in observers)
         {
-            item.updateBar(this.Energy);
+            item.updateBar(this);
         }
     }
 

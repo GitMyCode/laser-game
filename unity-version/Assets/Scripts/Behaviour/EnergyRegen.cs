@@ -8,11 +8,14 @@ public class EnergyRegen : GameBehaviours,ISubject {
     public int energyRegeneration = 120;
     private int regenerateCounter = 1;
     public ArrayList observers = new ArrayList();
+    GameObject barIndicator;
 
 	// Use this for initialization
 	void Start () {
         player = transform.GetComponent<Player>();
-        this.attach(transform.GetComponent<Energy>());
+
+        barIndicator = GameObject.Find("BarIndicator");
+        this.attach(barIndicator.GetComponent<Energy>());
 	}
 
     public void attach(Observer observer)
@@ -39,10 +42,7 @@ public class EnergyRegen : GameBehaviours,ISubject {
         if (player.Energy < 5)
         {
             player.Energy += quantite;
-            if (player.Name == "Player1")
-            {
-                notifyObservers();
-            }
+             notifyObservers();
            
             if (player.Energy > 5)
             {
@@ -58,7 +58,7 @@ public class EnergyRegen : GameBehaviours,ISubject {
     {
         foreach (Observer item in observers)
         {
-            item.updateBar(player.Energy);
+            item.updateBar(player);
         }
     }
 
