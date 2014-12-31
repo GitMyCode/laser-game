@@ -45,7 +45,7 @@ using UnityEngine.UI;
               HandleLifeBar(player.Life, lifeTransformP1, visualHealthP1);
           }
           else {
-            //  HandleenergyBar(player.Energy, lifeTransformP2, visualHealthP2);
+              HandleenergyBar(player.Life, lifeTransformP2, visualHealthP2);
           }
          
       }

@@ -39,17 +39,17 @@ public class Player : GameBehaviours, IPlayer, ISubject{
 
     protected override void Start()
     {
-        textOutput = GetComponent<GUIText>();
+        //textOutput = GetComponent<GUIText>();
         life = 5;
         energy = 5;
         base.Start();
 
-        float scalex = (float)(Screen.width) / 320.0f; //your scale x
-        float scaley = (float)(Screen.height) / 480.0f; //your scale y
-        Vector2 pixOff = textOutput.pixelOffset; //your pixel offset on screen
-        int origSizeText = textOutput.fontSize;
-        textOutput.pixelOffset = new Vector2(pixOff.x * scalex, pixOff.y * scaley);
-        textOutput.fontSize = (int)(origSizeText * scalex);
+      //  float scalex = (float)(Screen.width) / 320.0f; //your scale x
+      //  float scaley = (float)(Screen.height) / 480.0f; //your scale y
+      //  Vector2 pixOff = textOutput.pixelOffset; //your pixel offset on screen
+      //  int origSizeText = textOutput.fontSize;
+       // textOutput.pixelOffset = new Vector2(pixOff.x * scalex, pixOff.y * scaley);
+        //textOutput.fontSize = (int)(origSizeText * scalex);
         barIndicator = GameObject.Find("BarIndicator");
         this.attach(barIndicator.GetComponent<Energy>());
     }
@@ -72,7 +72,7 @@ public class Player : GameBehaviours, IPlayer, ISubject{
 
     protected override void GameFixedUpdate()
     {
-        textOutput.text = ToString();
+        //textOutput.text = ToString();
     }
 
 
