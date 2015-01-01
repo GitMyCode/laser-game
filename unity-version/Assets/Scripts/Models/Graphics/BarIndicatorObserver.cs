@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-  public class Energy : MonoBehaviour, Observer
+  public class BarIndicatorObserver : MonoBehaviour, Observer
     {
       public RectTransform energyTransformP1;
       public RectTransform lifeTransformP1;

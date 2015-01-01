@@ -51,7 +51,7 @@ public class Player : GameBehaviours, IPlayer, ISubject{
        // textOutput.pixelOffset = new Vector2(pixOff.x * scalex, pixOff.y * scaley);
         //textOutput.fontSize = (int)(origSizeText * scalex);
         barIndicator = GameObject.Find("BarIndicator");
-        this.attach(barIndicator.GetComponent<Energy>());
+        this.attach(barIndicator.GetComponent<BarIndicatorObserver>());
     }
 
     public void attach(Observer energy)

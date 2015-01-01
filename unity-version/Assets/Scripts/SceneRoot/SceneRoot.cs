@@ -26,7 +26,14 @@ public class SceneRoot : MonoBehaviour {
         instance = this;
         if (mCurrentState == null)
         {
-            mCurrentState = new StateGame();
+            if (UIManagerScript.state.GetType() == typeof(StateSingle))
+            {
+                mCurrentState = new StateSingle();
+            }
+            else {
+                mCurrentState = new StateMultiplayer();
+            }
+                
         }
 
         mCurrentState.Awake();

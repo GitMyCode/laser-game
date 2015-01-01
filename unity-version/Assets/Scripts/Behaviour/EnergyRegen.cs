@@ -15,7 +15,7 @@ public class EnergyRegen : GameBehaviours,ISubject {
         player = transform.GetComponent<Player>();
 
         barIndicator = GameObject.Find("BarIndicator");
-        this.attach(barIndicator.GetComponent<Energy>());
+        this.attach(barIndicator.GetComponent<BarIndicatorObserver>());
 	}
 
     public void attach(Observer observer)

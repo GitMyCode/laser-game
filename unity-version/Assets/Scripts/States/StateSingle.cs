@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-public class StateGame : StateBase {
+public class StateSingle : StateBase {
 
 
     public override string Name { get { return "Game"; } }
@@ -46,7 +46,7 @@ public class StateGame : StateBase {
     {
         if (reference.name == "replay")
         {
-            SceneRoot.Instance.LoadLevel("LaserPlay");
+            SceneRoot.Instance.LoadLevel("LineWar");
             popUp.SetActive(false);
             SceneRoot.Instance.SceneState.State = ESubState.Default;
         }
