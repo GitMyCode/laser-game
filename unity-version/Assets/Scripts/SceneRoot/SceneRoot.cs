@@ -10,7 +10,6 @@ public class SceneRoot : MonoBehaviour {
 
     private Players mPlayers;
 	private GameObject gm;
-	private NetworkManager nt;
 
     public static SceneRoot Instance
     {
@@ -33,30 +32,13 @@ public class SceneRoot : MonoBehaviour {
 				mCurrentState = UIManagerScript.state; // SINGLE PLAYER
             }
             else {
-				networkInitialisation();
+                mCurrentState = UIManagerScript.state;
             }
                 
         }
 		mCurrentState.Awake();
         
     }
-
-	private void networkInitialisation(){
-		gm = GameObject.Find("Main Camera");
-		nt = gm.AddComponent("NetworkManager") as NetworkManager;
-		StartCoroutine(ConnectionApproved());
-		mCurrentState = UIManagerScript.state;
-	}
-
-	IEnumerator ConnectionApproved()
-	{
-		while (!NetworkManager.connected)
-		{
-			Debug.Log("NOT CONNECTED");
-			yield return 0;
-		}
-	}
-
 
 	// Update is called once per frame
 	void Update () {
