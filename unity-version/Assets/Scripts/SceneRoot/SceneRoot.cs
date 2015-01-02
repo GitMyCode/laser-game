@@ -6,10 +6,9 @@ public class SceneRoot : MonoBehaviour {
 
     private static SceneRoot instance;
     private StateBase mCurrentState;
-	private bool connectionOk = false;
 
     private Players mPlayers;
-	private GameObject gm;
+
 
     public static SceneRoot Instance
     {
