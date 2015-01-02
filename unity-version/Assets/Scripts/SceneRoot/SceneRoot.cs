@@ -27,14 +27,7 @@ public class SceneRoot : MonoBehaviour {
         instance = this;
         if (mCurrentState == null)
         {
-            if (UIManagerScript.state.GetType() == typeof(StateSingle))
-            {
-				mCurrentState = UIManagerScript.state; // SINGLE PLAYER
-            }
-            else {
-                mCurrentState = UIManagerScript.state;
-            }
-                
+             mCurrentState = new StateSingle();
         }
 		mCurrentState.Awake();
         
