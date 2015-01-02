@@ -7,16 +7,18 @@ public class NetworkManager : MonoBehaviour {
     private const string gameName = "Jennifer";
     private VectorGrid m_vectorGrid2;
     //public GameObject playerPrefab;
+	public static bool connected = false;
 
     private void StartServer()
     {
-        Network.InitializeServer(4, 25000, !Network.HavePublicAddress());
+        Network.InitializeServer(2, 25000, !Network.HavePublicAddress());
         MasterServer.RegisterHost(typeName, gameName);
+		connected = true;
     }
 
     void OnServerInitialized()
     {
-       SpawnPlayer();
+
     }
 
 
@@ -59,17 +61,12 @@ public class NetworkManager : MonoBehaviour {
     private void JoinServer(HostData hostData)
     {
         Network.Connect(hostData);
+
     }
 
     void OnConnectedToServer()
     {
-        SpawnPlayer();
-    }
-    
-    private void SpawnPlayer()
-    {
-       // Network.Instantiate(playerPrefab, new Vector3(0.8f, 0.95f, 2.54209f), Quaternion.identity, 0);
-        
+
     }
     
 	// Use this for initialization

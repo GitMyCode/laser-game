@@ -7,9 +7,10 @@ using UnityEngine;
 
     class StateMultiplayer : StateBase
     {
-        StateSingle refToSingle;
+        StateSingle refToSingle; // behaviour of the game
         public override void Awake()
         {
+
             //Create room
             refToSingle = new StateSingle();
             refToSingle.Awake();

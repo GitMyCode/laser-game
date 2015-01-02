@@ -6,9 +6,11 @@ public class SceneRoot : MonoBehaviour {
 
     private static SceneRoot instance;
     private StateBase mCurrentState;
-
+	private bool connectionOk = false;
 
     private Players mPlayers;
+	private GameObject gm;
+	private NetworkManager nt;
 
     public static SceneRoot Instance
     {
@@ -28,16 +30,33 @@ public class SceneRoot : MonoBehaviour {
         {
             if (UIManagerScript.state.GetType() == typeof(StateSingle))
             {
-                mCurrentState = new StateSingle();
+				mCurrentState = UIManagerScript.state; // SINGLE PLAYER
             }
             else {
-                mCurrentState = new StateMultiplayer();
+				networkInitialisation();
             }
                 
         }
-
-        mCurrentState.Awake();
+		mCurrentState.Awake();
+        
     }
+
+	private void networkInitialisation(){
+		gm = GameObject.Find("Main Camera");
+		nt = gm.AddComponent("NetworkManager") as NetworkManager;
+		StartCoroutine(ConnectionApproved());
+		mCurrentState = UIManagerScript.state;
+	}
+
+	IEnumerator ConnectionApproved()
+	{
+		while (!NetworkManager.connected)
+		{
+			Debug.Log("NOT CONNECTED");
+			yield return 0;
+		}
+	}
+
 
 	// Update is called once per frame
 	void Update () {

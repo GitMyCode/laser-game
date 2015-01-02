@@ -4,6 +4,7 @@ using System.Collections;
 public class UIManagerScript : MonoBehaviour {
 
     public static StateBase state;
+
 	public void StartGameSingle()
 	{
         state = new StateSingle();
@@ -13,7 +14,7 @@ public class UIManagerScript : MonoBehaviour {
     public void StartGameMultiplayer()
     {
         state = new StateMultiplayer();
-        Application.LoadLevel("LineWar");
+		Application.LoadLevel("LineWar");
     }
 
 }
