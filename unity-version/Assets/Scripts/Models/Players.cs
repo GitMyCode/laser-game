@@ -2,27 +2,27 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Players : IEnumerable<Player> {
+public class Players : IEnumerable<PlayerBase> {
 
 
-    private List<Player> players; 
+    private List<PlayerBase> players; 
 
 
     public Players()
     {
-        players = new List<Player>();
+        players = new List<PlayerBase>();
     }
 
     public void Awake()
     {
-         players = new List<Player>( GameObject.FindObjectsOfType<Player>() );
+         players = new List<PlayerBase>( GameObject.FindObjectsOfType<PlayerBase>() );
         
     }
 
 
-    public IEnumerator<Player> GetEnumerator()
+    public IEnumerator<PlayerBase> GetEnumerator()
     {
-        foreach (Player p in players)
+        foreach (PlayerBase p in players)
         {
             yield return p;
         }

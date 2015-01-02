@@ -4,7 +4,7 @@ using Assets.Scripts.Interfaces;
 
 public class EnergyRegen : GameBehaviours,ISubject {
 
-    Player player;
+    PlayerBase player;
     public int energyRegeneration = 120;
     private int regenerateCounter = 1;
     public ArrayList observers = new ArrayList();
@@ -12,7 +12,7 @@ public class EnergyRegen : GameBehaviours,ISubject {
 
 	// Use this for initialization
 	void Start () {
-        player = transform.GetComponent<Player>();
+        player = transform.GetComponent<PlayerBase>();
 
         barIndicator = GameObject.Find("BarIndicator");
         this.attach(barIndicator.GetComponent<BarIndicatorObserver>());

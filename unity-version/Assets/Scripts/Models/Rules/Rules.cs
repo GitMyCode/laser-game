@@ -74,7 +74,7 @@ public class Rules : IRules
 
         if (GameArbiter.lineModelDictionary.ContainsKey(lineCol.name))
         {
-            Player hurtPlayer = goalCol.owner.GetComponent<Player>();
+            PlayerBase hurtPlayer = goalCol.owner.GetComponent<PlayerBase>();
             if (hurtPlayer.tryRemoveLife(1))
             {
                 LaserModel lineAtGoal = GameArbiter.lineModelDictionary[lineCol.name];

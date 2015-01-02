@@ -19,7 +19,7 @@ public class GameArbiter : GameBehaviours {
 
 
 	public Queue<CollidableEvent> collidableQueue = new Queue<CollidableEvent>();
-	public Queue<Action> actionQueue = new Queue<Action>();
+	public Queue<PlayerAction> actionQueue = new Queue<PlayerAction>();
 
 	public static Dictionary<string, LaserModel> lineModelDictionary = new Dictionary<string,LaserModel >();
 
@@ -39,7 +39,7 @@ public class GameArbiter : GameBehaviours {
         instance = this;
         Application.targetFrameRate = 60;
         collidableQueue = new Queue<CollidableEvent>();
-        actionQueue = new Queue<Action>();
+        actionQueue = new Queue<PlayerAction>();
 
         /*
          TODO
@@ -57,7 +57,7 @@ public class GameArbiter : GameBehaviours {
     {
         while (actionQueue.Count > 0)
         {
-            Action a = actionQueue.Dequeue();
+            PlayerAction a = actionQueue.Dequeue();
             actionHandling(a);
         }
         while (collidableQueue.Count > 0)
@@ -69,15 +69,15 @@ public class GameArbiter : GameBehaviours {
 
 
 
-    public void actionHandling(Action a)
+    public void actionHandling(PlayerAction a)
     {
         switch (a.action)
         {
-            case Action.ActionType.DEFENSIVE:
+            case PlayerAction.ActionType.DEFENSIVE:
                 {
                     defensiveAction(a);
                 } break;
-            case Action.ActionType.ATTACK:
+            case PlayerAction.ActionType.ATTACK:
                 {
                     createLine(a);
                 } break;
@@ -107,10 +107,10 @@ public class GameArbiter : GameBehaviours {
     }
     
 
-	public void createLine(Action a){
+	public void createLine(PlayerAction a){
 
             
-        IPlayer p = a.owner.GetComponent<Player>();
+        IPlayer p = a.owner.GetComponent<PlayerBase>();
 		if(p.tryRemoveEnergy(1)){
 			Vector3 birthPosition = a.endPos;
 			if(p.Goals[0].tag == "goalP2"){
@@ -141,11 +141,11 @@ public class GameArbiter : GameBehaviours {
     
 
 
-	public void defensiveAction(Action a ){
+	public void defensiveAction(PlayerAction a ){
 		List<GameObject> trappedLines = findZoneContainingForCircle(a.endPos);
 		if(trappedLines.Count > 0){
 			foreach (GameObject gm in trappedLines){
-				a.owner.GetComponent<Player>().tryAddEnergy(1);
+				a.owner.GetComponent<PlayerBase>().tryAddEnergy(1);
 				LaserModel lm = lineModelDictionary[gm.name];
 				lm.head.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
 			}
