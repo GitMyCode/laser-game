@@ -73,7 +73,7 @@ public class AIPlayer : Player
             blockCounter = 0;
         }
         blockCounter++;
-
+        
        // textOutput.text = ToString();
     }
 
@@ -95,6 +95,7 @@ public class AIPlayer : Player
 
     void launchLine()
     {
+        
         GameObject zone = zones[0];
         float randomX = Random.Range(zone.transform.position.x - zone.transform.localScale.x / 2, zone.transform.position.x + zone.transform.localScale.x / 2);
         float randomY = Random.Range((zone.transform.position.y - zone.transform.localScale.y / 2), (zone.transform.position.y));
@@ -106,7 +107,7 @@ public class AIPlayer : Player
 
         Debug.DrawRay(start, end, Color.red, 2, false);
         GameArbiter.Instance.actionQueue.Enqueue(new Action(start, end, Random.Range(0.1f, 0.3f), Action.ActionType.ATTACK, gameObject));
-
+        
     }
 
     IEnumerator reload()

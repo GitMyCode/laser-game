@@ -63,8 +63,8 @@ public class LaserModel {
 			speed = speed / 2;
 		}
 
-		if(speed > 80){
-			speed = 80;
+		if(speed > 90){
+			speed = 90;
 		}
 		return speed;
 	}

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts.Interfaces;
 
-public class Player : GameBehaviours, IPlayer{
+public class Player : GameBehaviours, IPlayer, ISubject{
 
     public enum PlayerState
     {
@@ -11,6 +12,7 @@ public class Player : GameBehaviours, IPlayer{
         Winner = 3
     }
 
+    public  ArrayList observers = new ArrayList();
     private PlayerState state;
     private int life;
     private int energy;
@@ -26,7 +28,7 @@ public class Player : GameBehaviours, IPlayer{
     public IPlayer playerImpl;
     public enum Typee{AI, HUMAN} 
     // peut etre ajouter une prefab pour un style de ligne et cercle
-
+    GameObject barIndicator;
 
 
     protected void Awake()
@@ -37,17 +39,27 @@ public class Player : GameBehaviours, IPlayer{
 
     protected override void Start()
     {
-        textOutput = GetComponent<GUIText>();
+        //textOutput = GetComponent<GUIText>();
         life = 5;
         energy = 5;
         base.Start();
 
-        float scalex = (float)(Screen.width) / 320.0f; //your scale x
-        float scaley = (float)(Screen.height) / 480.0f; //your scale y
-        Vector2 pixOff = textOutput.pixelOffset; //your pixel offset on screen
-        int origSizeText = textOutput.fontSize;
-        textOutput.pixelOffset = new Vector2(pixOff.x * scalex, pixOff.y * scaley);
-        textOutput.fontSize = (int)(origSizeText * scalex);
+      //  float scalex = (float)(Screen.width) / 320.0f; //your scale x
+      //  float scaley = (float)(Screen.height) / 480.0f; //your scale y
+      //  Vector2 pixOff = textOutput.pixelOffset; //your pixel offset on screen
+      //  int origSizeText = textOutput.fontSize;
+       // textOutput.pixelOffset = new Vector2(pixOff.x * scalex, pixOff.y * scaley);
+        //textOutput.fontSize = (int)(origSizeText * scalex);
+        barIndicator = GameObject.Find("BarIndicator");
+        this.attach(barIndicator.GetComponent<BarIndicatorObserver>());
+    }
+
+    public void attach(Observer energy)
+    {
+        if (observers.Contains(energy) == false)
+        {
+            observers.Add(energy);
+        }
     }
         
 
@@ -60,7 +72,7 @@ public class Player : GameBehaviours, IPlayer{
 
     protected override void GameFixedUpdate()
     {
-        textOutput.text = ToString();
+        //textOutput.text = ToString();
     }
 
 
@@ -70,10 +82,12 @@ public class Player : GameBehaviours, IPlayer{
         if (Life - quantite > 0)
         {
             Life -= quantite;
+            notifyObservers();
             return true;
         }
         State = PlayerState.Dead;
         Life = 0;
+        notifyObservers();
         return false;
     }
 
@@ -83,6 +97,10 @@ public class Player : GameBehaviours, IPlayer{
         if (Energy < 5)
         {
             Energy += quantite;
+
+           notifyObservers();
+
+
             if (Energy > 5)
             {
                 Energy = 5;
@@ -91,11 +109,14 @@ public class Player : GameBehaviours, IPlayer{
         }
         return false;
     }
+
     public bool tryRemoveEnergy( int quantite)
     {
         if (quantite >= 0 && Energy >= quantite)
         {
             Energy -= quantite;
+            notifyObservers();
+
             return true;
         }
         return false;
@@ -233,4 +254,17 @@ public class Player : GameBehaviours, IPlayer{
         }
     }
 
+
+    public void notifyObservers()
+    {
+        foreach (Observer item in observers)
+        {
+            item.updateBar(this);
+        }
+    }
+
+    public void detach(Observer observer)
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -1,15 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts.Interfaces;
 
-public class EnergyRegen : GameBehaviours {
+public class EnergyRegen : GameBehaviours,ISubject {
 
     Player player;
     public int energyRegeneration = 120;
     private int regenerateCounter = 1;
+    public ArrayList observers = new ArrayList();
+    GameObject barIndicator;
+
 	// Use this for initialization
 	void Start () {
         player = transform.GetComponent<Player>();
+
+        barIndicator = GameObject.Find("BarIndicator");
+        this.attach(barIndicator.GetComponent<BarIndicatorObserver>());
 	}
+
+    public void attach(Observer observer)
+    {
+        if (observers.Contains(observer) == false)
+        {
+            observers.Add(observer);
+        }
+    }
 	
 	// Update is called once per frame
 	
@@ -27,12 +42,28 @@ public class EnergyRegen : GameBehaviours {
         if (player.Energy < 5)
         {
             player.Energy += quantite;
+             notifyObservers();
+           
             if (player.Energy > 5)
             {
                 player.Energy = 5;
+
             }
             return true;
         }
         return false;
+    }
+
+    public  void notifyObservers()
+    {
+        foreach (Observer item in observers)
+        {
+            item.updateBar(player);
+        }
+    }
+
+    public void detach(Observer observer)
+    {
+        throw new System.NotImplementedException();
     }
 }

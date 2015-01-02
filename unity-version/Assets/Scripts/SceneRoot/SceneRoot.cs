@@ -7,8 +7,8 @@ public class SceneRoot : MonoBehaviour {
     private static SceneRoot instance;
     private StateBase mCurrentState;
 
-
     private Players mPlayers;
+
 
     public static SceneRoot Instance
     {
@@ -26,10 +26,10 @@ public class SceneRoot : MonoBehaviour {
         instance = this;
         if (mCurrentState == null)
         {
-            mCurrentState = new StateGame();
+             mCurrentState = new StateSingle();
         }
-
-        mCurrentState.Awake();
+		mCurrentState.Awake();
+        
     }
 
 	// Update is called once per frame

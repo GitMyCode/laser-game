@@ -3,8 +3,14 @@ using System.Collections;
 
 public class UIManagerScript : MonoBehaviour {
 
-	public void StartGame()
+
+	public void StartGameSingle()
 	{
-		Application.LoadLevel("LaserPlay");
+        Application.LoadLevel("LineWar");
 	}
+
+    public void StartGameMultiplayer()
+    {
+    }
+
 }
