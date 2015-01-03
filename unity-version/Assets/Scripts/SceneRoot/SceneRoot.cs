@@ -40,7 +40,15 @@ public class SceneRoot : MonoBehaviour {
 
     public void OnUIInteract(GameObject reference)
     {
-        mCurrentState.OnUIInteract(reference);
+        if (mCurrentState == null)
+        {
+            LoadLevel("main");
+        }
+        else
+        {
+            mCurrentState.OnUIInteract(reference);
+        }
+
     }
 
     public void EndGame()
