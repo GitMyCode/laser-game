@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class AIPlayer : Player
+public class AIPlayer : myPlayer
 {
 
 
@@ -60,9 +60,9 @@ public class AIPlayer : Player
                     if (isInZone(lm.head.transform.position))
                     {
 
-                        GameArbiter.Instance.actionQueue.Enqueue(new Action(lm.head.transform.position,
+                        GameArbiter.Instance.actionQueue.Enqueue(new myAction(lm.head.transform.position,
                                                                    lm.head.transform.position,
-                                                                   0.1f, Action.ActionType.DEFENSIVE,
+                                                                   0.1f, myAction.ActionType.DEFENSIVE,
                                                                    gameObject
                                                                    ));
                         alreadyBlocked.Add(lm.head.name);
@@ -106,7 +106,7 @@ public class AIPlayer : Player
         Vector3 end = new Vector3(randomX, randomY, 0);
 
         Debug.DrawRay(start, end, Color.red, 2, false);
-        GameArbiter.Instance.actionQueue.Enqueue(new Action(start, end, Random.Range(0.1f, 0.3f), Action.ActionType.ATTACK, gameObject));
+        GameArbiter.Instance.actionQueue.Enqueue(new myAction(start, end, Random.Range(0.1f, 0.3f), myAction.ActionType.ATTACK, gameObject));
         
     }
 

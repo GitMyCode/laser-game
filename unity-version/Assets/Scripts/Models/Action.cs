@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Action {
+public class myAction {
 
 	public enum ActionType{
 		DEFENSIVE,
@@ -17,7 +17,7 @@ public class Action {
 
 	public GameObject owner;
 
-	public Action(Vector3 startPos, Vector3 endPos, float time, ActionType type,GameObject _owner){
+	public myAction(Vector3 startPos, Vector3 endPos, float time, ActionType type,GameObject _owner){
 		action = type;
 		this.startPos = startPos;
 		this.endPos = endPos;

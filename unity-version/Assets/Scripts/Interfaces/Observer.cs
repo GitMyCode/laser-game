@@ -7,6 +7,6 @@ namespace Assets.Scripts.Interfaces
 {
     public interface Observer
     {
-        void updateBar(Player player);
+        void updateBar(myPlayer player);
     }
 }

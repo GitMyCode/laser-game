@@ -37,7 +37,7 @@ using UnityEngine.UI;
           setValueToHandleChangeLf(lifeTransformP1);
       }
 
-      public void updateBar(Player player)
+      public void updateBar(myPlayer player)
       {
           if (player.Name == "Player1")
           {

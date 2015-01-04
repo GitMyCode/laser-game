@@ -2,7 +2,7 @@
 using System.Collections;
 using Assets.Scripts.Interfaces;
 
-public class Player : GameBehaviours, IPlayer, ISubject{
+public class myPlayer : GameBehaviours, IPlayer, ISubject{
 
     public enum PlayerState
     {
@@ -245,7 +245,7 @@ public class Player : GameBehaviours, IPlayer, ISubject{
         {
             if (value != State)
             {
-                if (value == Player.PlayerState.Dead)
+                if (value == myPlayer.PlayerState.Dead)
                 {
                     Die();
                 }
