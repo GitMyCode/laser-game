@@ -17,6 +17,8 @@ public class NetworkMainMenu : MonoBehaviour
     public GameObject invitationPanel;
     public GameObject networkMenu;
     public GameObject signInBut;
+
+    public GameObject hideOrShowGameObj;
     void Start()
     {
    
@@ -37,7 +39,7 @@ public class NetworkMainMenu : MonoBehaviour
 
                 break;
             case NetworkListener.NetworkState.SetupFailed:
-
+                Debug.Log("Room Connected Failed !!");
                 break;
             case NetworkListener.NetworkState.Aborted:
 
@@ -47,6 +49,9 @@ public class NetworkMainMenu : MonoBehaviour
                 break;
             case NetworkListener.NetworkState.Playing:
 
+                hideOrShowGameObj.GetComponent<ShowrelevantElement>().ShowOrHideGame(true);
+                hideOrShowGameObj.GetComponent<ShowrelevantElement>().multiConfiguration();
+               // showGame.ShowOrHideNetwork(false);
                 break;
             default:
                 Debug.Log("NetworkListener.Instance.State = " + NetworkListener.Instance.State);
@@ -86,18 +91,21 @@ public class NetworkMainMenu : MonoBehaviour
     //Handler for the Quick Match button.
     public void OnQuickMatch()
     {
+        Debug.Log("QuickMatch");
         NetworkListener.CreateQuickGame();
     }
 
     //Handler for the send initation button.
     public void OnInvite()
     {
+        Debug.Log("Invite");
         NetworkListener.CreateWithInvitationScreen();
     }
 
     //Handler for the inbox button.
     public void OnInboxClicked()
     {
+        Debug.Log("Inbox");
         NetworkListener.AcceptFromInbox();
     }
 
@@ -107,6 +115,7 @@ public class NetworkMainMenu : MonoBehaviour
 
         if (PlayGamesPlatform.Instance != null)
         {
+            Debug.Log("Signout");
             PlayGamesPlatform.Instance.SignOut();
         }
         else
@@ -128,5 +137,18 @@ public class NetworkMainMenu : MonoBehaviour
         signInBut.SetActive(true);
 
     }
+    /*
+    void playMode()
+    {
+        Selectable[] items = networkMenu.GetComponentsInChildren<Selectable>(true);
 
+        foreach (Selectable s in items)
+        {
+            s.gameObject.SetActive(false);
+        }
+
+        signInBut.SetActive(false);
+        playingText.SetActive(true);
+    }
+    */
 }

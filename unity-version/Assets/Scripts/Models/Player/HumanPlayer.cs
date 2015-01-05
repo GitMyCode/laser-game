@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using GooglePlayGames;
+using System.Text;
 
 public class HumanPlayer : myPlayer {
-
-
-    
-
 
     void Awake()
     {
@@ -23,8 +21,6 @@ public class HumanPlayer : myPlayer {
         Name = "Player1";
         Life = 5;
         Energy = 5;
-       
-
     }
 
     //public member vars
@@ -39,10 +35,9 @@ public class HumanPlayer : myPlayer {
     private int activeTouch = -1;
 
     public int tapLength = 3;
-    //methods
-  
-
     
+    //Networking
+
 
     protected override void GameUpdate()
     {
@@ -73,8 +68,12 @@ public class HumanPlayer : myPlayer {
                         activeTouch = touch.fingerId;
                         swipeCompleteArray[touch.fingerId] = true;
 
-                        GameArbiter.Instance.actionQueue.Enqueue(new myAction(fingerTrackArray[touch.fingerId],
-                            touchPos, intervalTime, myAction.ActionType.ATTACK, gameObject));
+                        myAction actiontoDo = new myAction(fingerTrackArray[touch.fingerId],
+                            touchPos, intervalTime, myAction.ActionType.ATTACK, gameObject);
+                        GameArbiter.Instance.actionQueue.Enqueue(actiontoDo);
+                        Debug.Log("Owner : " + gameObject.ToString());
+                        if (UIManagerScript.multiplayer) { NetworkListener.Instance.sendMessageToOtherPlayer(actiontoDo);
+                        }
 
                     }
                 }
@@ -87,20 +86,19 @@ public class HumanPlayer : myPlayer {
                        activeTouch == -1 && touch.phase == TouchPhase.Ended)
                     {
 
-                        //				Debug.Log("distance :"+dist);
+                        //	Debug.Log("distance :"+dist);
                         //	Debug.Log("tracker.tapCount="+touch.tapCount);
                         activeTouch = touch.fingerId;
                         //	Debug.Log(touch.fingerId + " " + fingerTrackArray[touch.fingerId] + " " +  touch.position);
                         swipeCompleteArray[touch.fingerId] = true;
-                        GameArbiter.Instance.actionQueue.Enqueue(new myAction(fingerTrackArray[touch.fingerId], touchPos, intervalTime, myAction.ActionType.DEFENSIVE, gameObject));
-                        DebugDraw.DrawSphere(touch.position, 10, Color.yellow);
 
+                        myAction actiontoDo = new myAction(fingerTrackArray[touch.fingerId], touchPos, intervalTime, myAction.ActionType.DEFENSIVE, gameObject);
+                        GameArbiter.Instance.actionQueue.Enqueue(actiontoDo);
+                        if (UIManagerScript.multiplayer) { NetworkListener.Instance.sendMessageToOtherPlayer(actiontoDo); }
+                        
                     }
 
                 }
-
-
-                
 
 
                 //when the touch has ended we can start accepting swipes again
@@ -119,6 +117,8 @@ public class HumanPlayer : myPlayer {
             }
         }
     }
+
+
 
     public override string ToString()
     {

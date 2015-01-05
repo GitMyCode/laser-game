@@ -98,7 +98,7 @@ public class myPlayer : GameBehaviours, IPlayer, ISubject{
         {
             Energy += quantite;
 
-           notifyObservers();
+           //notifyObservers();
 
 
             if (Energy > 5)
@@ -115,7 +115,7 @@ public class myPlayer : GameBehaviours, IPlayer, ISubject{
         if (quantite >= 0 && Energy >= quantite)
         {
             Energy -= quantite;
-            notifyObservers();
+            //notifyObservers();
 
             return true;
         }
@@ -257,8 +257,10 @@ public class myPlayer : GameBehaviours, IPlayer, ISubject{
 
     public void notifyObservers()
     {
+        Debug.Log("Size : " + observers.Count);
         foreach (Observer item in observers)
         {
+            
             item.updateBar(this);
         }
     }

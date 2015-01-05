@@ -65,6 +65,7 @@ public class Authenfication : MonoBehaviour {
 
     void initiliazeNetworkMenu()
     {
+        Debug.Log("Initialize Network Menu");
         Selectable[] items = networkMenu.GetComponentsInChildren<Selectable>(true);
 
         foreach (Selectable s in items)

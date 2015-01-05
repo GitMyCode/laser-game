@@ -4,6 +4,7 @@ using GooglePlayGames;
 using GooglePlayGames.BasicApi.Multiplayer;
 using System.Collections.Generic;
 using System;
+using System.Text;
 
 public class NetworkListener : RealTimeMultiplayerListener {
 
@@ -15,7 +16,7 @@ public class NetworkListener : RealTimeMultiplayerListener {
     static NetworkListener sInstance = null;
 
     public enum NetworkState { SettingUp, Playing, Finished, SetupFailed, Aborted };
-    private NetworkState mRaceState = NetworkState.SettingUp;
+    private NetworkState mNetworkState = NetworkState.SettingUp;
 
     // my participant ID
     private string mMyParticipantId = "";
@@ -33,7 +34,7 @@ public class NetworkListener : RealTimeMultiplayerListener {
     {
         get
         {
-            return mRaceState;
+            return mNetworkState;
         }
     }
 
@@ -45,6 +46,14 @@ public class NetworkListener : RealTimeMultiplayerListener {
         }
     }
 
+
+    // FOR MESSAGE RECEIVE
+    String action;
+    myAction actiontoAdd;
+
+    string actionToadd;
+    byte[] actionByteToSend;
+    public static string participantId;
 
 	// Use this for initialization
 	void Start () {
@@ -118,20 +127,22 @@ public class NetworkListener : RealTimeMultiplayerListener {
     {
         if (success)
         {
-            mRaceState = NetworkState.Playing;
-            mMyParticipantId = GetSelf().ParticipantId;
+            Debug.Log("Room Connected !!");
+            mNetworkState = NetworkState.Playing;
+            participantId= GetSelf().ParticipantId;
+
         }
         else
         {
-            mRaceState = NetworkState.SetupFailed;
+            mNetworkState = NetworkState.SetupFailed;
         }
     }
 
     public void OnLeftRoom()
     {
-        if (mRaceState != NetworkState.Finished)
+        if (mNetworkState != NetworkState.Finished)
         {
-            mRaceState = NetworkState.Aborted;
+            mNetworkState = NetworkState.Aborted;
         }
     }
 
@@ -147,6 +158,17 @@ public class NetworkListener : RealTimeMultiplayerListener {
 
     public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data)
     {
-        throw new NotImplementedException();
+        action = System.Text.Encoding.UTF8.GetString(data);
+        Debug.Log("ACTION :" + action);
+        actiontoAdd = myAction.DeserializeAction(action);
+        GameArbiter.Instance.actionQueue.Enqueue(actiontoAdd);
+    }
+
+    public void sendMessageToOtherPlayer(myAction action)
+    {
+        Debug.Log("sendMESSAGE" + actionToadd);
+        actionToadd = action.serializeAction(action);
+        actionByteToSend = Encoding.ASCII.GetBytes(actionToadd);
+        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(false, actionByteToSend);
     }
 }

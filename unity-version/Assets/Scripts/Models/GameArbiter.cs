@@ -111,8 +111,11 @@ public class GameArbiter : GameBehaviours {
 
             
         IPlayer p = a.owner.GetComponent<myPlayer>();
+        Debug.Log("owner : " + a.owner.GetComponent<myPlayer>().ToString());
 		if(p.tryRemoveEnergy(1)){
 			Vector3 birthPosition = a.endPos;
+            Debug.Log("birthPosition : " + birthPosition.ToString());
+            Debug.Log("Tag[0] : " + p.Goals[0].tag);
 			if(p.Goals[0].tag == "goalP2"){
 				Transform goalTran = p.Goals[0].transform;
 				birthPosition.y = (goalTran.position.y - goalTran.localScale.y / 2);
@@ -122,7 +125,7 @@ public class GameArbiter : GameBehaviours {
 
             var direction = (a.endPos - a.startPos);
             var distance = Vector2.Distance(a.startPos, a.endPos);
-            Debug.DrawRay(a.startPos,direction, Color.green,1);
+           // Debug.DrawRay(a.startPos,direction, Color.green,1);
 			LaserModel lm = new LaserModel(a,birthPosition);
 			
             lineModelDictionary.Add(lm.name,lm);
