@@ -5,7 +5,7 @@ public class SceneRoot : MonoBehaviour {
 
 
     private static SceneRoot instance;
-    private StateBase mCurrentState;
+    private static StateBase mCurrentState;
 
     private Players mPlayers;
 
@@ -26,7 +26,7 @@ public class SceneRoot : MonoBehaviour {
         instance = this;
         if (mCurrentState == null)
         {
-             mCurrentState = new StateSingle();
+             mCurrentState = new StateMainMenu();
         }
 		mCurrentState.Awake();
         
@@ -75,6 +75,10 @@ public class SceneRoot : MonoBehaviour {
         get
         {
             return mCurrentState;
+        }
+        set
+        {
+            mCurrentState = value;
         }
     }
 
